@@ -30,7 +30,7 @@ namespace WeatherDataAnalysis
         /// <summary>
         ///     The application width
         /// </summary>
-        public const int ApplicationWidth = 1150;
+        public const int ApplicationWidth = 1450;
 
         private StorageFile file;
 
@@ -113,7 +113,7 @@ namespace WeatherDataAnalysis
 
         private async void addDay_Click(object sender, RoutedEventArgs e)
         {
-            var date = DateTime.Parse(this.dateTextBox.Text);
+            var date = DateTime.Parse(this.newDayPicker.Date.LocalDateTime.ToShortDateString());
             var highTemp = int.Parse(this.highTempTextBox.Text);
             var lowTemp = int.Parse(this.lowTempTextBox.Text);
 
