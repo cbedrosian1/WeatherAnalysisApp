@@ -19,7 +19,7 @@ namespace WeatherDataAnalysis.Controllers
 
         private const ContentDialogResult Replace = ContentDialogResult.Primary;
 
-        private WeatherData weatherData;
+        private WeatherCalculator weatherData;
         private DuplicateDayResult duplicateBehavior;
         private readonly WeatherDataCsvParser loader;
 
@@ -76,7 +76,7 @@ namespace WeatherDataAnalysis.Controllers
         /// </summary>
         public WeatherDataController()
         {
-            this.weatherData = new WeatherData(new List<DailySummary>());
+            this.weatherData = new WeatherCalculator(new List<DailyStats>());
             this.loader = new WeatherDataCsvParser();
             this.HighTempThreshold = "90";
             this.LowTempThreshold = "32";
@@ -97,7 +97,7 @@ namespace WeatherDataAnalysis.Controllers
         {
             if (this.weatherData.Days.Count != 0 && this.MergeOrReplace == MergeOrReplaceResult.Merge)
             {
-                this.weatherData = new WeatherData(this.weatherData, await this.loader.LoadFile(this.File)) {
+                this.weatherData = new WeatherCalculator(this.weatherData, await this.loader.LoadFile(this.File)) {
                     HighTemperatureThreshold = int.Parse(this.HighTempThreshold),
                     LowTemperatureThreshold = int.Parse(this.LowTempThreshold),
                     HistogramBucketSize = this.HistogramBucketSize
@@ -106,7 +106,7 @@ namespace WeatherDataAnalysis.Controllers
             }
             else
             {
-                this.weatherData = new WeatherData(await this.loader.LoadFile(this.File)) {
+                this.weatherData = new WeatherCalculator(await this.loader.LoadFile(this.File)) {
                     HighTemperatureThreshold = int.Parse(this.HighTempThreshold),
                     LowTemperatureThreshold = int.Parse(this.LowTempThreshold),
                     HistogramBucketSize = this.HistogramBucketSize
@@ -163,7 +163,7 @@ namespace WeatherDataAnalysis.Controllers
         public string ClearReport()
         {
             this.loader.LinesWithErrors = string.Empty;
-            this.weatherData = new WeatherData(new List<DailySummary>()) {
+            this.weatherData = new WeatherCalculator(new List<DailyStats>()) {
                 HistogramBucketSize = this.HistogramBucketSize
             };
             var reportBuilder = new ReportBuilder(this.weatherData);
@@ -185,7 +185,7 @@ namespace WeatherDataAnalysis.Controllers
                 throw new ArgumentNullException(nameof(date));
             }
 
-            var day = new DailySummary(date, highTemp, lowTemp);
+            var day = new DailyStats(date, highTemp, lowTemp);
             var duplicate = this.weatherData.Days.FirstOrDefault(d => d.Date.Date == date.Date);
             if (duplicate == null)
             {

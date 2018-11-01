@@ -1,20 +1,22 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using WeatherDataAnalysis.View;
 
 namespace WeatherDataAnalysis.Model
 {
     /// <summary>
     ///     Takes a list of days and returns weather data about them
     /// </summary>
-    public class WeatherData
+    public class WeatherCalculator : ICollection<DailyStats>
     {
         #region Data members
 
         private const int YearPadding = 1000;
         private const int SizeFinder = 1;
 
-        private readonly ICollection<IGrouping<int, DailySummary>> conflictingDays;
+        private readonly ICollection<IGrouping<int, DailyStats>> conflictingDays;
 
         #endregion
 
@@ -26,7 +28,7 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     The collection of days.
         /// </value>
-        public ICollection<DailySummary> Days { get; set; }
+        public ICollection<DailyStats> Days { get; set; }
 
         /// <summary>
         ///     Gets or sets the high temperature threshold.
@@ -68,27 +70,31 @@ namespace WeatherDataAnalysis.Model
         /// </value>
         public int HistogramRange => this.HistogramBucketSize - SizeFinder;
 
+        public int Count => Days.Count;
+
+        public bool IsReadOnly => Days.IsReadOnly;
+
         #endregion
 
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="WeatherData" /> class.
+        ///     Initializes a new instance of the <see cref="WeatherCalculator" /> class.
         ///     Precondition: days != null
         /// </summary>
         /// <param name="days">The days to take info from.</param>
-        public WeatherData(ICollection<DailySummary> days)
+        public WeatherCalculator(ICollection<DailyStats> days)
         {
             this.Days = days ?? throw new ArgumentNullException(nameof(days));
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="WeatherData" /> class.
+        ///     Initializes a new instance of the <see cref="WeatherCalculator" /> class.
         ///     Precondition: data != null AND days != null
         /// </summary>
         /// <param name="data">The existing data.</param>
         /// <param name="days">The new incoming data.</param>
-        public WeatherData(WeatherData data, IEnumerable<DailySummary> days)
+        public WeatherCalculator(WeatherCalculator data, IEnumerable<DailyStats> days)
         {
             if (days == null)
             {
@@ -119,7 +125,7 @@ namespace WeatherDataAnalysis.Model
         /// <returns>
         ///     List of days with the highest temperature of the year
         /// </returns>
-        public List<DailySummary> FindHighestTemperatureDaysOfYear(int year)
+        public List<DailyStats> FindHighestTemperatureDaysOfYear(int year)
         {
             return this.Days.Where(day => day.Date.Year == year).GroupBy(day => day.HighTemperature)
                        .OrderByDescending(highTemp => highTemp.Key).First().ToList();
@@ -132,7 +138,7 @@ namespace WeatherDataAnalysis.Model
         /// <returns>
         ///     List of days with the lowest high temperature of the year
         /// </returns>
-        public List<DailySummary> FindLowestHighTemperatureDaysOfYear(int year)
+        public List<DailyStats> FindLowestHighTemperatureDaysOfYear(int year)
         {
             return this.Days.Where(day => day.Date.Year == year).GroupBy(day => day.HighTemperature)
                        .OrderBy(highTemp => highTemp.Key).First()
@@ -146,7 +152,7 @@ namespace WeatherDataAnalysis.Model
         /// <returns>
         ///     List of days with the lowest temperature of the year
         /// </returns>
-        public List<DailySummary> FindLowestTemperatureDaysOfYear(int year)
+        public List<DailyStats> FindLowestTemperatureDaysOfYear(int year)
         {
             return this.Days.Where(day => day.Date.Year == year).GroupBy(day => day.LowTemperature)
                        .OrderBy(lowTemp => lowTemp.Key).First()
@@ -160,7 +166,7 @@ namespace WeatherDataAnalysis.Model
         /// <returns>
         ///     List of days with the highest low temperature of the year
         /// </returns>
-        public List<DailySummary> FindHighestLowTemperatureDaysOfYear(int year)
+        public List<DailyStats> FindHighestLowTemperatureDaysOfYear(int year)
         {
             return this.Days.Where(day => day.Date.Year == year).GroupBy(day => day.LowTemperature)
                        .OrderByDescending(lowTemp => lowTemp.Key).First()
@@ -225,10 +231,10 @@ namespace WeatherDataAnalysis.Model
         /// <returns>
         ///     List of monthly summaries
         /// </returns>
-        public ICollection<MonthlySummary> GroupDaysByMonth(int year)
+        public ICollection<MonthlyStats> GroupDaysByMonth(int year)
         {
             return this.Days.Where(day => day.Date.Year == year).GroupBy(month => month.Date.Month)
-                       .Select(group => new MonthlySummary(group))
+                       .Select(group => new MonthlyStats(group))
                        .ToList();
         }
 
@@ -252,14 +258,14 @@ namespace WeatherDataAnalysis.Model
         ///     Finds the next conflicting days.
         /// </summary>
         /// <returns>Collection of the next conflicting days</returns>
-        public ICollection<DailySummary> FindNextConflictingDays()
+        public ICollection<DailyStats> FindNextConflictingDays()
         {
             if (this.ConflictingDaysCount > 0)
             {
                 return this.conflictingDays.First().ToList();
             }
 
-            return new List<DailySummary>();
+            return new List<DailyStats>();
         }
 
         /// <summary>
@@ -355,6 +361,41 @@ namespace WeatherDataAnalysis.Model
         {
             return this.Days.Where(yearOfDay => yearOfDay.Date.Year == year).Select(day => day.LowTemperature)
                 .ToList();
+        }
+
+        public void Add(DailyStats item)
+        {
+            Days.Add(item);
+        }
+
+        public void Clear()
+        {
+            Days.Clear();
+        }
+
+        public bool Contains(DailyStats item)
+        {
+            return Days.Contains(item);
+        }
+
+        public void CopyTo(DailyStats[] array, int arrayIndex)
+        {
+            Days.CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(DailyStats item)
+        {
+            return Days.Remove(item);
+        }
+
+        public IEnumerator<DailyStats> GetEnumerator()
+        {
+            return Days.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Days.GetEnumerator();
         }
 
         #endregion

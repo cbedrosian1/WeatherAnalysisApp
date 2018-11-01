@@ -1,4 +1,4 @@
-﻿namespace WeatherDataAnalysis.Model
+﻿namespace WeatherDataAnalysis.View
 {
     /// <summary>
     ///     Options for the keep and replace button in ContentDialog

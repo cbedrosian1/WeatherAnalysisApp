@@ -99,7 +99,7 @@
     </Compile>
     <Compile Include="DataTier\CsvFileSaver.cs" />
     <Compile Include="DataTier\WeatherDataCsvParser.cs" />
-    <Compile Include="Model\DuplicateDayResult.cs" />
+    <Compile Include="View\DuplicateDayResult.cs" />
     <Compile Include="View\DuplicateDayDialog.xaml.cs">
       <DependentUpon>DuplicateDayDialog.xaml</DependentUpon>
     </Compile>
@@ -110,9 +110,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\WeatherData.cs" />
-    <Compile Include="Model\DailySummary.cs" />
-    <Compile Include="Model\MonthlySummary.cs" />
+    <Compile Include="Model\WeatherCalculator.cs" />
+    <Compile Include="Model\DailyStats.cs" />
+    <Compile Include="Model\MonthlyStats.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\WeatherDataController.cs" />
   </ItemGroup>
