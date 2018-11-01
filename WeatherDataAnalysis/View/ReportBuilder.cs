@@ -57,6 +57,8 @@ namespace WeatherDataAnalysis.View
             var years = this.data.FindYears();
             foreach (var currentYear in years)
             {
+                var highTemps = this.data.FindHighTemperaturesForYear(currentYear);
+                var lowTemps = this.data.FindLowTemperaturesForYear(currentYear);
                 this.Report += $"Year: {currentYear}" + Environment.NewLine;
                 this.addHighestTemperatureDaysOfYearToReport(currentYear);
                 this.addLowestTemperatureDaysOfYearToReport(currentYear);
@@ -66,8 +68,8 @@ namespace WeatherDataAnalysis.View
                 this.addAverageTemperatureOfYearToReport(currentYear, Low);
                 this.addNumberOfDaysOverTemperatureToReport(currentYear);
                 this.addNumberOfDaysUnderTemperatureToReport(currentYear);
-                this.addTempHistogramToReport(currentYear, High);
-                this.addTempHistogramToReport(currentYear, Low);
+                this.addTempHistogramToReport(highTemps);
+                this.addTempHistogramToReport(lowTemps);
                 this.addInfoForMonthsToReport(currentYear);
                 this.Report += Environment.NewLine;
             }
@@ -205,20 +207,10 @@ namespace WeatherDataAnalysis.View
             }
         }
 
-        private void addTempHistogramToReport(int year, bool highOrLow)
+        private void addTempHistogramToReport(List<int> temps)
         {
-            string flag;
-            if (highOrLow)
-            {
-                flag = "High";
-            }
-            else
-            {
-                flag = "Low";
-            }
-
-            this.Report += flag + " Temperature Histogram: " + Environment.NewLine;
-            var temperatureHistogram = this.data.GenerateTempHistogram(year, highOrLow);
+            this.Report += " Temperature Histogram: " + Environment.NewLine;
+            var temperatureHistogram = this.data.GenerateTempHistogram(temps);
             foreach (var currentKey in temperatureHistogram.Keys)
             {
                 this.Report +=
