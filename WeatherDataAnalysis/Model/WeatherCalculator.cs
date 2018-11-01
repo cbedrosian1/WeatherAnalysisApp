@@ -70,9 +70,19 @@ namespace WeatherDataAnalysis.Model
         /// </value>
         public int HistogramRange => this.HistogramBucketSize - SizeFinder;
 
-        public int Count => Days.Count;
+        /// <summary>
+        /// Gets the count of days 
+        /// </summary>
+        /// <value>
+        /// the count of days
+        /// </value>
+        public int Count => this.Days.Count;
 
-        public bool IsReadOnly => Days.IsReadOnly;
+        /// <summary>
+        /// gets whether true or false depending on if days is read only
+        /// </summary>
+        /// <value> true or false depending on days is read only</value>
+        public bool IsReadOnly => this.Days.IsReadOnly;
 
         #endregion
 
@@ -174,26 +184,15 @@ namespace WeatherDataAnalysis.Model
         }
 
         /// <summary>
-        ///     Gets the average temperature of the year.
+        ///     Gets the average temperature of the provided temperatures.
         /// </summary>
-        /// <param name="year">The year.</param>
-        /// <param name="highOrLow">Whether the method is finding the high temp or low temp average</param>
+        /// <param name="temps">The temperatures.</param>
         /// <returns>
-        ///     Returns the average temperature of the year
+        ///     Returns the average temperature of the list
         /// </returns>
-        public double FindAverageTemperatureOfYear(int year, bool highOrLow)
-        {
-            double averageTemp;
-            if (highOrLow)
-            {
-                averageTemp = this.Days.Where(day => day.Date.Year == year).Average(temp => temp.HighTemperature);
-            }
-            else
-            {
-                averageTemp = this.Days.Where(day => day.Date.Year == year).Average(temp => temp.LowTemperature);
-            }
-
-            return averageTemp;
+        public double FindAverageTemperatureOfYear(List<int> temps)
+        { 
+            return temps.Average();
         }
 
         /// <summary>
@@ -363,39 +362,39 @@ namespace WeatherDataAnalysis.Model
                 .ToList();
         }
 
-        public void Add(DailyStats item)
+        public void Add(DailyStats day)
         {
-            Days.Add(item);
+            this.Days.Add(day);
         }
 
         public void Clear()
         {
-            Days.Clear();
+            this.Days.Clear();
         }
 
         public bool Contains(DailyStats item)
         {
-            return Days.Contains(item);
+            return this.Days.Contains(item);
         }
 
         public void CopyTo(DailyStats[] array, int arrayIndex)
         {
-            Days.CopyTo(array, arrayIndex);
+            this.Days.CopyTo(array, arrayIndex);
         }
 
         public bool Remove(DailyStats item)
         {
-            return Days.Remove(item);
+            return this.Days.Remove(item);
         }
 
         public IEnumerator<DailyStats> GetEnumerator()
         {
-            return Days.GetEnumerator();
+            return this.Days.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return Days.GetEnumerator();
+            return this.Days.GetEnumerator();
         }
 
         #endregion

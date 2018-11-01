@@ -15,8 +15,8 @@ namespace WeatherDataAnalysis.View
 
         private const int FirstIndex = 0;
         private const int MonthCount = 12;
-        private const bool High = true;
-        private const bool Low = false;
+        private const string High = "High";
+        private const string Low = "Low";
         private readonly WeatherCalculator data;
 
         #endregion
@@ -59,17 +59,18 @@ namespace WeatherDataAnalysis.View
             {
                 var highTemps = this.data.FindHighTemperaturesForYear(currentYear);
                 var lowTemps = this.data.FindLowTemperaturesForYear(currentYear);
+
                 this.Report += $"Year: {currentYear}" + Environment.NewLine;
                 this.addHighestTemperatureDaysOfYearToReport(currentYear);
                 this.addLowestTemperatureDaysOfYearToReport(currentYear);
                 this.addLowestHighTemperatureDaysOfYearToReport(currentYear);
                 this.addHighestLowTemperatureDaysOfYearToReport(currentYear);
-                this.addAverageTemperatureOfYearToReport(currentYear, High);
-                this.addAverageTemperatureOfYearToReport(currentYear, Low);
+                this.addAverageTemperatureOfYearToReport(highTemps, High);
+                this.addAverageTemperatureOfYearToReport(lowTemps, Low);
                 this.addNumberOfDaysOverTemperatureToReport(currentYear);
                 this.addNumberOfDaysUnderTemperatureToReport(currentYear);
-                this.addTempHistogramToReport(highTemps);
-                this.addTempHistogramToReport(lowTemps);
+                this.addTempHistogramToReport(highTemps, High);
+                this.addTempHistogramToReport(lowTemps, Low);
                 this.addInfoForMonthsToReport(currentYear);
                 this.Report += Environment.NewLine;
             }
@@ -108,20 +109,10 @@ namespace WeatherDataAnalysis.View
                 Environment.NewLine;
         }
 
-        private void addAverageTemperatureOfYearToReport(int year, bool highOrLow)
+        private void addAverageTemperatureOfYearToReport(List<int> temps, string highOrLow)
         {
-            string flag;
-            if (highOrLow)
-            {
-                flag = "High";
-            }
-            else
-            {
-                flag = "Low";
-            }
-
-            var days = this.data.FindAverageTemperatureOfYear(year, highOrLow);
-            this.Report += $"The average {flag} temperature of the year was: {days:0.00}" + Environment.NewLine;
+            var days = this.data.FindAverageTemperatureOfYear(temps);
+            this.Report += $"The average {highOrLow.ToLower()} temperature of the year was: {days:0.00}" + Environment.NewLine;
         }
 
         private void addNumberOfDaysOverTemperatureToReport(int year)
@@ -207,9 +198,9 @@ namespace WeatherDataAnalysis.View
             }
         }
 
-        private void addTempHistogramToReport(List<int> temps)
+        private void addTempHistogramToReport(List<int> temps, string highOrLow)
         {
-            this.Report += " Temperature Histogram: " + Environment.NewLine;
+            this.Report += highOrLow + " temperature Histogram: " + Environment.NewLine;
             var temperatureHistogram = this.data.GenerateTempHistogram(temps);
             foreach (var currentKey in temperatureHistogram.Keys)
             {
