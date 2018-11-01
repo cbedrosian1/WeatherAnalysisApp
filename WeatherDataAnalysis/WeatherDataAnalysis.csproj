@@ -97,7 +97,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataTier\CsvFIleSaver.cs" />
+    <Compile Include="DataTier\CsvFileSaver.cs" />
     <Compile Include="DataTier\WeatherDataCsvParser.cs" />
     <Compile Include="Model\DuplicateDayResult.cs" />
     <Compile Include="View\DuplicateDayDialog.xaml.cs">

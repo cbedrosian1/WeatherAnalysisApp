@@ -11,7 +11,7 @@ namespace WeatherDataAnalysis.DataTier
     /// <summary>
     ///     Puts existing weather data into a csv file
     /// </summary>
-    public class CsvFIleSaver
+    public class CsvFileSaver
     {
         #region Methods
 

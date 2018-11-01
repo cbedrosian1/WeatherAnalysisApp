@@ -209,7 +209,7 @@ namespace WeatherDataAnalysis.Controllers
         /// </summary>
         public void SaveFile()
         {
-            var fileSaver = new CsvFIleSaver();
+            var fileSaver = new CsvFileSaver();
             fileSaver.SaveFile(this.weatherData.Days);
         }
 
