@@ -27,7 +27,7 @@
         <TextBlock x:Name="daysOverTextBlock" HorizontalAlignment="Left" Margin="726,141,0,0" Text="Check for days over:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>
         <TextBlock x:Name="temperatureType" HorizontalAlignment="Left" Margin="1062,137,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Width="23" Height="32" FontSize="20" RenderTransformOrigin="13.907,0.723"/>
         <TextBlock x:Name="temperatureType2" HorizontalAlignment="Left" Margin="1062,82,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Width="23" Height="32" FontSize="20" RenderTransformOrigin="1.261,0.594"/>
-        <Button x:Name="clearTextButton" Content="Clear Text" Click ="clearText_Click"  HorizontalAlignment="Left" Margin="330,365,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="clearDataButton" Content="Clear Data" Click ="clearData_Click"  HorizontalAlignment="Left" Margin="330,365,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="dateTextBox" HorizontalAlignment="Left" Margin="730,257,0,0" Text="" VerticalAlignment="Top"/>
         <TextBox x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="840,257,0,0" Text="" VerticalAlignment="Top"/>
         <TextBox x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="950,257,0,0" Text="" VerticalAlignment="Top"/>

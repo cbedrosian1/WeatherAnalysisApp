@@ -106,7 +106,7 @@ namespace WeatherDataAnalysis
             this.summaryTextBox.Text = this.controller.UpdateThresholds();
         }
 
-        private void clearText_Click(object sender, RoutedEventArgs e)
+        private void clearData_Click(object sender, RoutedEventArgs e)
         {
             this.summaryTextBox.Text = this.controller.ClearReport();
         }
