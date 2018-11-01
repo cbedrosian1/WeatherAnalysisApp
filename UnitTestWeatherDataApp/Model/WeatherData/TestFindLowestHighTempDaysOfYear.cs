@@ -20,14 +20,14 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
 
         #region Data members
 
-        private WeatherDataAnalysis.Model.WeatherData weatherData;
-        private List<DailySummary> days;
-        private List<DailySummary> testList;
-        private DailySummary day1;
-        private DailySummary day2;
-        private DailySummary day3;
-        private DailySummary day4;
-        private DailySummary day5;
+        private WeatherDataAnalysis.Model.WeatherCalculator weatherData;
+        private List<DailyStats> days;
+        private List<DailyStats> testList;
+        private DailyStats day1;
+        private DailyStats day2;
+        private DailyStats day3;
+        private DailyStats day4;
+        private DailyStats day5;
 
         #endregion
 
@@ -36,13 +36,13 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         [TestInitialize]
         public void TestInit()
         {
-            this.days = new List<DailySummary>();
-            this.testList = new List<DailySummary>();
-            this.day1 = new DailySummary(new DateTime(2015, 1, 1), 50, 15);
-            this.day2 = new DailySummary(new DateTime(2015, 1, 2), 45, 25);
-            this.day3 = new DailySummary(new DateTime(2015, 1, 3), 40, 30);
-            this.day4 = new DailySummary(new DateTime(2015, 1, 4), 40, 15);
-            this.day5 = new DailySummary(new DateTime(2016, 1, 1), 50, 15);
+            this.days = new List<DailyStats>();
+            this.testList = new List<DailyStats>();
+            this.day1 = new DailyStats(new DateTime(2015, 1, 1), 50, 15);
+            this.day2 = new DailyStats(new DateTime(2015, 1, 2), 45, 25);
+            this.day3 = new DailyStats(new DateTime(2015, 1, 3), 40, 30);
+            this.day4 = new DailyStats(new DateTime(2015, 1, 4), 40, 15);
+            this.day5 = new DailyStats(new DateTime(2016, 1, 1), 50, 15);
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         {
             this.days.Add(this.day1);
             this.testList.Add(this.day1);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherData(this.days);
+            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindLowestHighTemperatureDaysOfYear(this.day1.Date.Year));
         }
@@ -63,7 +63,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day3);
             this.days.Add(this.day1);
             this.days.Add(this.day2);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherData(this.days);
+            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindLowestHighTemperatureDaysOfYear(this.day3.Date.Year));
         }
@@ -77,7 +77,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day3);
             this.days.Add(this.day1);
 
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherData(this.days);
+            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindLowestHighTemperatureDaysOfYear(this.day3.Date.Year));
         }
@@ -91,7 +91,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day1);
             this.days.Add(this.day3);
 
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherData(this.days);
+            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindLowestHighTemperatureDaysOfYear(this.day3.Date.Year));
         }
@@ -106,7 +106,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day2);
             this.days.Add(this.day3);
             this.days.Add(this.day4);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherData(this.days);
+            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindLowestHighTemperatureDaysOfYear(this.day3.Date.Year));
         }
@@ -118,7 +118,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
 
             this.days.Add(this.day1);
             this.days.Add(this.day5);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherData(this.days);
+            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindLowestHighTemperatureDaysOfYear(this.day1.Date.Year));
         }
@@ -126,7 +126,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         [TestMethod]
         public void TestEmptyList()
         {
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherData(this.days);
+            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
             Assert.ThrowsException<InvalidOperationException>(() =>
                 this.weatherData.FindLowestHighTemperatureDaysOfYear(this.day1.Date.Year));
         }

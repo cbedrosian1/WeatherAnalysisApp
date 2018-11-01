@@ -36,6 +36,9 @@ namespace WeatherDataAnalysis
 
         private readonly WeatherDataController controller;
 
+        private const string HighThresholdDefault = "90";
+        private const string LowThresholdDefault = "32";
+
         #endregion
 
         #region Constructors
@@ -95,12 +98,12 @@ namespace WeatherDataAnalysis
 
             if (string.IsNullOrEmpty(this.overTempTextBox.Text))
             {
-                this.controller.HighTempThreshold = "90";
+                this.controller.HighTempThreshold = HighThresholdDefault;
             }
 
             if (string.IsNullOrEmpty(this.underTempTextBox.Text))
             {
-                this.controller.LowTempThreshold = "32";
+                this.controller.LowTempThreshold = LowThresholdDefault;
             }
 
             this.summaryTextBox.Text = this.controller.UpdateThresholds();

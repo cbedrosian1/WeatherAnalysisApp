@@ -43,7 +43,7 @@ namespace WeatherDataAnalysis.DataTier
         ///     List of days from file being read
         /// </returns>
         /// <exception cref="ArgumentNullException">file</exception>
-        public async Task<ICollection<DailySummary>> LoadFile(StorageFile file)
+        public async Task<ICollection<DailyStats>> LoadFile(StorageFile file)
         {
             if (file == null)
             {
@@ -60,14 +60,14 @@ namespace WeatherDataAnalysis.DataTier
             }
         }
 
-        private ICollection<DailySummary> parseCsvFile(StreamReader reader)
+        private ICollection<DailyStats> parseCsvFile(StreamReader reader)
         {
             if (reader == null)
             {
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            var days = new List<DailySummary>();
+            var days = new List<DailyStats>();
             var lineCount = 0;
             var lineWithError = string.Empty;
             while (!reader.EndOfStream)
@@ -84,7 +84,7 @@ namespace WeatherDataAnalysis.DataTier
                         var date = DateTime.Parse(values[DateField]);
                         var highTemp = int.Parse(values[HighTempField]);
                         var lowTemp = int.Parse(values[LowTempField]);
-                        var day = new DailySummary(date, highTemp, lowTemp);
+                        var day = new DailyStats(date, highTemp, lowTemp);
                         days.Add(day);
                     }
                 }

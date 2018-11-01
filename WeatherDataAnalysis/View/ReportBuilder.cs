@@ -14,10 +14,10 @@ namespace WeatherDataAnalysis.View
         #region Data members
 
         private const int FirstIndex = 0;
-        private const int MonthCount = 13;
+        private const int MonthCount = 12;
         private const bool High = true;
         private const bool Low = false;
-        private readonly WeatherData data;
+        private readonly WeatherCalculator data;
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace WeatherDataAnalysis.View
         /// </summary>
         /// <param name="data">WeatherData being passed to the report.</param>
         /// <exception cref="ArgumentNullException">collection</exception>
-        public ReportBuilder(WeatherData data)
+        public ReportBuilder(WeatherCalculator data)
         {
             this.data = data ?? throw new ArgumentNullException(nameof(data));
         }
@@ -144,7 +144,7 @@ namespace WeatherDataAnalysis.View
             var textToBeReported = string.Empty;
             var months = this.data.GroupDaysByMonth(year);
 
-            for (var currentMonth = 1; currentMonth < MonthCount; currentMonth++)
+            for (var currentMonth = 1; currentMonth <= MonthCount; currentMonth++)
             {
                 var month = months.FirstOrDefault(m => m.MonthNumber == currentMonth);
                 var daysInMonth = 0;
@@ -173,7 +173,7 @@ namespace WeatherDataAnalysis.View
             this.Report += textToBeReported;
         }
 
-        private string addSuffixToDays(IEnumerable<DailySummary> daysInMonth)
+        private string addSuffixToDays(IEnumerable<DailyStats> daysInMonth)
         {
             var days = new List<string>();
 
@@ -186,7 +186,7 @@ namespace WeatherDataAnalysis.View
             return string.Join(", ", days);
         }
 
-        private string getSuffix(DailySummary day)
+        private string getSuffix(DailyStats day)
         {
             switch (day.Date.Day)
             {

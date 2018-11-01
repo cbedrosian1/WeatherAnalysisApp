@@ -20,7 +20,7 @@ namespace WeatherDataAnalysis.DataTier
         ///     Precondition: daySummaries != null
         /// </summary>
         /// <param name="daySummaries">The data being saved</param>
-        public async void SaveFile(ICollection<DailySummary> daySummaries)
+        public async void SaveFile(ICollection<DailyStats> daySummaries)
         {
             if (daySummaries == null)
             {

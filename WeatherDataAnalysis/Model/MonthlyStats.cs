@@ -7,7 +7,7 @@ namespace WeatherDataAnalysis.Model
     /// <summary>
     ///     Stores information about months in the year
     /// </summary>
-    public class MonthlySummary
+    public class MonthlyStats
     {
         #region Properties
 
@@ -25,7 +25,7 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     Days of the month sorted by high temperature.
         /// </value>
-        public List<DailySummary> HighTempDays { get; }
+        public List<DailyStats> HighTempDays { get; }
 
         /// <summary>
         ///     Gets or sets days of the month sorted by low temperature.
@@ -33,7 +33,7 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     Days of the month sorted by high temperature..
         /// </value>
-        public List<DailySummary> LowTempDays { get; }
+        public List<DailyStats> LowTempDays { get; }
 
         /// <summary>
         ///     Gets or sets the average high temperature of a month
@@ -64,11 +64,11 @@ namespace WeatherDataAnalysis.Model
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MonthlySummary" /> class.
+        ///     Initializes a new instance of the <see cref="MonthlyStats" /> class.
         ///     Precondition: monthDays != null
         /// </summary>
         /// <param name="monthDays">The month days.</param>
-        public MonthlySummary(IGrouping<int, DailySummary> monthDays)
+        public MonthlyStats(IGrouping<int, DailyStats> monthDays)
         {
             if (monthDays == null)
             {

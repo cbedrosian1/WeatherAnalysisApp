@@ -5,7 +5,7 @@ namespace WeatherDataAnalysis.Model
     /// <summary>
     ///     Stores information about a Day
     /// </summary>
-    public class DailySummary
+    public class DailyStats
     {
         #region Properties
 
@@ -38,12 +38,12 @@ namespace WeatherDataAnalysis.Model
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DailySummary" /> class.
+        ///     Initializes a new instance of the <see cref="DailyStats" /> class.
         /// </summary>
         /// <param name="date">The date.</param>
         /// <param name="lowTemperature">The low temperature.</param>
         /// <param name="highTemperature">The high temperature.</param>
-        public DailySummary(DateTime date, int highTemperature, int lowTemperature)
+        public DailyStats(DateTime date, int highTemperature, int lowTemperature)
         {
             if (date == null)
             {
