@@ -15,8 +15,6 @@ namespace WeatherDataAnalysis.Model
 
         private const int YearPadding = 1000;
         private const int SizeFinder = 1;
-        private int highestTemp;
-        private int lowestTemp;
 
         private readonly ICollection<IGrouping<int, DailyStats>> conflictingDays;
 
@@ -296,30 +294,20 @@ namespace WeatherDataAnalysis.Model
         }
 
         /// <summary>
-        ///     Generates a high or low temperature histogram.
+        /// Generates the histogram of the temps.
         /// </summary>
-        /// <param name="year">The year to generate the histogram for.</param>
-        /// <param name="highOrLow">Whether the method is generating the high temp or low temp histogram</param>
-        /// <returns>
-        ///     A Dictionary of a range of temperatures and a number of days in that range
-        /// </returns>
-        public IDictionary<int, int> GenerateTempHistogram(int year, bool highOrLow)
+        /// <param name="temps">The temps.</param>
+        /// <returns> the histogram</returns>
+        public IDictionary<int, int> GenerateTempHistogram(List<int> temps)
         {
-            if (highOrLow)
-            {
-                this.lowestTemp = this.FindLowestHighTemperatureDaysOfYear(year).First().HighTemperature;
-                this.highestTemp = this.FindHighestTemperatureDaysOfYear(year).First().HighTemperature;
-            }
-            else
-            {
-                this.lowestTemp = this.FindLowestTemperatureDaysOfYear(year).First().LowTemperature;
-                this.highestTemp = this.FindHighestLowTemperatureDaysOfYear(year).First().LowTemperature;
-            }
+            var high = temps.Max();
+            var low = temps.Min();
 
-            var topOfHistogram = this.findStartingTempForHistogram(this.highestTemp) + this.HistogramRange;
-            var bottomOfRange = this.findStartingTempForHistogram(this.lowestTemp);
+            var topOfHistogram = this.findStartingTempForHistogram(high) + this.HistogramRange;
+            var bottomOfRange = this.findStartingTempForHistogram(low);
 
-            return this.findNumbersInRange(year, highOrLow, topOfHistogram, bottomOfRange);
+            return this.findNumbersInRange(topOfHistogram, bottomOfRange, temps);
+
         }
 
         private int findStartingTempForHistogram(int temp)
@@ -333,32 +321,46 @@ namespace WeatherDataAnalysis.Model
             return startingTemp;
         }
 
-        private SortedDictionary<int, int> findNumbersInRange(int year, bool highOrLow, int topOfHistogram,
-            int bottomOfRange)
+        private SortedDictionary<int, int> findNumbersInRange(int topOfHistogram,
+            int bottomOfRange, List<int> temps)
         {
             var groupCounts = new SortedDictionary<int, int>();
             while (bottomOfRange <= topOfHistogram)
             {
-                int numberInRange;
                 var topOfRange = bottomOfRange + this.HistogramRange;
-                if (highOrLow)
-                {
-                    numberInRange = this.Days.Where(day => day.Date.Year == year).Count(day =>
-                        day.HighTemperature >= bottomOfRange &&
-                        day.HighTemperature <= topOfRange);
-                }
-                else
-                {
-                    numberInRange = this.Days.Where(day => day.Date.Year == year).Count(day =>
-                        day.LowTemperature >= bottomOfRange &&
-                        day.LowTemperature <= topOfRange);
-                }
 
-                groupCounts.Add(bottomOfRange, numberInRange);
+                var numbersInRange = temps.Count(temp => temp >= bottomOfRange && temp <= topOfRange);
+                groupCounts.Add(bottomOfRange, numbersInRange);
+
                 bottomOfRange += this.HistogramBucketSize;
+
             }
 
             return groupCounts;
+        }
+
+        /// <summary>
+        /// Finds the high temperatures for year.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <returns>the high temperatures for year</returns>
+        public List<int> FindHighTemperaturesForYear(int year)
+        {
+            var list = this.Days.Where(yearOfDay => yearOfDay.Date.Year == year).Select(day => day.HighTemperature)
+                .ToList();
+
+            return list;
+        }
+
+        /// <summary>
+        /// Finds the low temperatures for year.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <returns>the low temperatures for year</returns>
+        public List<int> FindLowTemperaturesForYear(int year)
+        {
+            return this.Days.Where(yearOfDay => yearOfDay.Date.Year == year).Select(day => day.LowTemperature)
+                .ToList();
         }
 
         public void Add(DailyStats item)
