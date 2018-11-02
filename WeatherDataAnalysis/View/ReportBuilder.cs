@@ -69,6 +69,7 @@ namespace WeatherDataAnalysis.View
                 this.addAverageTemperatureOfYearToReport(lowTemps, Low);
                 this.addNumberOfDaysOverTemperatureToReport(currentYear);
                 this.addNumberOfDaysUnderTemperatureToReport(currentYear);
+                this.addDayWithHighestPercipitationToReport(currentYear);
                 this.addTempHistogramToReport(highTemps, High);
                 this.addTempHistogramToReport(lowTemps, Low);
                 this.addInfoForMonthsToReport(currentYear);
@@ -132,6 +133,12 @@ namespace WeatherDataAnalysis.View
                            Environment.NewLine;
         }
 
+        private void addDayWithHighestPercipitationToReport(int year)
+        {
+            var day = this.data.FindDayHighestPercipitationOccuredOn(year);
+            this.Report += $"The day with the highest percipitation of {day.Percipitation:0.00}: {day.Date.ToShortDateString()}" + Environment.NewLine;
+        }
+
         private void addInfoForMonthsToReport(int year)
         {
             var textToBeReported = string.Empty;
@@ -148,7 +155,7 @@ namespace WeatherDataAnalysis.View
 
                 textToBeReported +=
                     Environment.NewLine + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth) +
-                    $" {year} ({daysInMonth} day(s) of data) " + Environment.NewLine;
+                    $" {year} ({daysInMonth}/{DateTime.DaysInMonth(year, currentMonth)} day(s) of data) " + Environment.NewLine;
                 if (month != null)
                 {
                     var averageHighTemp = month.AverageHighTemperature;
@@ -159,7 +166,8 @@ namespace WeatherDataAnalysis.View
                         $"Lowest temp: {month.LowTempDays[FirstIndex].LowTemperature} occured on the {this.addSuffixToDays(month.LowTempDays)}" +
                         Environment.NewLine +
                         $"Average High: {averageHighTemp:0.00}" + Environment.NewLine +
-                        $"Average Low: {averageLowTemp:0.00}" + Environment.NewLine;
+                        $"Average Low: {averageLowTemp:0.00}" + Environment.NewLine +
+                        $"Total percipitation: {month.TotalPercipitation:0.00} inches" + Environment.NewLine;
                 }
             }
 

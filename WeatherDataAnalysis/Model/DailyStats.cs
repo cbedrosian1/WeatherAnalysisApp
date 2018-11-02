@@ -10,7 +10,7 @@ namespace WeatherDataAnalysis.Model
         #region Properties
 
         /// <summary>
-        ///     Gets or sets the Date.
+        ///     Gets the Date.
         /// </summary>
         /// <value>
         ///     The Date.
@@ -18,7 +18,7 @@ namespace WeatherDataAnalysis.Model
         public DateTime Date { get; }
 
         /// <summary>
-        ///     Gets or sets the low temperature.
+        ///     Gets the low temperature.
         /// </summary>
         /// <value>
         ///     The low temperature.
@@ -26,12 +26,18 @@ namespace WeatherDataAnalysis.Model
         public int LowTemperature { get; }
 
         /// <summary>
-        ///     Gets or sets the high temperature.
+        ///     Gets the high temperature.
         /// </summary>
         /// <value>
         ///     The high temperature.
         /// </value>
         public int HighTemperature { get; }
+
+        /// <summary>
+        /// Gets the percipitation for the day
+        /// </summary>
+        /// <value>the percipitation</value>
+        public double Percipitation { get; }
 
         #endregion
 
@@ -43,7 +49,8 @@ namespace WeatherDataAnalysis.Model
         /// <param name="date">The date.</param>
         /// <param name="lowTemperature">The low temperature.</param>
         /// <param name="highTemperature">The high temperature.</param>
-        public DailyStats(DateTime date, int highTemperature, int lowTemperature)
+        /// <param name="percipitation"> the percipitation of the day</param>
+        public DailyStats(DateTime date, int highTemperature, int lowTemperature, double percipitation)
         {
             if (date == null)
             {
@@ -53,6 +60,7 @@ namespace WeatherDataAnalysis.Model
             this.Date = date;
             this.LowTemperature = lowTemperature;
             this.HighTemperature = highTemperature;
+            this.Percipitation = percipitation;
         }
 
         #endregion

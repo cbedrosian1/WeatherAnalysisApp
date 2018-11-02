@@ -177,15 +177,16 @@ namespace WeatherDataAnalysis.Controllers
         /// <param name="date">The date.</param>
         /// <param name="highTemp">The high temperature.</param>
         /// <param name="lowTemp">The low temperature.</param>
+        /// <param name="percipitation"> the percipitation</param>
         /// <returns>Returns output with the new data added</returns>
-        public async Task<string> AddData(DateTime date, int highTemp, int lowTemp)
+        public async Task<string> AddData(DateTime date, int highTemp, int lowTemp, double percipitation)
         {
             if (date == null)
             {
                 throw new ArgumentNullException(nameof(date));
             }
 
-            var day = new DailyStats(date, highTemp, lowTemp);
+            var day = new DailyStats(date, highTemp, lowTemp, percipitation);
             var duplicate = this.weatherData.Days.FirstOrDefault(d => d.Date.Date == date.Date);
             if (duplicate == null)
             {

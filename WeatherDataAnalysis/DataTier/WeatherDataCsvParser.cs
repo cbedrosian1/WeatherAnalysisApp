@@ -17,6 +17,7 @@ namespace WeatherDataAnalysis.DataTier
         private const int DateField = 0;
         private const int HighTempField = 1;
         private const int LowTempField = 2;
+        private const int PercipitationField = 3;
 
         #endregion
 
@@ -84,7 +85,8 @@ namespace WeatherDataAnalysis.DataTier
                         var date = DateTime.Parse(values[DateField]);
                         var highTemp = int.Parse(values[HighTempField]);
                         var lowTemp = int.Parse(values[LowTempField]);
-                        var day = new DailyStats(date, highTemp, lowTemp);
+                        var percipitation = double.Parse(values[PercipitationField]);
+                        var day = new DailyStats(date, highTemp, lowTemp, percipitation);
                         days.Add(day);
                     }
                 }

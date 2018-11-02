@@ -224,6 +224,20 @@ namespace WeatherDataAnalysis.Model
         }
 
         /// <summary>
+        /// Gets the day that has the highest percipitation
+        /// </summary>
+        /// <param name="year"> the year that the day occurs in</param>
+        /// <returns> the day with the highest percipitation</returns>
+        public DailyStats FindDayHighestPercipitationOccuredOn(int year)
+        {
+           return this.Days.Where(day => day.Date.Year == year).GroupBy(day => day.Percipitation)
+                       .OrderByDescending(percipitation => percipitation.Key).First()
+                       .Select(day => new DailyStats(day.Date, day.HighTemperature, day.LowTemperature, day.Percipitation))
+                      .First();
+
+        }
+
+        /// <summary>
         ///     Groups the days by month.
         /// </summary>
         /// <param name="year">The year.</param>
