@@ -63,7 +63,7 @@ namespace WeatherDataAnalysis.Model
         /// gets the total percipitation for the month
         /// </summary>
         /// <value> the percipitation for the month</value>
-        public double TotalPercipitation { get; }
+        public double TotalPrecipitation { get; }
 
         #endregion
 
@@ -89,7 +89,7 @@ namespace WeatherDataAnalysis.Model
             this.AverageLowTemperature = monthDays.ToList().Average(temp => temp.LowTemperature);
             this.DaysInMonth = monthDays.ToList().Count;
             this.MonthNumber = monthDays.Key;
-            this.TotalPercipitation = monthDays.Sum(day => day.Percipitation);
+            this.TotalPrecipitation = monthDays.Sum(day => day.Precipitation);
         }
 
         #endregion
