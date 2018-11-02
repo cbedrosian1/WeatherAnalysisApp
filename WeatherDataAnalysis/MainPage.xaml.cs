@@ -119,11 +119,11 @@ namespace WeatherDataAnalysis
             var date = DateTime.Parse(this.newDayPicker.Date.LocalDateTime.ToShortDateString());
             var highTemp = int.Parse(this.highTempTextBox.Text);
             var lowTemp = int.Parse(this.lowTempTextBox.Text);
-            var percipitation = double.Parse(this.percipitationTextBox.Text);
+            var precipitation = double.Parse(this.percipitationTextBox.Text);
 
             if (highTemp > lowTemp)
             {
-                this.summaryTextBox.Text = await this.controller.AddData(date, highTemp, lowTemp, percipitation);
+                this.summaryTextBox.Text = await this.controller.AddData(date, highTemp, lowTemp, precipitation);
                 this.tempCheckerTextBlock.Visibility = Visibility.Collapsed;
             }
             else

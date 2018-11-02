@@ -23,6 +23,9 @@ namespace WeatherDataAnalysis.Controllers
         private DuplicateDayResult duplicateBehavior;
         private readonly WeatherDataCsvParser loader;
 
+        private const string HighThresholdDefault = "90";
+        private const string LowThresholdDefault = "32";
+
         #endregion
 
         #region Properties
@@ -65,7 +68,7 @@ namespace WeatherDataAnalysis.Controllers
         /// <value>
         ///     The file.
         /// </value>
-        public StorageFile File { get; set; }
+        public StorageFile File { get; set; } 
 
         #endregion
 
@@ -78,8 +81,8 @@ namespace WeatherDataAnalysis.Controllers
         {
             this.weatherData = new WeatherCalculator(new List<DailyStats>());
             this.loader = new WeatherDataCsvParser();
-            this.HighTempThreshold = "90";
-            this.LowTempThreshold = "32";
+            this.HighTempThreshold = HighThresholdDefault;
+            this.LowTempThreshold = LowThresholdDefault;
             this.HistogramBucketSize = 10;
         }
 
@@ -177,16 +180,16 @@ namespace WeatherDataAnalysis.Controllers
         /// <param name="date">The date.</param>
         /// <param name="highTemp">The high temperature.</param>
         /// <param name="lowTemp">The low temperature.</param>
-        /// <param name="percipitation"> the percipitation</param>
+        /// <param name="precipitation"> the precipitation</param>
         /// <returns>Returns output with the new data added</returns>
-        public async Task<string> AddData(DateTime date, int highTemp, int lowTemp, double percipitation)
+        public async Task<string> AddData(DateTime date, int highTemp, int lowTemp, double precipitation)
         {
             if (date == null)
             {
                 throw new ArgumentNullException(nameof(date));
             }
 
-            var day = new DailyStats(date, highTemp, lowTemp, percipitation);
+            var day = new DailyStats(date, highTemp, lowTemp, precipitation);
             var duplicate = this.weatherData.Days.FirstOrDefault(d => d.Date.Date == date.Date);
             if (duplicate == null)
             {

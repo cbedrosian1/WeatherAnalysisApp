@@ -60,9 +60,9 @@ namespace WeatherDataAnalysis.Model
         public int DaysInMonth { get; }
 
         /// <summary>
-        /// gets the total percipitation for the month
+        /// gets the total precipitation for the month
         /// </summary>
-        /// <value> the percipitation for the month</value>
+        /// <value> the precipitation for the month</value>
         public double TotalPrecipitation { get; }
 
         #endregion

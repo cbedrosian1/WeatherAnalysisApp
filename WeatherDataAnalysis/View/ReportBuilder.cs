@@ -169,7 +169,7 @@ namespace WeatherDataAnalysis.View
                         Environment.NewLine +
                         $"Average High: {averageHighTemp:0.00}" + Environment.NewLine +
                         $"Average Low: {averageLowTemp:0.00}" + Environment.NewLine +
-                        $"Total percipitation: {month.TotalPrecipitation:0.00} inches" + Environment.NewLine;
+                        $"Total precipitation: {month.TotalPrecipitation:0.00} inches" + Environment.NewLine;
                 }
             }
 
