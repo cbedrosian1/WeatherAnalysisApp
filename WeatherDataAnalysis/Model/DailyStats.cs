@@ -34,9 +34,9 @@ namespace WeatherDataAnalysis.Model
         public int HighTemperature { get; }
 
         /// <summary>
-        /// Gets the percipitation for the day
+        /// Gets the precipitation for the day
         /// </summary>
-        /// <value>the percipitation</value>
+        /// <value>the precipitation</value>
         public double Precipitation { get; }
 
         #endregion
@@ -49,7 +49,7 @@ namespace WeatherDataAnalysis.Model
         /// <param name="date">The date.</param>
         /// <param name="lowTemperature">The low temperature.</param>
         /// <param name="highTemperature">The high temperature.</param>
-        /// <param name="precipitation"> the percipitation of the day</param>
+        /// <param name="precipitation"> the precipitation of the day</param>
         public DailyStats(DateTime date, int highTemperature, int lowTemperature, double precipitation)
         {
             if (date == null)
