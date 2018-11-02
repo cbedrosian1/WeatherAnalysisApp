@@ -69,7 +69,7 @@ namespace WeatherDataAnalysis.View
                 this.addAverageTemperatureOfYearToReport(lowTemps, Low);
                 this.addNumberOfDaysOverTemperatureToReport(currentYear);
                 this.addNumberOfDaysUnderTemperatureToReport(currentYear);
-                this.addDayWithHighestPercipitationToReport(currentYear);
+                this.addDayWithHighestPrecipitationToReport(currentYear);
                 this.addTempHistogramToReport(highTemps, High);
                 this.addTempHistogramToReport(lowTemps, Low);
                 this.addInfoForMonthsToReport(currentYear);
@@ -133,10 +133,10 @@ namespace WeatherDataAnalysis.View
                            Environment.NewLine;
         }
 
-        private void addDayWithHighestPercipitationToReport(int year)
+        private void addDayWithHighestPrecipitationToReport(int year)
         {
-            var day = this.data.FindDayHighestPercipitationOccuredOn(year);
-            this.Report += $"The day with the highest percipitation of {day.Percipitation:0.00}: {day.Date.ToShortDateString()}" + Environment.NewLine;
+            var day = this.data.FindDayHighestPrecipitationOccuredOn(year);
+            this.Report += $"The day with the highest precipitation of {day.Precipitation:0.00}: {day.Date.ToShortDateString()}" + Environment.NewLine;
         }
 
         private void addInfoForMonthsToReport(int year)
@@ -167,7 +167,7 @@ namespace WeatherDataAnalysis.View
                         Environment.NewLine +
                         $"Average High: {averageHighTemp:0.00}" + Environment.NewLine +
                         $"Average Low: {averageLowTemp:0.00}" + Environment.NewLine +
-                        $"Total percipitation: {month.TotalPercipitation:0.00} inches" + Environment.NewLine;
+                        $"Total precipitation: {month.TotalPercipitation:0.00} inches" + Environment.NewLine;
                 }
             }
 

@@ -89,7 +89,7 @@ namespace WeatherDataAnalysis.Model
             this.AverageLowTemperature = monthDays.ToList().Average(temp => temp.LowTemperature);
             this.DaysInMonth = monthDays.ToList().Count;
             this.MonthNumber = monthDays.Key;
-            this.TotalPercipitation = monthDays.Sum(day => day.Percipitation);
+            this.TotalPercipitation = monthDays.Sum(day => day.Precipitation);
         }
 
         #endregion
