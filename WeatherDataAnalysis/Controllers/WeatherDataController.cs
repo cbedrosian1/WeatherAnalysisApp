@@ -151,9 +151,14 @@ namespace WeatherDataAnalysis.Controllers
         /// </returns>
         public string UpdateThresholds()
         {
+            this.resetThrehold();
+            return this.refreshReport();
+        }
+
+        private void resetThrehold()
+        {
             this.weatherData.HighTemperatureThreshold = int.Parse(this.HighTempThreshold);
             this.weatherData.LowTemperatureThreshold = int.Parse(this.LowTempThreshold);
-            return this.refreshReport();
         }
 
         /// <summary>
@@ -185,6 +190,8 @@ namespace WeatherDataAnalysis.Controllers
             {
                 throw new ArgumentNullException(nameof(date));
             }
+
+            this.resetThrehold();
 
             var day = new DailyStats(date, highTemp, lowTemp, percipitation);
             var duplicate = this.weatherData.Days.FirstOrDefault(d => d.Date.Date == date.Date);
