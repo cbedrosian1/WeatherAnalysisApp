@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Xml.Serialization;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using WeatherDataAnalysis.Model;
@@ -27,6 +31,39 @@ namespace WeatherDataAnalysis.DataTier
                 throw new ArgumentNullException(nameof(daySummaries));
             }
 
+            
+
+            var savePicker = new FileSavePicker {
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+            };
+            savePicker.FileTypeChoices.Add("CSV", new List<string> {".csv"});
+            savePicker.FileTypeChoices.Add("XML", new List<string>{".xml"});
+            savePicker.SuggestedFileName = "New Document";
+            var file = await savePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+                if (file.FileType == ".csv")
+                {
+                    var csv = this.buildCsv(daySummaries);
+                    CachedFileManager.DeferUpdates(file);
+                    await FileIO.WriteTextAsync(file, csv);
+                } else if (file.FileType == ".xml")
+                {
+                    var serializer = new XmlSerializer(typeof(List<DailyStats>));
+                    var writer = await file.OpenStreamForWriteAsync();
+                    serializer.Serialize(writer, daySummaries);
+                    writer.Close();
+
+                }
+            
+
+
+                
+            }
+        }
+
+        private string buildCsv(ICollection<DailyStats> daySummaries)
+        {
             var days = daySummaries.OrderBy(day => day.Date);
             var csv = new StringBuilder();
             foreach (var day in days)
@@ -35,17 +72,7 @@ namespace WeatherDataAnalysis.DataTier
                 csv.Append(Environment.NewLine);
             }
 
-            var savePicker = new FileSavePicker {
-                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
-            };
-            savePicker.FileTypeChoices.Add("CSV", new List<string> {".csv"});
-            savePicker.SuggestedFileName = "New Document";
-            var file = await savePicker.PickSaveFileAsync();
-            if (file != null)
-            {
-                CachedFileManager.DeferUpdates(file);
-                await FileIO.WriteTextAsync(file, csv.ToString());
-            }
+            return csv.ToString();
         }
 
         #endregion
