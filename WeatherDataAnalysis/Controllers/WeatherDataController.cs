@@ -23,7 +23,7 @@ namespace WeatherDataAnalysis.Controllers
         
         private WeatherCalculator weatherData;
         private DuplicateDayResult duplicateBehavior;
-        private readonly WeatherDataCsvParser loader;
+        private readonly WeatherDataParser loader;
 
         private const string HighThresholdDefault = "90";
         private const string LowThresholdDefault = "32";
@@ -95,7 +95,7 @@ namespace WeatherDataAnalysis.Controllers
         public WeatherDataController()
         {
             this.weatherData = new WeatherCalculator(new List<DailyStats>());
-            this.loader = new WeatherDataCsvParser();
+            this.loader = new WeatherDataParser();
             this.lowTempThreshold = LowThresholdDefault;
             this.HighTempThreshold = HighThresholdDefault;
             this.LowTempThreshold = LowThresholdDefault;

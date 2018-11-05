@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Windows.Storage;
 using WeatherDataAnalysis.Model;
 
@@ -10,14 +11,14 @@ namespace WeatherDataAnalysis.DataTier
     /// <summary>
     ///     Reads a file and creates Day objects
     /// </summary>
-    public class WeatherDataCsvParser
+    public class WeatherDataParser
     {
         #region Data members
 
         private const int DateField = 0;
         private const int HighTempField = 1;
         private const int LowTempField = 2;
-        private const int PercipitationField = 3;
+        private const int PrecipitationField = 3;
 
         #endregion
 
@@ -51,17 +52,41 @@ namespace WeatherDataAnalysis.DataTier
                 throw new ArgumentNullException(nameof(file));
             }
 
+            var days = new List<DailyStats>();
+            if (file.FileType == ".csv")
+            {
+                days = await this.handleCsvFile(file);
+            } else if (file.FileType == ".xml")
+            {
+                days = await this.handleXmlFile(file);
+            }
+
+            return days;
+        }
+
+        private async Task<List<DailyStats>> handleXmlFile(StorageFile file)
+        {
+            var serializer = new XmlSerializer(typeof(List<DailyStats>));
+            var stream = await file.OpenStreamForReadAsync();
+            var days = (List<DailyStats>) serializer.Deserialize(stream);
+            return days;
+        }
+
+        private async Task<List<DailyStats>> handleCsvFile(StorageFile file)
+        {
+            List<DailyStats> days;
             this.LinesWithErrors = string.Empty;
             var stream = await file.OpenStreamForReadAsync();
 
             using (var reader = new StreamReader(stream))
             {
-                var days = this.parseCsvFile(reader);
-                return days;
+                days = this.parseCsvFile(reader);
             }
+
+            return days;
         }
 
-        private ICollection<DailyStats> parseCsvFile(StreamReader reader)
+        private List<DailyStats> parseCsvFile(StreamReader reader)
         {
             if (reader == null)
             {
@@ -85,8 +110,8 @@ namespace WeatherDataAnalysis.DataTier
                         var date = DateTime.Parse(values[DateField]);
                         var highTemp = int.Parse(values[HighTempField]);
                         var lowTemp = int.Parse(values[LowTempField]);
-                        var percipitation = double.Parse(values[PercipitationField]);
-                        var day = new DailyStats(date, highTemp, lowTemp, percipitation);
+                        var precipitation = double.Parse(values[PrecipitationField]);
+                        var day = new DailyStats(date, highTemp, lowTemp, precipitation);
                         days.Add(day);
                     }
                 }

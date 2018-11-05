@@ -71,6 +71,7 @@ namespace WeatherDataAnalysis
             };
             openPicker.FileTypeFilter.Add(".csv");
             openPicker.FileTypeFilter.Add(".txt");
+            openPicker.FileTypeFilter.Add(".xml");
             this.file = await openPicker.PickSingleFileAsync();
             if (this.file != null)
             {

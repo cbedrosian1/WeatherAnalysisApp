@@ -98,7 +98,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataTier\WeatherDataFileSaver.cs" />
-    <Compile Include="DataTier\WeatherDataCsvParser.cs" />
+    <Compile Include="DataTier\WeatherDataParser.cs" />
     <Compile Include="View\DuplicateDayResult.cs" />
     <Compile Include="View\DuplicateDayDialog.xaml.cs">
       <DependentUpon>DuplicateDayDialog.xaml</DependentUpon>
