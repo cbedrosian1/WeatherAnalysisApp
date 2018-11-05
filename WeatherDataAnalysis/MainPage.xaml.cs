@@ -121,7 +121,7 @@ namespace WeatherDataAnalysis
             var date = DateTime.Parse(this.newDayPicker.Date.LocalDateTime.ToShortDateString());
             var highTemp = int.Parse(this.highTempTextBox.Text);
             var lowTemp = int.Parse(this.lowTempTextBox.Text);
-            var precipitation = double.Parse(this.percipitationTextBox.Text);
+            var precipitation = double.Parse(this.precipitationTextBox.Text);
 
             if (highTemp > lowTemp)
             {
