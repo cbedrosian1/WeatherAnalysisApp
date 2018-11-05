@@ -5,8 +5,11 @@ namespace WeatherDataAnalysis.Model
     /// <summary>
     ///     Stores information about a Day
     /// </summary>
+    ///
+    [Serializable]
     public class DailyStats
     {
+       
         #region Properties
 
         /// <summary>
@@ -15,7 +18,7 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     The Date.
         /// </value>
-        public DateTime Date { get; }
+        public DateTime Date { get; set; }
 
         /// <summary>
         ///     Gets the low temperature.
@@ -23,7 +26,7 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     The low temperature.
         /// </value>
-        public int LowTemperature { get; }
+        public int LowTemperature { get; set; }
 
         /// <summary>
         ///     Gets the high temperature.
@@ -31,13 +34,13 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     The high temperature.
         /// </value>
-        public int HighTemperature { get; }
+        public int HighTemperature { get; set; }
 
         /// <summary>
         /// Gets the precipitation for the day
         /// </summary>
         /// <value>the precipitation</value>
-        public double Precipitation { get; }
+        public double Precipitation { get; set; }
 
         #endregion
 
@@ -61,6 +64,14 @@ namespace WeatherDataAnalysis.Model
             this.LowTemperature = lowTemperature;
             this.HighTemperature = highTemperature;
             this.Precipitation = precipitation;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DailyStats"/> class.
+        /// </summary>
+        public DailyStats()
+        {
+            //TODO
         }
 
         #endregion
