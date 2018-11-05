@@ -9,13 +9,13 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
     public class TestFindNumberOfDaysOverTemperature
     {
 
-        //  Input ({WeatherData.Days} in WeatherData)                                            Expected output
-        //  [{1/3/2015,89,30}]                                                                         0
-        //  [{1/4/2015,90,15}]                                                                         1
-        //  [{1/1/2016, 91, 15}]                                                                       1
-        //  [{1/2/2015,94,25}, {1/1/2015,91,15}]                                                       2
-        //  [{1/2/2015,94,25}, {1/1/2015,91,15}]  (with incorrect year passed in)                      0
-        //  [{}]                                                                                       0
+        //  Input ({WeatherData.Days} in WeatherData)                                             Expected output
+        //  [{1/3/2015,89,30,0}]                                                                         0
+        //  [{1/4/2015,90,15,0}]                                                                         1
+        //  [{1/1/2016,91,15,0}]                                                                         1
+        //  [{1/2/2015,94,25,0}, {1/1/2015,91,15,0}]                                                     2
+        //  [{1/2/2015,94,25,0}, {1/1/2015,91,15,0}]  (with incorrect year passed in)                    0
+        //  [{}]                                                                                         0
 
         #region Data members
 
