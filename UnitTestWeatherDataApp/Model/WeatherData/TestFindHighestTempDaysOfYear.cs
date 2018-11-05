@@ -9,14 +9,14 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
     public class TestFindHighestTempDaysOfYear
     {
 
-        //  Input ({WeatherData.Days} in WeatherData)                                            Expected output
-        //  [{1/1/2015,50,15}]                                                                 [{1/1/2015, 50, 15}]
-        //  [{1/1/2015,50,15}, {1/2/2015,45,25}, {1/3/2015,40,30}]                             [{1/1/2015, 50, 15}]
-        //  [{1/2/2015,45,25}, {1/1/2015,50,15}, {1/3/2015,40,30}]                             [{1/1/2015, 50, 15}]
-        //  [{1/2/2015,45,25}, {1/3/2015,40,30}, {1/1/2015,50,15}]                             [{1/1/2015, 50, 15}]
-        //  [{1/1/2015,50,15}, {1/2/2015,45,25}, {1/3/2015,40,20}, {1/4/2015,50,15}]           [{1/1/2015, 50, 15}, {1/4/2015,50,15}]
-        //  [{1/1/2015,50,15}, {1/1/2016, 50, 15}]                                             [{1/1/2015, 50, 15}]
-        //  [{}]                                                                               InvalidOperationException
+        //  Input ({WeatherData.Days} in WeatherData)                                                Expected output
+        //  [{1/1/2015,50,15,1}]                                                                     [{1/1/2015, 50, 15}]
+        //  [{1/1/2015,50,15,1}, {1/2/2015,45,25,1}, {1/3/2015,40,30,1}]                             [{1/1/2015, 50, 15}]
+        //  [{1/2/2015,45,25,1}, {1/1/2015,50,15,1}, {1/3/2015,40,30,1}]                             [{1/1/2015, 50, 15}]
+        //  [{1/2/2015,45,25,1}, {1/3/2015,40,30,1}, {1/1/2015,50,15,1}]                             [{1/1/2015, 50, 15}]
+        //  [{1/1/2015,50,15,1}, {1/2/2015,45,25,1}, {1/3/2015,40,20,1}, {1/4/2015,50,15,1}]         [{1/1/2015, 50, 15}, {1/4/2015,50,15}]
+        //  [{1/1/2015,50,15,1}, {1/1/2016, 50, 15,1}]                                               [{1/1/2015, 50, 15}]
+        //  [{}]                                                                                     InvalidOperationException
 
         #region Data members
 
@@ -38,11 +38,11 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         {
             this.days = new List<DailyStats>();
             this.testList = new List<DailyStats>();
-            this.day1 = new DailyStats(new DateTime(2015, 1, 1), 50, 15);
-            this.day2 = new DailyStats(new DateTime(2015, 1, 2), 45, 25);
-            this.day3 = new DailyStats(new DateTime(2015, 1, 3), 40, 30);
-            this.day4 = new DailyStats(new DateTime(2015, 1, 4), 50, 15);
-            this.day5 = new DailyStats(new DateTime(2016, 1, 1), 50, 15);
+            this.day1 = new DailyStats(new DateTime(2015, 1, 1), 50, 15, 1);
+            this.day2 = new DailyStats(new DateTime(2015, 1, 2), 45, 25, 1);
+            this.day3 = new DailyStats(new DateTime(2015, 1, 3), 40, 30, 1);
+            this.day4 = new DailyStats(new DateTime(2015, 1, 4), 50, 15, 1);
+            this.day5 = new DailyStats(new DateTime(2016, 1, 1), 50, 15, 1);
         }
 
         [TestMethod]
