@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
@@ -13,7 +15,7 @@ namespace WeatherDataAnalysis.Controllers
     /// <summary>
     ///     Communicates between Model objects and the MainPage
     /// </summary>
-    public class WeatherDataController
+    public class WeatherDataController : INotifyPropertyChanged
     {
         #region Data members
 
@@ -26,6 +28,7 @@ namespace WeatherDataAnalysis.Controllers
         private const string HighThresholdDefault = "90";
         private const string LowThresholdDefault = "32";
 
+
         #endregion
 
         #region Properties
@@ -36,7 +39,19 @@ namespace WeatherDataAnalysis.Controllers
         /// <value>
         ///     The under temperature text box in the UI.
         /// </value>
-        public string LowTempThreshold { get; set; }
+        public string LowTempThreshold {
+            get => this.lowTempThreshold;
+            set
+            {
+                if (value != this.lowTempThreshold)
+                {
+                    this.lowTempThreshold = value;
+                    this.NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private string lowTempThreshold;
 
         /// <summary>
         ///     Gets or sets the over temperature text box in the UI.
@@ -81,6 +96,7 @@ namespace WeatherDataAnalysis.Controllers
         {
             this.weatherData = new WeatherCalculator(new List<DailyStats>());
             this.loader = new WeatherDataCsvParser();
+            this.lowTempThreshold = LowThresholdDefault;
             this.HighTempThreshold = HighThresholdDefault;
             this.LowTempThreshold = LowThresholdDefault;
             this.HistogramBucketSize = 10;
@@ -193,7 +209,7 @@ namespace WeatherDataAnalysis.Controllers
             {
                 throw new ArgumentNullException(nameof(date));
             }
-            this.resetThreshold();
+            //this.resetThreshold();
             var day = new DailyStats(date, highTemp, lowTemp, precipitation);
             var duplicate = this.weatherData.Days.FirstOrDefault(d => d.Date.Date == date.Date);
             if (duplicate == null)
@@ -248,6 +264,21 @@ namespace WeatherDataAnalysis.Controllers
             var reportBuilder = new ReportBuilder(this.weatherData);
             reportBuilder.CompileReport();
             return this.loader.LinesWithErrors + reportBuilder.Report;
+        }
+
+
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
+        /// <returns></returns>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // This method is called by the Set accessor of each property.
+        // The CallerMemberName attribute that is applied to the optional propertyName
+        // parameter causes the property name of the caller to be substituted as an argument.
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

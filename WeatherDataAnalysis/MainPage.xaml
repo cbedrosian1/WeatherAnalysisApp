@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -21,7 +23,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="12,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top">
             <Run Text="Weather Analysis" /><LineBreak /><Run /><LineBreak /><Run />
         </TextBlock>
-        <TextBox x:Name="underTempTextBox" HorizontalAlignment="Left" Margin="966,79,0,0" TextChanged="thresholdChangedEventHandler"  Text="32" VerticalAlignment="Top" Height="30" Width="60" InputScope="Default"/>
+        <TextBox extensions:TextBoxRegex.ValidationMode="Dynamic" extensions:TextBoxRegex.ValidationType="Number" x:Name="underTempTextBox"   HorizontalAlignment="Left" Margin="966,79,0,0" Text="{Binding Path=LowTempThreshold, Mode=TwoWay}"  VerticalAlignment="Top" Height="30" Width="60" InputScope="Default"/>
         <TextBox x:Name="overTempTextBox" HorizontalAlignment="Left" Margin="966,137,0,0" TextChanged="thresholdChangedEventHandler" Text="90" VerticalAlignment="Top" Height="30" Width="60"/>
         <TextBlock x:Name="daysUnderTextBlock" HorizontalAlignment="Left" Margin="726,83,0,0" Text="Check for days under:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>
         <TextBlock x:Name="daysOverTextBlock" HorizontalAlignment="Left" Margin="726,141,0,0" Text="Check for days over:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>

@@ -35,11 +35,11 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         public void TestInit()
         {
             this.days = new List<DailyStats>();
-            this.day1 = new DailyStats(new DateTime(2015, 1, 1), 91, 15);
-            this.day2 = new DailyStats(new DateTime(2015, 1, 2), 94, 25);
-            this.day3 = new DailyStats(new DateTime(2015, 1, 3), 89, 30);
-            this.day4 = new DailyStats(new DateTime(2015, 1, 4), 90, 15);
-            this.day5 = new DailyStats(new DateTime(2016, 1, 1), 91, 15);
+            this.day1 = new DailyStats(new DateTime(2015, 1, 1), 91, 15, 0);
+            this.day2 = new DailyStats(new DateTime(2015, 1, 2), 94, 25, 0);
+            this.day3 = new DailyStats(new DateTime(2015, 1, 3), 89, 30, 0);
+            this.day4 = new DailyStats(new DateTime(2015, 1, 4), 90, 15, 0);
+            this.day5 = new DailyStats(new DateTime(2016, 1, 1), 91, 15, 0);
         }
 
         [TestMethod]

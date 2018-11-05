@@ -55,6 +55,7 @@ namespace WeatherDataAnalysis
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
             this.summaryTextBox.Text = string.Empty;
             this.controller = new WeatherDataController();
+            this.DataContext = this.controller;
             this.radioButton10.IsChecked = true;
         }
 
