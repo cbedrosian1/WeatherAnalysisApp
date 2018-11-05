@@ -357,10 +357,8 @@ namespace WeatherDataAnalysis.Model
         /// <returns>the high temperatures for year</returns>
         public List<int> FindHighTemperaturesForYear(int year)
         {
-            var list = this.Days.Where(yearOfDay => yearOfDay.Date.Year == year).Select(day => day.HighTemperature)
-                .ToList();
-
-            return list;
+            return this.Days.Where(yearOfDay => yearOfDay.Date.Year == year).Select(day => day.HighTemperature)
+                       .ToList();
         }
 
         /// <summary>

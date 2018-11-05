@@ -20,7 +20,7 @@ namespace WeatherDataAnalysis.Controllers
         #region Data members
 
         private const ContentDialogResult Replace = ContentDialogResult.Primary;
-
+        
         private WeatherCalculator weatherData;
         private DuplicateDayResult duplicateBehavior;
         private readonly WeatherDataCsvParser loader;
