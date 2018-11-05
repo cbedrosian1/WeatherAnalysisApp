@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
 
 namespace WeatherDataAnalysis.Model
 {
     /// <summary>
     ///     Stores information about a Day
     /// </summary>
-    [Serializable, DataContract(Name = "Day")]
+    ///
+    [Serializable]
     public class DailyStats
     {
+       
         #region Properties
 
         /// <summary>
@@ -18,7 +18,6 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     The Date.
         /// </value>
-        [DataMember]
         public DateTime Date { get; set; }
 
         /// <summary>
@@ -27,7 +26,6 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     The low temperature.
         /// </value>
-        [DataMember]
         public int LowTemperature { get; set; }
 
         /// <summary>
@@ -36,24 +34,17 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     The high temperature.
         /// </value>
-        [DataMember]
         public int HighTemperature { get; set; }
 
         /// <summary>
         /// Gets the precipitation for the day
         /// </summary>
         /// <value>the precipitation</value>
-        [DataMember]
         public double Precipitation { get; set; }
 
         #endregion
 
         #region Constructors
-
-        public DailyStats()
-        {
-        }
-
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DailyStats" /> class.
@@ -73,6 +64,14 @@ namespace WeatherDataAnalysis.Model
             this.LowTemperature = lowTemperature;
             this.HighTemperature = highTemperature;
             this.Precipitation = precipitation;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DailyStats"/> class.
+        /// </summary>
+        public DailyStats()
+        {
+            //TODO
         }
 
         #endregion
