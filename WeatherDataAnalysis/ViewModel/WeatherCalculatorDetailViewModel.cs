@@ -1,6 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Windows.Storage;
+using WeatherDataAnalysis.DataTier;
+using WeatherDataAnalysis.Extension;
 using WeatherDataAnalysis.Model;
 
 namespace WeatherDataAnalysis.ViewModel
@@ -18,6 +22,18 @@ namespace WeatherDataAnalysis.ViewModel
         /// </summary>
         /// <returns> the event</returns>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private DailyStats selectedDay;
+
+        public DailyStats SelectedDay
+        {
+            get { return this.selectedDay; }
+            set
+            {
+                this.selectedDay = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         private ObservableCollection<DailyStats> days;
 
@@ -44,8 +60,17 @@ namespace WeatherDataAnalysis.ViewModel
         {
             this.days = new ObservableCollection<DailyStats>();
             this.weatherCalculator = new WeatherCalculator(this.days);
+         //   this.weatherCalculator.Days.ToObservableCollection();
         }
 
+        public void ReadFile(StorageFile file)
+        {
+            var parser = new WeatherDataParser();
+            var dayTest = parser.LoadFile(file).Result;
+            var test = dayTest.Count;
+            var test2 = dayTest.ToString();
+            this.days = dayTest.ToObservableCollection();
+        }
         /// <summary>
         /// Called when [property changed].
         /// </summary>

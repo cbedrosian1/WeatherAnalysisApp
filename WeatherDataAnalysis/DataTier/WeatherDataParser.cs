@@ -76,6 +76,7 @@ namespace WeatherDataAnalysis.DataTier
         {
             List<DailyStats> days;
             this.LinesWithErrors = string.Empty;
+            var data = FileIO.ReadTextAsync(file);
             var stream = await file.OpenStreamForReadAsync();
 
             using (var reader = new StreamReader(stream))

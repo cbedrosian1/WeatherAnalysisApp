@@ -15,7 +15,7 @@ namespace WeatherDataAnalysis.Controllers
     /// <summary>
     ///     Communicates between Model objects and the MainPage
     /// </summary>
-    public class WeatherDataController : INotifyPropertyChanged
+    public class WeatherDataController 
     {
         #region Data members
 
@@ -46,7 +46,6 @@ namespace WeatherDataAnalysis.Controllers
                 if (value != this.lowTempThreshold)
                 {
                     this.lowTempThreshold = value;
-                    this.NotifyPropertyChanged();
                 }
             }
         }
@@ -267,19 +266,6 @@ namespace WeatherDataAnalysis.Controllers
         }
 
 
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        /// <returns></returns>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // This method is called by the Set accessor of each property.
-        // The CallerMemberName attribute that is applied to the optional propertyName
-        // parameter causes the property name of the caller to be substituted as an argument.
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         #endregion
     }

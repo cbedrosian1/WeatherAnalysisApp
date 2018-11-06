@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using WeatherDataAnalysis.Controllers;
 using WeatherDataAnalysis.View;
+using WeatherDataAnalysis.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -36,6 +37,8 @@ namespace WeatherDataAnalysis
 
         private readonly WeatherDataController controller;
 
+        private readonly WeatherCalculatorDetailViewModel viewModel;
+
         private const string HighThresholdDefault = "90";
         private const string LowThresholdDefault = "32";
 
@@ -55,8 +58,10 @@ namespace WeatherDataAnalysis
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
             this.summaryTextBox.Text = string.Empty;
             this.controller = new WeatherDataController();
-            this.DataContext = this.controller;
+          //  this.DataContext = this.controller;
             this.radioButton10.IsChecked = true;
+
+            this.viewModel = new WeatherCalculatorDetailViewModel();
         }
 
         #endregion
@@ -75,14 +80,15 @@ namespace WeatherDataAnalysis
             this.file = await openPicker.PickSingleFileAsync();
             if (this.file != null)
             {
-                this.controller.File = this.file;
+             //   this.controller.File = this.file;
 
-                if (!string.IsNullOrEmpty(this.summaryTextBox.Text))
-                {
-                    this.controller.MergeOrReplace = await this.handleDataExists();
-                }
+             //   if (!string.IsNullOrEmpty(this.summaryTextBox.Text))
+             //   {
+             //       this.controller.MergeOrReplace = await this.handleDataExists();
+            //   }
 
-                this.summaryTextBox.Text = await this.controller.LoadReport();
+               // this.summaryTextBox.Text = await this.controller.LoadReport();
+                this.viewModel.ReadFile(this.file);
             }
         }
 
