@@ -25,12 +25,12 @@ namespace WeatherDataAnalysis
         /// <summary>
         ///     The application height
         /// </summary>
-        public const int ApplicationHeight = 450;
+        public const int ApplicationHeight = 425;
 
         /// <summary>
         ///     The application width
         /// </summary>
-        public const int ApplicationWidth = 1450;
+        public const int ApplicationWidth = 1100;
 
         private StorageFile file;
 
@@ -160,5 +160,17 @@ namespace WeatherDataAnalysis
         }
 
         #endregion
+
+
+        private void summaryButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.open();
+        }
+
+        private async Task open()
+        {
+            var dialog = new SummaryDialog();
+            await dialog.ShowAsync();
+        }
     }
 }

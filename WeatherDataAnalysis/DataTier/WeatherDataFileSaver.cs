@@ -57,9 +57,9 @@ namespace WeatherDataAnalysis.DataTier
             serializer.Serialize(writer, daySummaries);
         }
 
-        private string formatToCSV(ICollection<DailyStats> dailystats)
+        private string formatToCSV(ICollection<DailyStats> dailyStats)
         {
-            var days = dailystats.OrderBy(day => day.Date);
+            var days = dailyStats.OrderBy(day => day.Date);
             var csv = new StringBuilder();
             foreach (var day in days)
             {
