@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using WeatherDataAnalysis.Model;
+using WeatherDataAnalysis.Utility;
 
 namespace WeatherDataAnalysis.View
 {
@@ -191,21 +192,7 @@ namespace WeatherDataAnalysis.View
 
         private string getSuffix(DailyStats day)
         {
-            switch (day.Date.Day)
-            {
-                case 1:
-                case 21:
-                case 31:
-                    return "st";
-                case 2:
-                case 22:
-                    return "nd";
-                case 3:
-                case 23:
-                    return "rd";
-                default:
-                    return "th";
-            }
+            return DateTimeExtensions.FormatEndingForDay(day.Date);
         }
 
         private void addTempHistogramToReport(List<int> temps, string highOrLow)

@@ -67,7 +67,7 @@ namespace WeatherDataAnalysis.Model
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DailyStats"/> class.
+        /// Initializes a new instance of the <see cref="DailyStats"/> class. The default constructor 
         /// </summary>
         public DailyStats()
         {
