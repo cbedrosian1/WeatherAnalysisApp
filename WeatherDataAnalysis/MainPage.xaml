@@ -9,9 +9,11 @@
 
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
     <Page.DataContext>
-        <vm:WeatherCalculatorDetailViewModel/>
+        <vm:WeatherCalculatorDetailViewModel />
     </Page.DataContext>
+
     <Grid RenderTransformOrigin="0.368,0.212">
         <CommandBar>
             <CommandBar.Content>
@@ -41,8 +43,8 @@
         <TextBlock x:Name="bucketSizeTextBlock" HorizontalAlignment="Left" Margin="640,846,0,0" Text="Histogram Bucket Size
                    " TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="tempCheckerTextBlock" HorizontalAlignment="Left" Visibility="Collapsed"  Margin="990,305,0,0" Text="High Temperature must be higher than Low Temperature" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="80"/>
-        <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=SelectedDay.Date, Mode=TwoWay}"/>
-        <ListView BorderBrush="Black" BorderThickness ="4" ItemsSource="{Binding Path=Days, Mode=TwoWay}" HorizontalAlignment="Left" 
+        <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=SelectedDay.DateTimeOffset, Mode=TwoWay}" />
+        <ListView ItemsSource="{Binding Path=Days, Mode=TwoWay}"  HorizontalAlignment="Left" 
                   SelectedItem="{Binding Path=SelectedDay, Mode=TwoWay}" Height="280" Margin="560,80,0,0" VerticalAlignment="Top" Width="480">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -63,7 +65,7 @@
         <Button x:Name="summaryButton" Content="Summary" HorizontalAlignment="Left" Margin="691,365,0,0" VerticalAlignment="Top" Click="summaryButton_Click"/>
         <Button x:Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="262,365,0,0" VerticalAlignment="Top" Width="77"/>
         <Button x:Name="removeButton" Content="Remove" HorizontalAlignment="Left" Margin="392,365,0,0" VerticalAlignment="Top" Width="77"/>
-        <Border BorderBrush="Black" BorderThickness="4" HorizontalAlignment="Left" Height="280" Margin="60,80,0,0" VerticalAlignment="Top" Width="480"/>
+        
         <TextBox x:Name="summaryTextBox" HorizontalAlignment="Left" Margin="177,576,0,0" Text="Summary" VerticalAlignment="Top" Height="254" Width="243" RenderTransformOrigin="0.913,0.214"/>
 
 
