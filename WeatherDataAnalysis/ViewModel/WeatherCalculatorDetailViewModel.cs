@@ -24,11 +24,11 @@ namespace WeatherDataAnalysis.ViewModel
 
         private DateTimeOffset date;
 
-        private string highTemperature;
+        private int highTemperature;
 
-        private string lowTemperature;
+        private int lowTemperature;
 
-        private string precipitation;
+        private double precipitation;
 
         private DailyStats selectedDay;
 
@@ -55,7 +55,7 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
-        public string HighTemperature
+        public int HighTemperature
         {
             get => this.highTemperature;
             set
@@ -66,7 +66,7 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
-        public string LowTemperature
+        public int LowTemperature
         {
             get => this.lowTemperature;
             set
@@ -77,7 +77,7 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
-        public string Precipitation
+        public double Precipitation
         {
             get => this.precipitation;
             set
@@ -97,9 +97,9 @@ namespace WeatherDataAnalysis.ViewModel
                 this.OnPropertyChanged();
                 this.RemoveCommand.OnCanExecuteChanged();
                 this.Date = this.selectedDay.DateTimeOffset;
-                this.HighTemperature = this.selectedDay.HighTemperature.ToString();
-                this.LowTemperature = this.selectedDay.LowTemperature.ToString();
-                this.Precipitation = this.selectedDay.Precipitation.ToSafeString();
+                this.HighTemperature = this.selectedDay.HighTemperature;
+                this.LowTemperature = this.selectedDay.LowTemperature;
+                this.Precipitation = this.selectedDay.Precipitation;
                 
             }
         }
@@ -130,24 +130,34 @@ namespace WeatherDataAnalysis.ViewModel
         public WeatherCalculatorDetailViewModel()
         {
             this.date = DateTimeOffset.Now;
-            this.highTemperature = "";
-            this.lowTemperature = "";
-            this.precipitation = "";
+            this.highTemperature = 0;
+            this.lowTemperature = 0;
+            this.precipitation = 0.0;
             this.weatherCalculator = new WeatherCalculator(new List<DailyStats>());
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
             this.RemoveCommand = new RelayCommand(this.DeleteDay, this.CanDeleteDay);
             this.AddCommand = new RelayCommand(this.AddDay, this.CanAddDay);
+            this.EditCommand = new RelayCommand(this.EditDay, this.CanEditDay);
+        }
+
+        private bool CanEditDay(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void EditDay(object obj)
+        {
+            //TODO
         }
 
         private bool CanAddDay(object obj)
         {
-            return !(string.IsNullOrEmpty(this.HighTemperature) || string.IsNullOrEmpty(this.LowTemperature) ||
-                     string.IsNullOrEmpty(this.Precipitation));
+            return true;
         }
 
         private void AddDay(object obj)
         {
-            var dayToAdd = new DailyStats(this.Date.DateTime, int.Parse(this.HighTemperature), int.Parse(this.LowTemperature), double.Parse(this.Precipitation));
+            var dayToAdd = new DailyStats(this.Date.DateTime, this.HighTemperature, this.LowTemperature, this.Precipitation);
             this.weatherCalculator.Add(dayToAdd);
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
         }

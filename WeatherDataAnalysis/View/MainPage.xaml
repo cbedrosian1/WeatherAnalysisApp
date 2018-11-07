@@ -8,9 +8,13 @@
     xmlns:converter="using:WeatherDataAnalysis.Converter"
     xmlns:vm="using:WeatherDataAnalysis.ViewModel"
     
-    
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converter:IntConverter x:Key="IntConverter"/>
+        <converter:DoubleConverter x:Key="DoubleConverter"/>
+    </Page.Resources>
     <Page.DataContext>
         <vm:WeatherCalculatorDetailViewModel/>
     </Page.DataContext>
@@ -29,13 +33,13 @@
         <TextBlock x:Name="temperatureType" HorizontalAlignment="Left" Margin="1374,767,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Width="23" Height="32" FontSize="20" RenderTransformOrigin="13.907,0.723"/>
         <TextBlock x:Name="temperatureType2" HorizontalAlignment="Left" Margin="1365,592,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Width="23" Height="32" FontSize="20" RenderTransformOrigin="1.261,0.594"/>
         <Button x:Name="clearDataButton" Content="Clear Data" Click ="clearData_Click"  HorizontalAlignment="Left" Margin="821,365,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.449,0.485"/>
-        <TextBox x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=HighTemperature,Converter={StaticResource intConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
-        <TextBox x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="177,220,0,0" Text="{Binding Path=LowTemperature, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.751"/>
+        <TextBox x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=HighTemperature, Converter={StaticResource IntConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
+        <TextBox x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="177,220,0,0" Text="{Binding Path=LowTemperature, Converter={StaticResource IntConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.751"/>
         <TextBlock x:Name="dayTextBlock" HorizontalAlignment="Left" Margin="80,126,0,0" Text="Date" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-0.914,41.337"/>
         <TextBlock x:Name="highTempTextBlock" HorizontalAlignment="Left" Margin="80,176,0,0" Text="High Temp" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="lowTempTextBlock" HorizontalAlignment="Left" Margin="80,226,0,0" Text="Low Temp" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="precipitationTextBlock" HorizontalAlignment="Left" Margin="80,276,0,0" Text="Precipitation" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.354,0.767"/>
-        <TextBox x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=Precipitation, Mode=TwoWay}" VerticalAlignment="Top"/>
+        <TextBox x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=Precipitation, Converter={StaticResource DoubleConverter}, Mode=TwoWay}" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButton5" Content="5" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="640,871,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButton10" Content="10" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="700,871,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButton20" Content="20" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="760,871,0,0" VerticalAlignment="Top"/>
@@ -69,4 +73,5 @@
 
 
     </Grid>
-</>
+
+</Page>

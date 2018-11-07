@@ -97,6 +97,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\DoubleConverter.cs" />
     <Compile Include="Converter\IntConverter.cs" />
     <Compile Include="DataTier\WeatherDataFileSaver.cs" />
     <Compile Include="DataTier\WeatherDataParser.cs" />
