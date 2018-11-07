@@ -34,7 +34,15 @@ namespace WeatherDataAnalysis.Converter
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             var tempText = (string) value;
-            return int.Parse(tempText);
+
+
+            var valueToReturn = 0;
+            if (!string.IsNullOrEmpty(tempText))
+            {
+                valueToReturn = int.Parse(tempText);
+            }
+            
+            return valueToReturn;
         }
     }
 }

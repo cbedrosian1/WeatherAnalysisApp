@@ -45,7 +45,7 @@ namespace WeatherDataAnalysis.DataTier
         ///     List of days from file being read
         /// </returns>
         /// <exception cref="ArgumentNullException">file</exception>
-        public async Task<ICollection<DailyStats>> LoadFile(StorageFile file)
+        public async Task<IList<DailyStats>> LoadFile(StorageFile file)
         {
             if (file == null)
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Windows.Storage;
 using Microsoft.Toolkit.Extensions;
@@ -96,6 +97,7 @@ namespace WeatherDataAnalysis.ViewModel
                 this.selectedDay = value;
                 this.OnPropertyChanged();
                 this.RemoveCommand.OnCanExecuteChanged();
+                this.EditCommand.OnCanExecuteChanged();
                 this.Date = this.selectedDay.DateTimeOffset;
                 this.HighTemperature = this.selectedDay.HighTemperature;
                 this.LowTemperature = this.selectedDay.LowTemperature;
@@ -142,23 +144,30 @@ namespace WeatherDataAnalysis.ViewModel
 
         private bool CanEditDay(object obj)
         {
-            throw new NotImplementedException();
+            return this.SelectedDay != null;
         }
 
         private void EditDay(object obj)
         {
-            //TODO
+           var index = this.weatherCalculator.Days.IndexOf(this.SelectedDay);
+           this.weatherCalculator.Days[index].HighTemperature = this.HighTemperature;
+           this.weatherCalculator.Days[index].LowTemperature = this.LowTemperature;
+           this.weatherCalculator.Days[index].Precipitation = this.Precipitation;
+         
+           this.Days = this.weatherCalculator.Days.ToObservableCollection();
+
         }
 
         private bool CanAddDay(object obj)
         {
-            return true;
+            return this.HighTemperature > this.LowTemperature;
         }
 
         private void AddDay(object obj)
         {
             var dayToAdd = new DailyStats(this.Date.DateTime, this.HighTemperature, this.LowTemperature, this.Precipitation);
             this.weatherCalculator.Add(dayToAdd);
+            this.weatherCalculator.Days = this.weatherCalculator.Days.OrderBy(day => day.Date).ToList();
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
         }
 

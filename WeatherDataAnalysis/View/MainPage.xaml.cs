@@ -124,6 +124,7 @@ namespace WeatherDataAnalysis
             this.summaryTextBox.Text = this.controller.ClearReport();
         }
 
+        /**
         private async void addDay_Click(object sender, RoutedEventArgs e)
         {
             var date = DateTime.Parse(this.newDayPicker.Date.LocalDateTime.ToShortDateString());
@@ -141,7 +142,7 @@ namespace WeatherDataAnalysis
                 this.tempCheckerTextBlock.Visibility = Visibility.Visible;
             }
         }
-
+    **/
         private void histogramEventChangeHandler(object sender, RoutedEventArgs e)
         {
             if (this.radioButton5.IsChecked == true)

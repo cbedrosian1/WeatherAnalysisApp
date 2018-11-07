@@ -29,7 +29,13 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     The collection of days.
         /// </value>
-        public ICollection<DailyStats> Days { get; set; }
+        public IList<DailyStats> Days { get; set; }
+
+        public DailyStats this[int i]
+        {
+            get => this.Days[i];
+            set => this.Days[i] = value;
+        }
 
         /// <summary>
         ///     Gets or sets the high temperature threshold.
@@ -94,7 +100,7 @@ namespace WeatherDataAnalysis.Model
         ///     Precondition: days != null
         /// </summary>
         /// <param name="days">The days to take info from.</param>
-        public WeatherCalculator(ICollection<DailyStats> days)
+        public WeatherCalculator(IList<DailyStats> days)
         {
             this.Days = days ?? throw new ArgumentNullException(nameof(days));
         }
