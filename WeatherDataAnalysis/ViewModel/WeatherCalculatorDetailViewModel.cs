@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Microsoft.Toolkit.Extensions;
 using WeatherDataAnalysis.DataTier;
 using WeatherDataAnalysis.Extension;
 using WeatherDataAnalysis.Model;
@@ -19,6 +20,52 @@ namespace WeatherDataAnalysis.ViewModel
     public class WeatherCalculatorDetailViewModel : INotifyPropertyChanged
     {
         private WeatherCalculator weatherCalculator;
+
+        private string highTemperature;
+        public string HighTemperature
+        {
+            get => this.highTemperature;
+            set
+            {
+                this.highTemperature = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+
+        private string lowTemperature;
+
+        public string LowTemperature
+        {
+            get => this.lowTemperature;
+            set
+            {
+                this.lowTemperature = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        private string precipitation;
+        public string Precipitation
+        {
+            get => this.precipitation;
+            set
+            {
+                this.precipitation = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        private DateTimeOffset date;
+        public DateTimeOffset Date
+        {
+            get => this.date;
+            set
+            {
+                this.date = value;
+                this.OnPropertyChanged();
+            }
+        }
 
 
         public RelayCommand RemoveCommand { get; set; }
@@ -38,6 +85,12 @@ namespace WeatherDataAnalysis.ViewModel
                 this.selectedDay = value;
                 this.OnPropertyChanged();
                 this.RemoveCommand.OnCanExecuteChanged();
+
+                this.HighTemperature = this.selectedDay.HighTemperature.ToString();
+                this.LowTemperature = this.selectedDay.LowTemperature.ToString();
+                this.Date = this.selectedDay.DateTimeOffset;
+                this.Precipitation = this.selectedDay.Precipitation.ToSafeString();
+                
             }
         }
 
@@ -64,6 +117,10 @@ namespace WeatherDataAnalysis.ViewModel
         /// </summary>
         public WeatherCalculatorDetailViewModel()
         {
+            this.date = DateTimeOffset.Now;
+            this.highTemperature = "0";
+            this.lowTemperature = "0";
+            this.precipitation = "0";
             this.weatherCalculator = new WeatherCalculator(new List<DailyStats>());
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
             this.RemoveCommand = new RelayCommand(this.DeleteDay, this.CanDeleteDay);
