@@ -6,6 +6,7 @@ using Windows.Storage.Pickers;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 using WeatherDataAnalysis.Controllers;
 using WeatherDataAnalysis.View;
 using WeatherDataAnalysis.ViewModel;

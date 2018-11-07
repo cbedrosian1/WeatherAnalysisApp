@@ -27,21 +27,20 @@
         <TextBlock x:Name="temperatureType" HorizontalAlignment="Left" Margin="1374,767,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Width="23" Height="32" FontSize="20" RenderTransformOrigin="13.907,0.723"/>
         <TextBlock x:Name="temperatureType2" HorizontalAlignment="Left" Margin="1365,592,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Width="23" Height="32" FontSize="20" RenderTransformOrigin="1.261,0.594"/>
         <Button x:Name="clearDataButton" Content="Clear Data" Click ="clearData_Click"  HorizontalAlignment="Left" Margin="821,365,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.449,0.485"/>
-        <TextBox x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=SelectedDay.HighTemperature, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
-        <TextBox x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="177,220,0,0" Text="{Binding Path=SelectedDay.LowTemperature, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.751"/>
+        <TextBox x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=HighTemperature, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
+        <TextBox x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="177,220,0,0" Text="{Binding Path=LowTemperature, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.751"/>
         <TextBlock x:Name="dayTextBlock" HorizontalAlignment="Left" Margin="80,126,0,0" Text="Date" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-0.914,41.337"/>
         <TextBlock x:Name="highTempTextBlock" HorizontalAlignment="Left" Margin="80,176,0,0" Text="High Temp" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="lowTempTextBlock" HorizontalAlignment="Left" Margin="80,226,0,0" Text="Low Temp" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="precipitationTextBlock" HorizontalAlignment="Left" Margin="80,276,0,0" Text="Precipitation" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.354,0.767"/>
-        <TextBox x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=SelectedDay.Precipitation, Mode=TwoWay}" VerticalAlignment="Top"/>
-        <Button x:Name="addDayButton" Content="Add Day" Click ="addDay_Click" HorizontalAlignment="Left" Margin="132,365,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=Precipitation, Mode=TwoWay}" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButton5" Content="5" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="640,871,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButton10" Content="10" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="700,871,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButton20" Content="20" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="760,871,0,0" VerticalAlignment="Top"/>
         <TextBlock x:Name="bucketSizeTextBlock" HorizontalAlignment="Left" Margin="640,846,0,0" Text="Histogram Bucket Size
                    " TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="tempCheckerTextBlock" HorizontalAlignment="Left" Visibility="Collapsed"  Margin="990,305,0,0" Text="High Temperature must be higher than Low Temperature" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="80"/>
-        <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=SelectedDay.DateTimeOffset, Mode=TwoWay}"/>
+        <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=Date, Mode=TwoWay}"/>
         <ListView BorderBrush="Black" BorderThickness ="4" ItemsSource="{Binding Path=Days, Mode=TwoWay}" HorizontalAlignment="Left" 
                   SelectedItem="{Binding Path=SelectedDay, Mode=TwoWay}" Height="280" Margin="560,80,0,0" VerticalAlignment="Top" Width="480">
             <ListView.ItemTemplate>
@@ -60,6 +59,7 @@
 
         </ListView>
         <Button x:Name="summaryButton" Content="Summary" HorizontalAlignment="Left" Margin="691,365,0,0" VerticalAlignment="Top" Click="summaryButton_Click"/>
+        <Button x:Name="addDayButton" Content="Add Day" Command="{Binding AddCommand}"  Click ="addDay_Click" HorizontalAlignment="Left" Margin="132,365,0,0" VerticalAlignment="Top"/>
         <Button x:Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="262,365,0,0" VerticalAlignment="Top" Width="77"/>
         <Button x:Name="removeButton" Content="Remove" Command="{Binding RemoveCommand}" HorizontalAlignment="Left" Margin="392,365,0,0" VerticalAlignment="Top" Width="77"/>
         <Border BorderBrush="Black" BorderThickness="4" HorizontalAlignment="Left" Height="280" Margin="60,80,0,0" VerticalAlignment="Top" Width="480"/>
