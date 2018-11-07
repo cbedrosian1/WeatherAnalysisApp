@@ -5,8 +5,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:converter="using:WeatherDataAnalysis.Converter"
     xmlns:vm="using:WeatherDataAnalysis.ViewModel"
-
+    
+    
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.DataContext>
@@ -27,7 +29,7 @@
         <TextBlock x:Name="temperatureType" HorizontalAlignment="Left" Margin="1374,767,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Width="23" Height="32" FontSize="20" RenderTransformOrigin="13.907,0.723"/>
         <TextBlock x:Name="temperatureType2" HorizontalAlignment="Left" Margin="1365,592,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Width="23" Height="32" FontSize="20" RenderTransformOrigin="1.261,0.594"/>
         <Button x:Name="clearDataButton" Content="Clear Data" Click ="clearData_Click"  HorizontalAlignment="Left" Margin="821,365,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.449,0.485"/>
-        <TextBox x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=HighTemperature, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
+        <TextBox x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=HighTemperature,Converter={StaticResource intConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
         <TextBox x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="177,220,0,0" Text="{Binding Path=LowTemperature, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.751"/>
         <TextBlock x:Name="dayTextBlock" HorizontalAlignment="Left" Margin="80,126,0,0" Text="Date" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-0.914,41.337"/>
         <TextBlock x:Name="highTempTextBlock" HorizontalAlignment="Left" Margin="80,176,0,0" Text="High Temp" TextWrapping="Wrap" VerticalAlignment="Top"/>
@@ -67,4 +69,4 @@
 
 
     </Grid>
-</Page>
+</>
