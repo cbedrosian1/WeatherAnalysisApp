@@ -61,7 +61,7 @@
         </ListView>
         <Button x:Name="summaryButton" Content="Summary" HorizontalAlignment="Left" Margin="691,365,0,0" VerticalAlignment="Top" Click="summaryButton_Click"/>
         <Button x:Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="262,365,0,0" VerticalAlignment="Top" Width="77"/>
-        <Button x:Name="removeButton" Content="Remove" HorizontalAlignment="Left" Margin="392,365,0,0" VerticalAlignment="Top" Width="77"/>
+        <Button x:Name="removeButton" Content="Remove" Command="{Binding RemoveCommand}" HorizontalAlignment="Left" Margin="392,365,0,0" VerticalAlignment="Top" Width="77"/>
         <Border BorderBrush="Black" BorderThickness="4" HorizontalAlignment="Left" Height="280" Margin="60,80,0,0" VerticalAlignment="Top" Width="480"/>
         <TextBox x:Name="summaryTextBox" HorizontalAlignment="Left" Margin="177,576,0,0" Text="Summary" VerticalAlignment="Top" Height="254" Width="243" RenderTransformOrigin="0.913,0.214"/>
 

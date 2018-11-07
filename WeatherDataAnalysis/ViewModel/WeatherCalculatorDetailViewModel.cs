@@ -8,6 +8,7 @@ using Windows.Storage;
 using WeatherDataAnalysis.DataTier;
 using WeatherDataAnalysis.Extension;
 using WeatherDataAnalysis.Model;
+using WeatherDataAnalysis.Utility;
 
 namespace WeatherDataAnalysis.ViewModel
 {
@@ -19,6 +20,8 @@ namespace WeatherDataAnalysis.ViewModel
     {
         private WeatherCalculator weatherCalculator;
 
+
+        public RelayCommand RemoveCommand { get; set; }
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
@@ -34,6 +37,7 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.selectedDay = value;
                 this.OnPropertyChanged();
+                this.RemoveCommand.OnCanExecuteChanged();
             }
         }
 
@@ -62,13 +66,26 @@ namespace WeatherDataAnalysis.ViewModel
         {
             this.weatherCalculator = new WeatherCalculator(new List<DailyStats>());
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
+            this.RemoveCommand = new RelayCommand(this.DeleteDay, this.CanDeleteDay);
         }
 
-        public async Task ReadFileAsync(StorageFile file)
+        private bool CanDeleteDay(object obj)
+        {
+            return this.SelectedDay != null;
+        }
+
+        private void DeleteDay(object obj)
+        {
+            this.weatherCalculator.Remove(this.SelectedDay);
+            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+        }
+
+        public async void ReadFileAsync(StorageFile file)
         {
             var parser = new WeatherDataParser();
-            var dayTest = await parser.LoadFile(file);
-            this.Days = dayTest.ToObservableCollection();
+            var parsedDays = await parser.LoadFile(file);
+            this.weatherCalculator.Days = parsedDays;
+            this.Days = parsedDays.ToObservableCollection();
    
         }
         /// <summary>

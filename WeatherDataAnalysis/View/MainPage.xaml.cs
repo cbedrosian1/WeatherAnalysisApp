@@ -37,7 +37,7 @@ namespace WeatherDataAnalysis
 
         private readonly WeatherDataController controller;
 
-        private WeatherCalculatorDetailViewModel viewModel;
+        private readonly WeatherCalculatorDetailViewModel viewModel;
 
         private const string HighThresholdDefault = "90";
         private const string LowThresholdDefault = "32";
@@ -89,7 +89,7 @@ namespace WeatherDataAnalysis
             //   }
 
                // this.summaryTextBox.Text = await this.controller.LoadReport();
-                await this.viewModel.ReadFileAsync(this.file);
+                this.viewModel.ReadFileAsync(this.file);
             }
         }
 
