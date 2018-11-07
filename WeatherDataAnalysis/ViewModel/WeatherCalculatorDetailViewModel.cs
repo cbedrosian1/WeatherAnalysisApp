@@ -32,7 +32,7 @@ namespace WeatherDataAnalysis.ViewModel
 
         public DailyStats SelectedDay
         {
-            get { return this.selectedDay; }
+            get => this.selectedDay; 
             set
             {
                 this.selectedDay = value;
@@ -51,7 +51,7 @@ namespace WeatherDataAnalysis.ViewModel
         /// </value>
         public ObservableCollection<DailyStats> Days
         {
-            get { return this.days; }
+            get => this.days; 
             set
             {
                 this.days = value;
