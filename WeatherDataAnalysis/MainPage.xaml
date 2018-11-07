@@ -41,7 +41,7 @@
         <TextBlock x:Name="bucketSizeTextBlock" HorizontalAlignment="Left" Margin="640,846,0,0" Text="Histogram Bucket Size
                    " TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="tempCheckerTextBlock" HorizontalAlignment="Left" Visibility="Collapsed"  Margin="990,305,0,0" Text="High Temperature must be higher than Low Temperature" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="80"/>
-        <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=SelectedDay.Date, Mode=TwoWay}"/>
+        <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=SelectedDay.DateTimeOffset, Mode=TwoWay}"/>
         <ListView BorderBrush="Black" BorderThickness ="4" ItemsSource="{Binding Path=Days, Mode=TwoWay}" HorizontalAlignment="Left" 
                   SelectedItem="{Binding Path=SelectedDay, Mode=TwoWay}" Height="280" Margin="560,80,0,0" VerticalAlignment="Top" Width="480">
             <ListView.ItemTemplate>
@@ -52,8 +52,7 @@
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0"
-                                       Text="{Binding Date}" />
+                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0" Text="{Binding Date}" />
                         </Grid>
                     </Border>
                 </DataTemplate>

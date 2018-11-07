@@ -37,7 +37,7 @@ namespace WeatherDataAnalysis
 
         private readonly WeatherDataController controller;
 
-        private readonly WeatherCalculatorDetailViewModel viewModel;
+        private WeatherCalculatorDetailViewModel viewModel;
 
         private const string HighThresholdDefault = "90";
         private const string LowThresholdDefault = "32";
@@ -58,10 +58,11 @@ namespace WeatherDataAnalysis
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
             this.summaryTextBox.Text = string.Empty;
             this.controller = new WeatherDataController();
-          //  this.DataContext = this.controller;
+            this.viewModel = new WeatherCalculatorDetailViewModel();
+            this.DataContext = this.viewModel;
             this.radioButton10.IsChecked = true;
 
-            this.viewModel = new WeatherCalculatorDetailViewModel();
+           
         }
 
         #endregion
@@ -88,7 +89,7 @@ namespace WeatherDataAnalysis
             //   }
 
                // this.summaryTextBox.Text = await this.controller.LoadReport();
-                this.viewModel.ReadFile(this.file);
+                await this.viewModel.ReadFileAsync(this.file);
             }
         }
 

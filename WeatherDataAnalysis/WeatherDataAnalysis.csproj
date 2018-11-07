@@ -101,6 +101,7 @@
     <Compile Include="DataTier\WeatherDataParser.cs" />
     <Compile Include="Extension\ListExtensions.cs" />
     <Compile Include="Utility\DateTimeExtensions.cs" />
+    <Compile Include="Utility\RelayCommand.cs" />
     <Compile Include="ViewModel\WeatherCalculatorDetailViewModel.cs" />
     <Compile Include="View\DuplicateDayResult.cs" />
     <Compile Include="View\DuplicateDayDialog.xaml.cs">

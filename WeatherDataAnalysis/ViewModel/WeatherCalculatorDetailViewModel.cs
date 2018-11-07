@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Windows.Storage;
 using WeatherDataAnalysis.DataTier;
 using WeatherDataAnalysis.Extension;
@@ -45,7 +47,7 @@ namespace WeatherDataAnalysis.ViewModel
         /// </value>
         public ObservableCollection<DailyStats> Days
         {
-            get => this.days; 
+            get { return this.days; }
             set
             {
                 this.days = value;
@@ -58,18 +60,16 @@ namespace WeatherDataAnalysis.ViewModel
         /// </summary>
         public WeatherCalculatorDetailViewModel()
         {
-            this.days = new ObservableCollection<DailyStats>();
-            this.weatherCalculator = new WeatherCalculator(this.days);
-         //   this.weatherCalculator.Days.ToObservableCollection();
+            this.weatherCalculator = new WeatherCalculator(new List<DailyStats>());
+            this.Days = this.weatherCalculator.Days.ToObservableCollection();
         }
 
-        public void ReadFile(StorageFile file)
+        public async Task ReadFileAsync(StorageFile file)
         {
             var parser = new WeatherDataParser();
-            var dayTest = parser.LoadFile(file).Result;
-            var test = dayTest.Count;
-            var test2 = dayTest.ToString();
-            this.days = dayTest.ToObservableCollection();
+            var dayTest = await parser.LoadFile(file);
+            this.Days = dayTest.ToObservableCollection();
+   
         }
         /// <summary>
         /// Called when [property changed].
