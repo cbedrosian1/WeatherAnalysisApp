@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Windows.Storage;
 using Microsoft.Toolkit.Extensions;
 using WeatherDataAnalysis.DataTier;
@@ -14,14 +13,48 @@ using WeatherDataAnalysis.Utility;
 namespace WeatherDataAnalysis.ViewModel
 {
     /// <summary>
-    /// The view model for the weather calculator 
+    ///     The view model for the weather calculator
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class WeatherCalculatorDetailViewModel : INotifyPropertyChanged
     {
-        private WeatherCalculator weatherCalculator;
+        #region Data members
+
+        private readonly WeatherCalculator weatherCalculator;
+
+        private DateTimeOffset date;
 
         private string highTemperature;
+
+        private string lowTemperature;
+
+        private string precipitation;
+
+        private DailyStats selectedDay;
+
+        private ObservableCollection<DailyStats> days;
+
+        #endregion
+
+        #region Properties
+
+        public RelayCommand RemoveCommand { get; set; }
+
+        public RelayCommand AddCommand { get; set; }
+
+        public RelayCommand EditCommand { get; set; }
+
+        public DateTimeOffset Date
+        {
+            get => this.date;
+            set
+            {
+                this.date = value;
+                this.OnPropertyChanged();
+                this.AddCommand.OnCanExecuteChanged();
+            }
+        }
+
         public string HighTemperature
         {
             get => this.highTemperature;
@@ -29,11 +62,9 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.highTemperature = value;
                 this.OnPropertyChanged();
+                this.AddCommand.OnCanExecuteChanged();
             }
         }
-
-
-        private string lowTemperature;
 
         public string LowTemperature
         {
@@ -42,10 +73,10 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.lowTemperature = value;
                 this.OnPropertyChanged();
+                this.AddCommand.OnCanExecuteChanged();
             }
         }
 
-        private string precipitation;
         public string Precipitation
         {
             get => this.precipitation;
@@ -53,58 +84,35 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.precipitation = value;
                 this.OnPropertyChanged();
+                this.AddCommand.OnCanExecuteChanged();
             }
         }
-
-        private DateTimeOffset date;
-        public DateTimeOffset Date
-        {
-            get => this.date;
-            set
-            {
-                this.date = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-
-        public RelayCommand RemoveCommand { get; set; }
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        /// <returns> the event</returns>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private DailyStats selectedDay;
 
         public DailyStats SelectedDay
         {
-            get => this.selectedDay; 
+            get => this.selectedDay;
             set
             {
                 this.selectedDay = value;
                 this.OnPropertyChanged();
                 this.RemoveCommand.OnCanExecuteChanged();
-
+                this.Date = this.selectedDay.DateTimeOffset;
                 this.HighTemperature = this.selectedDay.HighTemperature.ToString();
                 this.LowTemperature = this.selectedDay.LowTemperature.ToString();
-                this.Date = this.selectedDay.DateTimeOffset;
                 this.Precipitation = this.selectedDay.Precipitation.ToSafeString();
                 
             }
         }
 
-        private ObservableCollection<DailyStats> days;
-
         /// <summary>
-        /// Gets or sets the days.
+        ///     Gets or sets the days.
         /// </summary>
         /// <value>
-        /// The days.
+        ///     The days.
         /// </value>
         public ObservableCollection<DailyStats> Days
         {
-            get => this.days; 
+            get => this.days;
             set
             {
                 this.days = value;
@@ -112,19 +120,47 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="WeatherCalculatorDetailViewModel"/> class.
+        ///     Initializes a new instance of the <see cref="WeatherCalculatorDetailViewModel" /> class.
         /// </summary>
         public WeatherCalculatorDetailViewModel()
         {
             this.date = DateTimeOffset.Now;
-            this.highTemperature = "0";
-            this.lowTemperature = "0";
-            this.precipitation = "0";
+            this.highTemperature = "";
+            this.lowTemperature = "";
+            this.precipitation = "";
             this.weatherCalculator = new WeatherCalculator(new List<DailyStats>());
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
             this.RemoveCommand = new RelayCommand(this.DeleteDay, this.CanDeleteDay);
+            this.AddCommand = new RelayCommand(this.AddDay, this.CanAddDay);
         }
+
+        private bool CanAddDay(object obj)
+        {
+            return !(string.IsNullOrEmpty(this.HighTemperature) || string.IsNullOrEmpty(this.LowTemperature) ||
+                     string.IsNullOrEmpty(this.Precipitation));
+        }
+
+        private void AddDay(object obj)
+        {
+            var dayToAdd = new DailyStats(this.Date.DateTime, int.Parse(this.HighTemperature), int.Parse(this.LowTemperature), double.Parse(this.Precipitation));
+            this.weatherCalculator.Add(dayToAdd);
+            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///     Occurs when a property value changes.
+        /// </summary>
+        /// <returns> the event</returns>
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private bool CanDeleteDay(object obj)
         {
@@ -143,15 +179,17 @@ namespace WeatherDataAnalysis.ViewModel
             var parsedDays = await parser.LoadFile(file);
             this.weatherCalculator.Days = parsedDays;
             this.Days = parsedDays.ToObservableCollection();
-   
         }
+
         /// <summary>
-        /// Called when [property changed].
+        ///     Called when [property changed].
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

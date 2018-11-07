@@ -36,7 +36,6 @@
         <TextBlock x:Name="lowTempTextBlock" HorizontalAlignment="Left" Margin="80,226,0,0" Text="Low Temp" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="precipitationTextBlock" HorizontalAlignment="Left" Margin="80,276,0,0" Text="Precipitation" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.354,0.767"/>
         <TextBox x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=Precipitation, Mode=TwoWay}" VerticalAlignment="Top"/>
-        <Button x:Name="addDayButton" Content="Add Day" Click ="addDay_Click" HorizontalAlignment="Left" Margin="132,365,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButton5" Content="5" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="640,871,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButton10" Content="10" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="700,871,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButton20" Content="20" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="760,871,0,0" VerticalAlignment="Top"/>
@@ -62,6 +61,7 @@
 
         </ListView>
         <Button x:Name="summaryButton" Content="Summary" HorizontalAlignment="Left" Margin="691,365,0,0" VerticalAlignment="Top" Click="summaryButton_Click"/>
+        <Button x:Name="addDayButton" Content="Add Day" Command="{Binding AddCommand}"  Click ="addDay_Click" HorizontalAlignment="Left" Margin="132,365,0,0" VerticalAlignment="Top"/>
         <Button x:Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="262,365,0,0" VerticalAlignment="Top" Width="77"/>
         <Button x:Name="removeButton" Content="Remove" Command="{Binding RemoveCommand}" HorizontalAlignment="Left" Margin="392,365,0,0" VerticalAlignment="Top" Width="77"/>
         <Border BorderBrush="Black" BorderThickness="4" HorizontalAlignment="Left" Height="280" Margin="60,80,0,0" VerticalAlignment="Top" Width="480"/>
