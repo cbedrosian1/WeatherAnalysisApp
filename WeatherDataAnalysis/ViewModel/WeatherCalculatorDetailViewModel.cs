@@ -114,6 +114,7 @@ namespace WeatherDataAnalysis.ViewModel
                 this.date = value;
                 this.OnPropertyChanged();
                 this.AddCommand.OnCanExecuteChanged();
+                this.EditCommand.OnCanExecuteChanged();
             }
         }
 
@@ -277,12 +278,13 @@ namespace WeatherDataAnalysis.ViewModel
 
         private bool canEditDay(object obj)
         {
-            return this.HighTemperature > this.LowTemperature && this.SelectedDay != null;
+            return this.HighTemperature > this.LowTemperature && this.SelectedDay != null && this.weatherCalculator.FindDayWithDate(this.Date.Date) != null;
         }
 
         private void editDay(object obj)
         {
-            var index = this.weatherCalculator.Days.IndexOf(this.SelectedDay);
+            var day = this.weatherCalculator.FindDayWithDate(this.Date.DateTime);
+            var index = this.weatherCalculator.Days.IndexOf(day);
             this.weatherCalculator.Days[index].HighTemperature = this.HighTemperature;
             this.weatherCalculator.Days[index].LowTemperature = this.LowTemperature;
             this.weatherCalculator.Days[index].Precipitation = this.Precipitation;
@@ -321,9 +323,6 @@ namespace WeatherDataAnalysis.ViewModel
         /// <param name="file">The file to be read.</param>
         public async void ReadFile(StorageFile file)
         {
-           // var parser = new WeatherDataParser();
-
-           
 
             var parsedDays = await this.parser.LoadFile(file);
             this.weatherCalculator.Days = parsedDays;
@@ -332,10 +331,9 @@ namespace WeatherDataAnalysis.ViewModel
 
         public async Task ReadNewFile(StorageFile file)
         {
-           // var parser = new WeatherDataParser();
             this.weatherCalculator =  new WeatherCalculator(this.weatherCalculator, await this.parser.LoadFile(file));
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
-            //await this.handleDuplicateDays();
+ 
         }
 
         public ICollection<IGrouping<int, DailyStats>> FindDuplicateDays()
@@ -356,31 +354,6 @@ namespace WeatherDataAnalysis.ViewModel
         public void Merge(bool action)
         {
             this.weatherCalculator.Merge(action);
-        }
-        private async Task handleDuplicateDays()
-        {
-            while (this.weatherCalculator.ConflictingDaysCount > 0)
-            {
-                var days = this.weatherCalculator.FindNextConflictingDays();
-                KeepOrReplace action;
-                if (this.duplicateBehavior == null)
-                {
-                    var dialog = new DuplicateDayDialog(days.First().Date.ToShortDateString());
-                    await dialog.ShowAsync();
-                    if (dialog.Result.DoForAll)
-                    {
-                        this.duplicateBehavior = dialog.Result;
-                    }
-
-                    action = dialog.Result.KeepOrReplace;
-                }
-                else
-                {
-                    action = this.duplicateBehavior.KeepOrReplace;
-                }
-
-              //  this.weatherCalculator.Merge(action);
-            }
         }
 
 

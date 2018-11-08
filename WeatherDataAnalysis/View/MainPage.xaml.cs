@@ -85,8 +85,12 @@ namespace WeatherDataAnalysis
                 if (this.viewModel.Days.Count > 0)
                 {
                     await this.handleDataExists();
+                }
+                else
+                {
+                    this.viewModel.ReadFile(this.file);
                 }    
-                this.viewModel.ReadFile(this.file);
+                
                 this.duplicateBehavior = null;
             }
         }
@@ -100,6 +104,11 @@ namespace WeatherDataAnalysis
             {
                 await this.viewModel.ReadNewFile(this.file);
                 await this.handleDuplicateDays();
+                this.viewModel.UpdateDays();
+            }
+            else
+            {
+                this.viewModel.ReadFile(this.file);
             }
         }
 
@@ -134,7 +143,6 @@ namespace WeatherDataAnalysis
 
                     this.viewModel.Merge(false);
                 } 
-                this.viewModel.UpdateDays();
             }
             
         }

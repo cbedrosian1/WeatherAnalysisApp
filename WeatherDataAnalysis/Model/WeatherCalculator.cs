@@ -135,6 +135,19 @@ namespace WeatherDataAnalysis.Model
 
         #region Methods
 
+        public DailyStats FindDayWithDate(DateTime date)
+        {
+            try
+            {
+                return this.Days.First(day => day.Date.ToShortDateString() == date.ToShortDateString());
+            }
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
+
+        }
+
         /// <summary>
         ///     Gets the highest temperature of the year.
         /// </summary>
