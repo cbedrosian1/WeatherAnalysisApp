@@ -4,11 +4,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Windows.Storage;
 using WeatherDataAnalysis.DataTier;
 using WeatherDataAnalysis.Extension;
 using WeatherDataAnalysis.Model;
 using WeatherDataAnalysis.Utility;
+using WeatherDataAnalysis.View;
 
 namespace WeatherDataAnalysis.ViewModel
 {
@@ -20,7 +22,7 @@ namespace WeatherDataAnalysis.ViewModel
     {
         #region Data members
 
-        private readonly WeatherCalculator weatherCalculator;
+        private WeatherCalculator weatherCalculator;
 
         private DateTimeOffset date;
 
@@ -33,6 +35,7 @@ namespace WeatherDataAnalysis.ViewModel
         private DailyStats selectedDay;
 
         private ObservableCollection<DailyStats> days;
+        private DuplicateDayResult duplicateBehavior;
 
         #endregion
 
@@ -180,6 +183,8 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
+        public MergeOrReplaceResult MergeOrReplace { get; set; }
+
         #endregion
 
         #region Constructors
@@ -268,13 +273,50 @@ namespace WeatherDataAnalysis.ViewModel
         ///     Reads the file.
         /// </summary>
         /// <param name="file">The file to be read.</param>
-        public async void ReadFileAsync(StorageFile file)
+        public async void ReadFile(StorageFile file)
         {
             var parser = new WeatherDataParser();
+
+           
+
             var parsedDays = await parser.LoadFile(file);
             this.weatherCalculator.Days = parsedDays;
             this.Days = parsedDays.ToObservableCollection();
         }
+
+        public async void ReadNewFile(StorageFile file)
+        {
+            var parser = new WeatherDataParser();
+            this.weatherCalculator = new WeatherCalculator(this.weatherCalculator, await parser.LoadFile(file));
+            await this.handleDuplicateDays();
+        }
+
+        private async Task handleDuplicateDays()
+        {
+            while (this.weatherCalculator.ConflictingDaysCount > 0)
+            {
+                var days = this.weatherCalculator.FindNextConflictingDays();
+                KeepOrReplace action;
+                if (this.duplicateBehavior == null)
+                {
+                    var dialog = new DuplicateDayDialog(days.First().Date.ToShortDateString());
+                    await dialog.ShowAsync();
+                    if (dialog.Result.DoForAll)
+                    {
+                        this.duplicateBehavior = dialog.Result;
+                    }
+
+                    action = dialog.Result.KeepOrReplace;
+                }
+                else
+                {
+                    action = this.duplicateBehavior.KeepOrReplace;
+                }
+
+                this.weatherCalculator.Merge(action);
+            }
+        }
+
 
         /// <summary>
         ///     Called when [property changed].

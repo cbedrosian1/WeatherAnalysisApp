@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage;
@@ -82,23 +83,24 @@ namespace WeatherDataAnalysis
             this.file = await openPicker.PickSingleFileAsync();
             if (this.file != null)
             {
-             //   this.controller.File = this.file;
-
-             //   if (!string.IsNullOrEmpty(this.summaryTextBox.Text))
-             //   {
-             //       this.controller.MergeOrReplace = await this.handleDataExists();
-            //   }
-
-               // this.summaryTextBox.Text = await this.controller.LoadReport();
-                this.viewModel.ReadFileAsync(this.file);
+                if (this.viewModel.Days.Count > 0)
+                {
+                   this.handleDataExists();
+                }    
+                this.viewModel.ReadFile(this.file);
             }
         }
 
-        private async Task<MergeOrReplaceResult> handleDataExists()
+        private async void handleDataExists()
         {
             var dialog = new DataExistsDialog();
             await dialog.ShowAsync();
-            return dialog.Result;
+            var mergeOrReplace = dialog.Result;
+            if (mergeOrReplace == MergeOrReplaceResult.Merge)
+            {
+                this.viewModel.ReadNewFile(this.file);
+            }
+            
         }
 
         private void thresholdChangedEventHandler(object sender, TextChangedEventArgs args)
@@ -119,30 +121,6 @@ namespace WeatherDataAnalysis
             this.summaryTextBox.Text = this.controller.UpdateThresholds();
         }
 
-        private void clearData_Click(object sender, RoutedEventArgs e)
-        {
-            this.summaryTextBox.Text = this.controller.ClearReport();
-        }
-
-        /**
-        private async void addDay_Click(object sender, RoutedEventArgs e)
-        {
-            var date = DateTime.Parse(this.newDayPicker.Date.LocalDateTime.ToShortDateString());
-            var highTemp = int.Parse(this.highTempTextBox.Text);
-            var lowTemp = int.Parse(this.lowTempTextBox.Text);
-            var precipitation = double.Parse(this.precipitationTextBox.Text);
-
-            if (highTemp > lowTemp)
-            {
-                this.summaryTextBox.Text = await this.controller.AddData(date, highTemp, lowTemp, precipitation);
-                this.tempCheckerTextBlock.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                this.tempCheckerTextBlock.Visibility = Visibility.Visible;
-            }
-        }
-    **/
         private void histogramEventChangeHandler(object sender, RoutedEventArgs e)
         {
             if (this.radioButton5.IsChecked == true)
@@ -169,17 +147,5 @@ namespace WeatherDataAnalysis
         }
 
         #endregion
-
-
-        private void summaryButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.open();
-        }
-
-        private async Task open()
-        {
-            var dialog = new SummaryDialog();
-            await dialog.ShowAsync();
-        }
     }
 }
