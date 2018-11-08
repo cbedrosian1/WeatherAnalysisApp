@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -45,6 +46,8 @@ namespace WeatherDataAnalysis
         private const string HighThresholdDefault = "90";
         private const string LowThresholdDefault = "32";
 
+        private DuplicateDayResult duplicateBehavior;
+
         #endregion
 
         #region Constructors
@@ -81,23 +84,62 @@ namespace WeatherDataAnalysis
             {
                 if (this.viewModel.Days.Count > 0)
                 {
-                    this.handleDataExists();
+                    await this.handleDataExists();
                 }    
                 this.viewModel.ReadFile(this.file);
+                this.duplicateBehavior = null;
             }
         }
 
-        private async void handleDataExists()
+        private async Task handleDataExists()
         {
             var dialog = new DataExistsDialog();
             await dialog.ShowAsync();
             var mergeOrReplace = dialog.Result;
             if (mergeOrReplace == MergeOrReplaceResult.Merge)
             {
-                this.viewModel.ReadNewFile(this.file);
+                await this.viewModel.ReadNewFile(this.file);
+                await this.handleDuplicateDays();
+            }
+        }
+
+        private async Task handleDuplicateDays()
+        {
+            while (this.viewModel.FindDuplicateDays().Count > 0)
+            {
+                var days = this.viewModel.FindNextConflictingDays();
+                KeepOrReplace action;
+                if (this.duplicateBehavior == null)
+                {
+                    var dialog = new DuplicateDayDialog(days.First().Date.ToShortDateString());
+                    await dialog.ShowAsync();
+                    if (dialog.Result.DoForAll)
+                    {
+                        this.duplicateBehavior = dialog.Result;
+                    }
+
+                    action = dialog.Result.KeepOrReplace;
+                }
+                else
+                {
+                    action = this.duplicateBehavior.KeepOrReplace;
+                }
+
+                if (action == KeepOrReplace.Replace)
+                {
+                    this.viewModel.Merge(true);
+                }
+                else if(action == KeepOrReplace.Keep)
+                {
+
+                    this.viewModel.Merge(false);
+                } 
+                this.viewModel.UpdateDays();
             }
             
         }
+
+
 
 
 

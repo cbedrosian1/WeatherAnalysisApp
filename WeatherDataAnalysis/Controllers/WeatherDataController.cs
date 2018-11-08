@@ -157,7 +157,7 @@ namespace WeatherDataAnalysis.Controllers
                     action = this.duplicateBehavior.KeepOrReplace;
                 }
 
-                this.weatherData.Merge(action);
+            //    this.weatherData.Merge(action);
             }
         }
 

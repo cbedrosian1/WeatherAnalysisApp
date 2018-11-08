@@ -17,7 +17,7 @@ namespace WeatherDataAnalysis.Model
         private const int YearPadding = 1000;
         private const int SizeFinder = 1;
 
-        private readonly ICollection<IGrouping<int, DailyStats>> conflictingDays;
+        public ICollection<IGrouping<int, DailyStats>> ConflictingDays { get; set; }
 
         #endregion
 
@@ -59,7 +59,7 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     The conflicting days count.
         /// </value>
-        public int ConflictingDaysCount => this.conflictingDays.Count;
+        public int ConflictingDaysCount => this.ConflictingDays.Count;
 
         /// <summary>
         ///     Gets or sets the size of each bucket
@@ -126,7 +126,7 @@ namespace WeatherDataAnalysis.Model
             this.Days = data.Days;
             var groupedDays = this.Days.Union(days)
                                   .GroupBy(day => day.Date.Year * YearPadding + day.Date.DayOfYear).ToList();
-            this.conflictingDays = groupedDays.Where(group => group.Count() > 1).ToList();
+            this.ConflictingDays = groupedDays.Where(group => group.Count() > 1).ToList();
             this.Days = this.Days.Union(groupedDays.Where(group => group.Count() == 1).Select(group => group.First()))
                             .ToList();
         }
@@ -280,7 +280,7 @@ namespace WeatherDataAnalysis.Model
         {
             if (this.ConflictingDaysCount > 0)
             {
-                return this.conflictingDays.First().ToList();
+                return this.ConflictingDays.First().ToList();
             }
 
             return new List<DailyStats>();
@@ -290,10 +290,10 @@ namespace WeatherDataAnalysis.Model
         ///     Merges the files based on the KeepOrReplace enum.
         /// </summary>
         /// <param name="action">The KeepOrReplace enum being chosen.</param>
-        public void Merge(KeepOrReplace action)
+        public void Merge(bool action)
         {
-            var conDays = this.conflictingDays.First();
-            if (action == KeepOrReplace.Replace)
+            var conDays = this.ConflictingDays.First();
+            if (action)
             {
                 foreach (var currentDay in conDays)
                 {
@@ -308,7 +308,7 @@ namespace WeatherDataAnalysis.Model
                 }
             }
 
-            this.conflictingDays.Remove(conDays);
+            this.ConflictingDays.Remove(conDays);
         }
 
         /// <summary>
