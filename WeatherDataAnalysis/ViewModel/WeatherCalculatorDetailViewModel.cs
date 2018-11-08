@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Windows.Storage;
-using Microsoft.Toolkit.Extensions;
 using WeatherDataAnalysis.DataTier;
 using WeatherDataAnalysis.Extension;
 using WeatherDataAnalysis.Model;
@@ -39,12 +38,44 @@ namespace WeatherDataAnalysis.ViewModel
 
         #region Properties
 
+        /// <summary>
+        ///     Gets or sets the remove command.
+        /// </summary>
+        /// <value>
+        ///     The remove command.
+        /// </value>
         public RelayCommand RemoveCommand { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the add command.
+        /// </summary>
+        /// <value>
+        ///     The add command.
+        /// </value>
         public RelayCommand AddCommand { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the edit command.
+        /// </summary>
+        /// <value>
+        ///     The edit command.
+        /// </value>
         public RelayCommand EditCommand { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the clear data command.
+        /// </summary>
+        /// <value>
+        ///     The clear data command.
+        /// </value>
+        public RelayCommand ClearDataCommand { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the date.
+        /// </summary>
+        /// <value>
+        ///     The date.
+        /// </value>
         public DateTimeOffset Date
         {
             get => this.date;
@@ -56,6 +87,12 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the high temperature.
+        /// </summary>
+        /// <value>
+        ///     The high temperature.
+        /// </value>
         public int HighTemperature
         {
             get => this.highTemperature;
@@ -68,6 +105,12 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the low temperature.
+        /// </summary>
+        /// <value>
+        ///     The low temperature.
+        /// </value>
         public int LowTemperature
         {
             get => this.lowTemperature;
@@ -80,6 +123,12 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the precipitation.
+        /// </summary>
+        /// <value>
+        ///     The precipitation.
+        /// </value>
         public double Precipitation
         {
             get => this.precipitation;
@@ -92,6 +141,12 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the selected day.
+        /// </summary>
+        /// <value>
+        ///     The selected day.
+        /// </value>
         public DailyStats SelectedDay
         {
             get => this.selectedDay;
@@ -105,8 +160,6 @@ namespace WeatherDataAnalysis.ViewModel
                 this.HighTemperature = this.selectedDay.HighTemperature;
                 this.LowTemperature = this.selectedDay.LowTemperature;
                 this.Precipitation = this.selectedDay.Precipitation;
-                
-
             }
         }
 
@@ -123,6 +176,7 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.days = value;
                 this.OnPropertyChanged();
+                this.ClearDataCommand?.OnCanExecuteChanged();
             }
         }
 
@@ -136,43 +190,9 @@ namespace WeatherDataAnalysis.ViewModel
         public WeatherCalculatorDetailViewModel()
         {
             this.date = DateTimeOffset.Now;
-            this.highTemperature = 0;
-            this.lowTemperature = 0;
-            this.precipitation = 0.0;
             this.weatherCalculator = new WeatherCalculator(new List<DailyStats>());
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
-            this.RemoveCommand = new RelayCommand(this.DeleteDay, this.CanDeleteDay);
-            this.AddCommand = new RelayCommand(this.AddDay, this.CanAddDay);
-            this.EditCommand = new RelayCommand(this.EditDay, this.CanEditDay);
-        }
-
-        private bool CanEditDay(object obj)
-        {
-            return this.HighTemperature > this.LowTemperature && this.SelectedDay != null;
-        }
-
-        private void EditDay(object obj)
-        {
-           var index = this.weatherCalculator.Days.IndexOf(this.SelectedDay);
-           this.weatherCalculator.Days[index].HighTemperature = this.HighTemperature;
-           this.weatherCalculator.Days[index].LowTemperature = this.LowTemperature;
-           this.weatherCalculator.Days[index].Precipitation = this.Precipitation;
-         
-           this.Days = this.weatherCalculator.Days.ToObservableCollection();
-
-        }
-
-        private bool CanAddDay(object obj)
-        {
-            return this.HighTemperature > this.LowTemperature;
-        }
-
-        private void AddDay(object obj)
-        {
-            var dayToAdd = new DailyStats(this.Date.DateTime, this.HighTemperature, this.LowTemperature, this.Precipitation);
-            this.weatherCalculator.Add(dayToAdd);
-            this.weatherCalculator.Days = this.weatherCalculator.Days.OrderBy(day => day.Date).ToList();
-            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+            this.intializeCommands();
         }
 
         #endregion
@@ -185,17 +205,69 @@ namespace WeatherDataAnalysis.ViewModel
         /// <returns> the event</returns>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private bool CanDeleteDay(object obj)
+        private void intializeCommands()
+        {
+            this.RemoveCommand = new RelayCommand(this.deleteDay, this.canDeleteDay);
+            this.AddCommand = new RelayCommand(this.addDay, this.canAddDay);
+            this.EditCommand = new RelayCommand(this.editDay, this.canEditDay);
+            this.ClearDataCommand = new RelayCommand(this.clearData, this.canClearData);
+        }
+
+        private bool canClearData(object obj)
+        {
+            return this.Days.Count > 0;
+        }
+
+        private void clearData(object obj)
+        {
+            this.weatherCalculator.Days.Clear();
+            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+        }
+
+        private bool canEditDay(object obj)
+        {
+            return this.HighTemperature > this.LowTemperature && this.SelectedDay != null;
+        }
+
+        private void editDay(object obj)
+        {
+            var index = this.weatherCalculator.Days.IndexOf(this.SelectedDay);
+            this.weatherCalculator.Days[index].HighTemperature = this.HighTemperature;
+            this.weatherCalculator.Days[index].LowTemperature = this.LowTemperature;
+            this.weatherCalculator.Days[index].Precipitation = this.Precipitation;
+
+            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+        }
+
+        private bool canAddDay(object obj)
+        {
+            return this.HighTemperature > this.LowTemperature;
+        }
+
+        private void addDay(object obj)
+        {
+            var dayToAdd = new DailyStats(this.Date.DateTime, this.HighTemperature, this.LowTemperature,
+                this.Precipitation);
+            this.weatherCalculator.Add(dayToAdd);
+            this.weatherCalculator.Days = this.weatherCalculator.Days.OrderBy(day => day.Date).ToList();
+            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+        }
+
+        private bool canDeleteDay(object obj)
         {
             return this.SelectedDay != null;
         }
 
-        private void DeleteDay(object obj)
+        private void deleteDay(object obj)
         {
             this.weatherCalculator.Remove(this.SelectedDay);
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
         }
 
+        /// <summary>
+        ///     Reads the file.
+        /// </summary>
+        /// <param name="file">The file to be read.</param>
         public async void ReadFileAsync(StorageFile file)
         {
             var parser = new WeatherDataParser();
