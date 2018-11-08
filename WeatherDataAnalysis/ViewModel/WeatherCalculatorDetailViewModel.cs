@@ -273,18 +273,17 @@ namespace WeatherDataAnalysis.ViewModel
         private void clearData(object obj)
         {
             this.weatherCalculator.Days.Clear();
-            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+            this.UpdateDays();
         }
 
         private bool canEditDay(object obj)
         {
-            return this.HighTemperature > this.LowTemperature && this.SelectedDay != null && this.weatherCalculator.FindDayWithDate(this.Date.Date) != null;
+            return this.HighTemperature > this.LowTemperature && this.SelectedDay != null && this.SelectedDay.Date == this.Date;
         }
 
         private void editDay(object obj)
         {
-            var day = this.weatherCalculator.FindDayWithDate(this.Date.DateTime);
-            var index = this.weatherCalculator.Days.IndexOf(day);
+            var index = this.weatherCalculator.Days.IndexOf(this.SelectedDay);
             this.weatherCalculator.Days[index].HighTemperature = this.HighTemperature;
             this.weatherCalculator.Days[index].LowTemperature = this.LowTemperature;
             this.weatherCalculator.Days[index].Precipitation = this.Precipitation;
@@ -303,7 +302,7 @@ namespace WeatherDataAnalysis.ViewModel
                 this.Precipitation);
             this.weatherCalculator.Add(dayToAdd);
             this.weatherCalculator.Days = this.weatherCalculator.Days.OrderBy(day => day.Date).ToList();
-            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+            this.UpdateDays();
         }
 
         private bool canDeleteDay(object obj)
@@ -314,7 +313,7 @@ namespace WeatherDataAnalysis.ViewModel
         private void deleteDay(object obj)
         {
             this.weatherCalculator.Remove(this.SelectedDay);
-            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+            this.UpdateDays();
         }
 
         /// <summary>
@@ -323,16 +322,15 @@ namespace WeatherDataAnalysis.ViewModel
         /// <param name="file">The file to be read.</param>
         public async void ReadFile(StorageFile file)
         {
+            this.weatherCalculator = new WeatherCalculator(await this.parser.LoadFile(file));
+            this.UpdateDays();
 
-            var parsedDays = await this.parser.LoadFile(file);
-            this.weatherCalculator.Days = parsedDays;
-            this.Days = parsedDays.ToObservableCollection();
         }
 
         public async Task ReadNewFile(StorageFile file)
         {
             this.weatherCalculator =  new WeatherCalculator(this.weatherCalculator, await this.parser.LoadFile(file));
-            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+            this.UpdateDays();
  
         }
 
@@ -343,6 +341,7 @@ namespace WeatherDataAnalysis.ViewModel
 
         public void UpdateDays()
         {
+            this.weatherCalculator.Days = this.weatherCalculator.Days.OrderBy(day => day.Date).ToList();
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
         }
 
