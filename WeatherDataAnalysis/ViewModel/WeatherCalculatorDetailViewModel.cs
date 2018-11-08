@@ -37,9 +37,25 @@ namespace WeatherDataAnalysis.ViewModel
         private ObservableCollection<DailyStats> days;
         private DuplicateDayResult duplicateBehavior;
 
+        private string report;
         #endregion
 
         #region Properties
+
+        
+
+        public string Report
+        {
+            get => this.report; 
+
+            set
+            {
+                this.report = value;
+                this.OnPropertyChanged();
+                this.SummaryCommand.OnCanExecuteChanged();
+            }
+        }
+
 
         /// <summary>
         ///     Gets or sets the remove command.
@@ -72,6 +88,14 @@ namespace WeatherDataAnalysis.ViewModel
         ///     The clear data command.
         /// </value>
         public RelayCommand ClearDataCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the summary command.
+        /// </summary>
+        /// <value>
+        /// The summary command.
+        /// </value>
+        public RelayCommand SummaryCommand { get; set; }
 
         /// <summary>
         ///     Gets or sets the date.
@@ -180,6 +204,7 @@ namespace WeatherDataAnalysis.ViewModel
                 this.days = value;
                 this.OnPropertyChanged();
                 this.ClearDataCommand?.OnCanExecuteChanged();
+                this.SummaryCommand?.OnCanExecuteChanged();
             }
         }
 
@@ -216,6 +241,22 @@ namespace WeatherDataAnalysis.ViewModel
             this.AddCommand = new RelayCommand(this.addDay, this.canAddDay);
             this.EditCommand = new RelayCommand(this.editDay, this.canEditDay);
             this.ClearDataCommand = new RelayCommand(this.clearData, this.canClearData);
+            this.SummaryCommand = new RelayCommand(this.createSummary, this.canCreateSummary);
+        }
+
+        private bool canCreateSummary(object obj)
+        {
+            return this.Days.Count > 0;
+        }
+
+        private void createSummary(object obj)
+        {
+            this.weatherCalculator.HighTemperatureThreshold = 20;
+            this.weatherCalculator.LowTemperatureThreshold = 20;
+            this.weatherCalculator.HistogramBucketSize = 5;
+            var reportBuilder = new ReportBuilder(this.weatherCalculator);
+            reportBuilder.CompileReport();
+            this.Report = reportBuilder.Report;
         }
 
         private bool canClearData(object obj)

@@ -8,6 +8,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Navigation;
 using WeatherDataAnalysis.Controllers;
 using WeatherDataAnalysis.View;
 using WeatherDataAnalysis.ViewModel;
@@ -54,17 +55,12 @@ namespace WeatherDataAnalysis
         public MainPage()
         {
             this.InitializeComponent();
-
             ApplicationView.PreferredLaunchViewSize = new Size {Width = ApplicationWidth, Height = ApplicationHeight};
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
-            this.summaryTextBox.Text = string.Empty;
-            this.controller = new WeatherDataController();
             this.viewModel = new WeatherCalculatorDetailViewModel();
-            this.DataContext = this.viewModel;
-            this.radioButton10.IsChecked = true;
+            this.DataContext = this.viewModel; 
 
-           
         }
 
         #endregion
@@ -85,7 +81,7 @@ namespace WeatherDataAnalysis
             {
                 if (this.viewModel.Days.Count > 0)
                 {
-                   this.handleDataExists();
+                    this.handleDataExists();
                 }    
                 this.viewModel.ReadFile(this.file);
             }
@@ -103,43 +99,10 @@ namespace WeatherDataAnalysis
             
         }
 
-        private void thresholdChangedEventHandler(object sender, TextChangedEventArgs args)
-        {
-            this.controller.HighTempThreshold = this.overTempTextBox.Text;
-            this.controller.LowTempThreshold = this.underTempTextBox.Text;
 
-            if (string.IsNullOrEmpty(this.overTempTextBox.Text))
-            {
-                this.controller.HighTempThreshold = HighThresholdDefault;
-            }
 
-            if (string.IsNullOrEmpty(this.underTempTextBox.Text))
-            {
-                this.controller.LowTempThreshold = LowThresholdDefault;
-            }
-
-            this.summaryTextBox.Text = this.controller.UpdateThresholds();
-        }
-
-        private void histogramEventChangeHandler(object sender, RoutedEventArgs e)
-        {
-            if (this.radioButton5.IsChecked == true)
-            {
-                this.controller.HistogramBucketSize = 5;
-            }
-
-            if (this.radioButton10.IsChecked == true)
-            {
-                this.controller.HistogramBucketSize = 10;
-            }
-
-            if (this.radioButton20.IsChecked == true)
-            {
-                this.controller.HistogramBucketSize = 20;
-            }
-
-            this.summaryTextBox.Text = this.controller.UpdateHistogram();
-        }
+  
+   
 
         private void saveFile_Click(object sender, RoutedEventArgs e)
         {
@@ -147,5 +110,19 @@ namespace WeatherDataAnalysis
         }
 
         #endregion
+
+
+        private void summaryButton_Click(object sender, RoutedEventArgs e)
+        {
+            //  var summaryWindow = new SummaryPage();
+            //  summaryWindow.InitializeComponent();
+            this.Frame.Navigate(typeof(SummaryPage), this.viewModel);
+        }
+
+        private async Task open()
+        {
+            var dialog = new SummaryDialog();
+            await dialog.ShowAsync();
+        }
     }
 }

@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="WeatherDataAnalysis.View.SummaryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WeatherDataAnalysis.View"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:converter="using:WeatherDataAnalysis.Converter"
+    xmlns:vm="using:WeatherDataAnalysis.ViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converter:IntConverter x:Key="IntConverter"/>
+        <converter:DoubleConverter x:Key="DoubleConverter"/>
+    </Page.Resources>
+    <Page.DataContext>
+        <vm:WeatherCalculatorDetailViewModel/>
+    </Page.DataContext>
+
+    <Grid>
+        <TextBox x:Name="summaryTextBox" HorizontalAlignment="Left" Text="{Binding Path=Report, Mode=TwoWay}" VerticalAlignment="Top" Height="277" Width="530" Margin="581,59,0,0"/>
+        <TextBlock x:Name="daysUnderTextBlock" HorizontalAlignment="Left" Margin="68,126,0,0" Text="Check for days under:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold" RenderTransformOrigin="0.484,0.54"/>
+        <TextBlock x:Name="daysOverTextBlock" HorizontalAlignment="Left" Margin="68,59,0,0" Text="Check for days over:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>
+        <TextBlock x:Name="bucketSizeTextBlock" HorizontalAlignment="Left" Margin="68,178,0,0" Text="Histogram Bucket Size:   " TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>
+        <TextBox x:Name="overTempTextBox" HorizontalAlignment="Left" Margin="322,56,0,0" Text="90" VerticalAlignment="Top"/>
+        <TextBox x:Name="underTempTextBox" HorizontalAlignment="Left" Margin="322,123,0,0" Text="32" VerticalAlignment="Top"/>
+        <RadioButton x:Name="radioButton5" Content="5" GroupName="Histogram" HorizontalAlignment="Left" Margin="322,175,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="radioButton10" Content="10" GroupName="Histogram" HorizontalAlignment="Left" Margin="382,175,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="radioButton20" Content="20" GroupName="Histogram" HorizontalAlignment="Left" Margin="442,175,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="68,231,0,0" VerticalAlignment="Top" Click="cancelButton_Click"/>
+    </Grid>
+</Page>
