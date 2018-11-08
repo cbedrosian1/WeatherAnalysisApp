@@ -7,7 +7,7 @@
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:converter="using:WeatherDataAnalysis.Converter"
     xmlns:vm="using:WeatherDataAnalysis.ViewModel"
-    
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -26,12 +26,6 @@
             <AppBarButton Icon="OpenFile" Label="Load File" Click="loadFile_Click" />
             <AppBarButton Icon="Save" Label="SaveFile" Click="saveFile_Click"></AppBarButton>
         </CommandBar>
-        <TextBox extensions:TextBoxRegex.ValidationMode="Dynamic" extensions:TextBoxRegex.ValidationType="Number" x:Name="underTempTextBox"   HorizontalAlignment="Left" Margin="1263,587,0,0" Text="" VerticalAlignment="Top" Height="30" Width="60" InputScope="Default"/>
-        <TextBox x:Name="overTempTextBox" HorizontalAlignment="Left" Margin="1295,764,0,0" TextChanged="thresholdChangedEventHandler" Text="90" VerticalAlignment="Top" Height="30" Width="60"/>
-        <TextBlock x:Name="daysUnderTextBlock" HorizontalAlignment="Left" Margin="68,901,0,0" Text="Check for days under:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold" RenderTransformOrigin="0.484,0.54"/>
-        <TextBlock x:Name="daysOverTextBlock" HorizontalAlignment="Left" Margin="1027,780,0,0" Text="Check for days over:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>
-        <TextBlock x:Name="temperatureType" HorizontalAlignment="Left" Margin="1374,767,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Width="23" Height="32" FontSize="20" RenderTransformOrigin="13.907,0.723"/>
-        <TextBlock x:Name="temperatureType2" HorizontalAlignment="Left" Margin="1365,592,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Width="23" Height="32" FontSize="20" RenderTransformOrigin="1.261,0.594"/>
         <TextBox x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=HighTemperature, Converter={StaticResource IntConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
         <TextBox x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="177,220,0,0" Text="{Binding Path=LowTemperature, Converter={StaticResource IntConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.751"/>
         <TextBlock x:Name="dayTextBlock" HorizontalAlignment="Left" Margin="80,126,0,0" Text="Date" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-0.914,41.337"/>
@@ -39,11 +33,6 @@
         <TextBlock x:Name="lowTempTextBlock" HorizontalAlignment="Left" Margin="80,226,0,0" Text="Low Temp" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="precipitationTextBlock" HorizontalAlignment="Left" Margin="80,276,0,0" Text="Precipitation" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.354,0.767"/>
         <TextBox x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=Precipitation, Converter={StaticResource DoubleConverter}, Mode=TwoWay}" VerticalAlignment="Top"/>
-        <RadioButton x:Name="radioButton5" Content="5" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="640,871,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="radioButton10" Content="10" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="700,871,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="radioButton20" Content="20" GroupName="Histogram" Checked="histogramEventChangeHandler" HorizontalAlignment="Left" Margin="760,871,0,0" VerticalAlignment="Top"/>
-        <TextBlock x:Name="bucketSizeTextBlock" HorizontalAlignment="Left" Margin="640,846,0,0" Text="Histogram Bucket Size
-                   " TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="tempCheckerTextBlock" HorizontalAlignment="Left" Visibility="Collapsed"  Margin="990,305,0,0" Text="High Temperature must be higher than Low Temperature" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="80"/>
         <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=Date, Mode=TwoWay}"/>
         <ListView BorderBrush="Black" BorderThickness ="4" ItemsSource="{Binding Path=Days, Mode=TwoWay}" HorizontalAlignment="Left" 
@@ -63,14 +52,13 @@
             </ListView.ItemTemplate>
 
         </ListView>
-        <Button x:Name="summaryButton" Content="Summary" HorizontalAlignment="Left" Margin="691,365,0,0" VerticalAlignment="Top" Click="summaryButton_Click"/>
         <Button x:Name="addDayButton" Content="Add Day" Command="{Binding AddCommand}" HorizontalAlignment="Left" Margin="132,365,0,0" VerticalAlignment="Top"/>
         <Button x:Name="editButton" Content="Edit" Command="{Binding EditCommand}" HorizontalAlignment="Left" Margin="262,365,0,0" VerticalAlignment="Top" Width="77"/>
         <Button x:Name="removeButton" Content="Remove" Command="{Binding RemoveCommand}" HorizontalAlignment="Left" Margin="392,365,0,0" VerticalAlignment="Top" Width="77"/>
+        <Button x:Name="summaryButton" Content="Summary" Command="{Binding SummaryCommand}" HorizontalAlignment="Left" Margin="691,365,0,0" VerticalAlignment="Top" Click="summaryButton_Click"/>
         <Button x:Name="clearDataButton" Content="Clear Data" Command="{Binding ClearDataCommand}"  HorizontalAlignment="Left" Margin="821,365,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.449,0.485"/>
         <Border BorderBrush="Black" BorderThickness="4" HorizontalAlignment="Left" Height="280" Margin="60,80,0,0" VerticalAlignment="Top" Width="480"/>
-        <TextBox x:Name="summaryTextBox" HorizontalAlignment="Left" Margin="177,576,0,0" Text="Summary" VerticalAlignment="Top" Height="254" Width="243" RenderTransformOrigin="0.913,0.214"/>
-
+       
 
     </Grid>
 
