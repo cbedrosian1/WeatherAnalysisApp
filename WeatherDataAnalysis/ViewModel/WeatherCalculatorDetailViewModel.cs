@@ -64,6 +64,7 @@ namespace WeatherDataAnalysis.ViewModel
                 this.highTemperature = value;
                 this.OnPropertyChanged();
                 this.AddCommand.OnCanExecuteChanged();
+                this.EditCommand.OnCanExecuteChanged();
             }
         }
 
@@ -75,6 +76,7 @@ namespace WeatherDataAnalysis.ViewModel
                 this.lowTemperature = value;
                 this.OnPropertyChanged();
                 this.AddCommand.OnCanExecuteChanged();
+                this.EditCommand.OnCanExecuteChanged();
             }
         }
 
@@ -86,6 +88,7 @@ namespace WeatherDataAnalysis.ViewModel
                 this.precipitation = value;
                 this.OnPropertyChanged();
                 this.AddCommand.OnCanExecuteChanged();
+                this.EditCommand.OnCanExecuteChanged();
             }
         }
 
@@ -103,6 +106,7 @@ namespace WeatherDataAnalysis.ViewModel
                 this.LowTemperature = this.selectedDay.LowTemperature;
                 this.Precipitation = this.selectedDay.Precipitation;
                 
+
             }
         }
 
@@ -144,7 +148,7 @@ namespace WeatherDataAnalysis.ViewModel
 
         private bool CanEditDay(object obj)
         {
-            return this.SelectedDay != null;
+            return this.HighTemperature > this.LowTemperature && this.SelectedDay != null;
         }
 
         private void EditDay(object obj)
