@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -147,9 +148,20 @@ namespace WeatherDataAnalysis
             
         }
 
-        private void saveFile_Click(object sender, RoutedEventArgs e)
+        private async void saveFile_Click(object sender, RoutedEventArgs e)
         {
-            this.viewModel.SaveFile();
+            var savePicker = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+            };
+            savePicker.FileTypeChoices.Add("CSV", new List<string> { ".csv" });
+            savePicker.FileTypeChoices.Add("XML", new List<string> { ".xml" });
+            savePicker.SuggestedFileName = "New Document";
+            var file = await savePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+                this.viewModel.SaveFile(file);
+            }
         }
 
         #endregion

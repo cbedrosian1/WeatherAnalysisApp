@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Windows.Storage;
-using Windows.Storage.Pickers;
 using WeatherDataAnalysis.Model;
 
 namespace WeatherDataAnalysis.DataTier
@@ -23,30 +22,23 @@ namespace WeatherDataAnalysis.DataTier
         ///     Precondition: daySummaries != null
         /// </summary>
         /// <param name="daySummaries">The data being saved</param>
-        public async void SaveFile(ICollection<DailyStats> daySummaries)
+        public async void SaveFile(ICollection<DailyStats> daySummaries, StorageFile file)
         {
-            if (daySummaries == null) throw new ArgumentNullException(nameof(daySummaries));
-            var savePicker = new FileSavePicker
+            if (daySummaries == null)
             {
-                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
-            };
-            savePicker.FileTypeChoices.Add("CSV", new List<string> {".csv"});
-            savePicker.FileTypeChoices.Add("XML", new List<string> {".xml"});
-            savePicker.SuggestedFileName = "New Document";
-            var file = await savePicker.PickSaveFileAsync();
-            if (file != null)
-            {
-                if (file.FileType == ".csv")
-                {
-                    CachedFileManager.DeferUpdates(file);
-                    await FileIO.WriteTextAsync(file, this.formatToCSV(daySummaries));
-                }
+                throw new ArgumentNullException(nameof(daySummaries));
+            }
 
-                if (file.FileType == ".xml")
-                {
-                    CachedFileManager.DeferUpdates(file);
-                    await this.formatToXML(daySummaries, file);
-                }
+            if (file.FileType == ".csv")
+            {
+                CachedFileManager.DeferUpdates(file);
+                await FileIO.WriteTextAsync(file, this.formatToCSV(daySummaries));
+            }
+
+            if (file.FileType == ".xml")
+            {
+                CachedFileManager.DeferUpdates(file);
+                await this.formatToXML(daySummaries, file);
             }
         }
 

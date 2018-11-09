@@ -353,10 +353,10 @@ namespace WeatherDataAnalysis.ViewModel
  
         }
 
-        public void SaveFile()
+        public void SaveFile(StorageFile file)
         {
             var fileSaver = new WeatherDataFileSaver();
-            fileSaver.SaveFile(this.weatherCalculator.Days);
+            fileSaver.SaveFile(this.weatherCalculator.Days, file);
         }
 
         public ICollection<IGrouping<int, DailyStats>> FindDuplicateDays()
