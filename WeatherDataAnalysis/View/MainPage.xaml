@@ -31,7 +31,7 @@
         </CommandBar>
         <TextBox extensions:TextBoxRegex.Regex="^(\-)?[0-9]{0,3}$" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=HighTemperature, Converter={StaticResource IntConverterForString}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
         <TextBox extensions:TextBoxRegex.Regex="^(\-)?[0-9]{0,3}$" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="177,220,0,0" Text="{Binding Path=LowTemperature, Converter={StaticResource IntConverterForString}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.751"/>
-        <TextBox extensions:TextBoxRegex.ValidationType="Decimal" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=Precipitation, Converter={StaticResource DoubleConverter}, Mode=TwoWay}" VerticalAlignment="Top"/>
+        <TextBox extensions:TextBoxRegex.Regex="^[0-9]{0,3}(\.[0-9]{0,2})?$" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=Precipitation, Converter={StaticResource DoubleConverter}, Mode=TwoWay}" VerticalAlignment="Top"/>
         <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=Date, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"/>
 
         <TextBlock x:Name="dayTextBlock" HorizontalAlignment="Left" Margin="80,126,0,0" Text="Date" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-0.914,41.337"/>
@@ -72,7 +72,6 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
         <Button x:Name="allYearsButton" Content="All years" HorizontalAlignment="Left" Margin="959,80,0,0" VerticalAlignment="Top" Click="allYearsButton_Click"/>
-        <TextBox HorizontalAlignment="Left" Margin="60,458,0,0" Text="{Binding Path=Report, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Height="238" Width="585" IsReadOnly="True"/>
 
 
     </Grid>

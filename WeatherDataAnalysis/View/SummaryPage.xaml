@@ -30,6 +30,6 @@
         <TextBlock x:Name="daysUnderTextBlock" HorizontalAlignment="Left" Margin="62,120,0,0" Text="Number of days under:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold" RenderTransformOrigin="0.484,0.54"/>
         <TextBlock x:Name="bucketSizeTextBlock" HorizontalAlignment="Left" Margin="60,180,0,0" Text="Histogram Bucket Size:   " TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>
         <TextBlock  HorizontalAlignment="Left" Margin="300,50,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="25" FontSize="25"/>
-        <TextBlock  HorizontalAlignment="Left" Margin="300,119,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="25" FontSize="25"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="300,110,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="25" FontSize="25"/>
     </Grid>
 </Page>

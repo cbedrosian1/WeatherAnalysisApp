@@ -9,8 +9,8 @@ namespace WeatherDataAnalysis.Utility
     /// <seealso cref="System.Windows.Input.ICommand" />
     public class RelayCommand : ICommand
     {
-        private Action<object> execute;
-        private Predicate<object> canExecute;
+        private readonly Action<object> execute;
+        private readonly Predicate<object> canExecute;
 
         /// <summary>
         /// Defines the method that determines whether the command can execute in its current state.
@@ -21,7 +21,7 @@ namespace WeatherDataAnalysis.Utility
         /// </returns>
         public bool CanExecute(object parameter)
         {
-            bool result = canExecute?.Invoke(parameter) ?? true;
+            var result = this.canExecute?.Invoke(parameter) ?? true;
             return result;
         }
 
@@ -31,9 +31,9 @@ namespace WeatherDataAnalysis.Utility
         /// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
         public void Execute(object parameter)
         {
-            if (CanExecute(parameter))
+            if (this.CanExecute(parameter))
             {
-                execute(parameter);
+                this.execute(parameter);
             }
         }
 
@@ -59,7 +59,7 @@ namespace WeatherDataAnalysis.Utility
         /// </summary>
         public virtual void OnCanExecuteChanged()
         {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
