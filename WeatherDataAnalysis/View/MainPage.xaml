@@ -14,6 +14,8 @@
     <Page.Resources>
         <converter:IntConverter x:Key="IntConverter"/>
         <converter:DoubleConverter x:Key="DoubleConverter"/>
+        <converter:DateTimeConverter x:Key="DateTimeConverter"/>
+        <converter:ShortStringDateTimeConverter x:Key="ShortStringDateTimeConverter"/>
     </Page.Resources>
     <Page.DataContext>
         <vm:WeatherCalculatorDetailViewModel/>
@@ -34,7 +36,7 @@
         <TextBlock x:Name="precipitationTextBlock" HorizontalAlignment="Left" Margin="80,276,0,0" Text="Precipitation" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.354,0.767"/>
         <TextBox x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=Precipitation, Converter={StaticResource DoubleConverter}, Mode=TwoWay}" VerticalAlignment="Top"/>
         <TextBlock x:Name="tempCheckerTextBlock" HorizontalAlignment="Left" Visibility="Collapsed"  Margin="990,305,0,0" Text="High Temperature must be higher than Low Temperature" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="80"/>
-        <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=Date, Mode=TwoWay}"/>
+        <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=Date, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"/>
         <ListView BorderBrush="Black" BorderThickness ="4" ItemsSource="{Binding Path=Days, Mode=TwoWay}" HorizontalAlignment="Left" 
                   SelectedItem="{Binding Path=SelectedDay, Mode=TwoWay}" Height="280" Margin="560,80,0,0" VerticalAlignment="Top" Width="480">
             <ListView.ItemTemplate>
@@ -45,7 +47,7 @@
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0" Text="{Binding Date}" />
+                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0" Text="{Binding Date, Converter={StaticResource ShortStringDateTimeConverter} }" />
                         </Grid>
                     </Border>
                 </DataTemplate>

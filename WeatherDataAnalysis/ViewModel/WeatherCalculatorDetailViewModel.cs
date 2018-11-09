@@ -24,7 +24,7 @@ namespace WeatherDataAnalysis.ViewModel
 
         private WeatherCalculator weatherCalculator;
 
-        private DateTimeOffset date;
+        private DateTime date;
 
         private int highTemperature;
 
@@ -45,7 +45,27 @@ namespace WeatherDataAnalysis.ViewModel
 
         #region Properties
 
-        
+
+
+
+
+        private string dateForDisplay;
+
+        public string DateForDisplay
+        {
+            get => this.dateForDisplay;
+            set
+            {
+                this.dateForDisplay = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+
+
+
+
+
 
         public string Report
         {
@@ -106,7 +126,7 @@ namespace WeatherDataAnalysis.ViewModel
         /// <value>
         ///     The date.
         /// </value>
-        public DateTimeOffset Date
+        public DateTime Date
         {
             get => this.date;
             set
@@ -187,7 +207,7 @@ namespace WeatherDataAnalysis.ViewModel
                 this.OnPropertyChanged();
                 this.RemoveCommand.OnCanExecuteChanged();
                 this.EditCommand.OnCanExecuteChanged();
-                this.Date = this.selectedDay.DateTimeOffset;
+                this.Date = this.selectedDay.Date;
                 this.HighTemperature = this.selectedDay.HighTemperature;
                 this.LowTemperature = this.selectedDay.LowTemperature;
                 this.Precipitation = this.selectedDay.Precipitation;
@@ -223,12 +243,11 @@ namespace WeatherDataAnalysis.ViewModel
         /// </summary>
         public WeatherCalculatorDetailViewModel()
         {
-            this.date = DateTimeOffset.Now;
-           // this.SelectedDay.DateTimeOffset = DateTimeOffset.Now;
+            this.date = DateTime.Now;
             this.parser = new WeatherDataParser();
             this.weatherCalculator = new WeatherCalculator(new List<DailyStats>());
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
-            this.intializeCommands();
+            this.initializeCommands();
         }
 
         #endregion
@@ -241,7 +260,7 @@ namespace WeatherDataAnalysis.ViewModel
         /// <returns> the event</returns>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void intializeCommands()
+        private void initializeCommands()
         {
             this.RemoveCommand = new RelayCommand(this.deleteDay, this.canDeleteDay);
             this.AddCommand = new RelayCommand(this.addDay, this.canAddDay);
@@ -293,12 +312,12 @@ namespace WeatherDataAnalysis.ViewModel
 
         private bool canAddDay(object obj)
         {
-            return this.HighTemperature > this.LowTemperature;
+            return this.HighTemperature > this.LowTemperature && this.weatherCalculator.FindDayWithDate(this.Date) == null;
         }
 
         private void addDay(object obj)
         {
-            var dayToAdd = new DailyStats(this.Date.DateTime, this.HighTemperature, this.LowTemperature,
+            var dayToAdd = new DailyStats(this.Date, this.HighTemperature, this.LowTemperature,
                 this.Precipitation);
             this.weatherCalculator.Add(dayToAdd);
             this.weatherCalculator.Days = this.weatherCalculator.Days.OrderBy(day => day.Date).ToList();
@@ -332,6 +351,12 @@ namespace WeatherDataAnalysis.ViewModel
             this.weatherCalculator =  new WeatherCalculator(this.weatherCalculator, await this.parser.LoadFile(file));
             this.UpdateDays();
  
+        }
+
+        public void SaveFile()
+        {
+            var fileSaver = new WeatherDataFileSaver();
+            fileSaver.SaveFile(this.weatherCalculator.Days);
         }
 
         public ICollection<IGrouping<int, DailyStats>> FindDuplicateDays()

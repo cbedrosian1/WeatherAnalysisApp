@@ -97,8 +97,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\DateTimeConverter.cs" />
     <Compile Include="Converter\DoubleConverter.cs" />
     <Compile Include="Converter\IntConverter.cs" />
+    <Compile Include="Converter\ShortStringDateTimeConverter.cs" />
     <Compile Include="DataTier\WeatherDataFileSaver.cs" />
     <Compile Include="DataTier\WeatherDataParser.cs" />
     <Compile Include="Extension\ListExtensions.cs" />

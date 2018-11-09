@@ -147,16 +147,9 @@ namespace WeatherDataAnalysis
             
         }
 
-
-
-
-
-  
-   
-
         private void saveFile_Click(object sender, RoutedEventArgs e)
         {
-            this.controller.SaveFile();
+            this.viewModel.SaveFile();
         }
 
         #endregion
@@ -164,8 +157,6 @@ namespace WeatherDataAnalysis
 
         private void summaryButton_Click(object sender, RoutedEventArgs e)
         {
-            //  var summaryWindow = new SummaryPage();
-            //  summaryWindow.InitializeComponent();
             this.Frame.Navigate(typeof(SummaryPage), this.viewModel);
         }
 
@@ -174,5 +165,7 @@ namespace WeatherDataAnalysis
             var dialog = new SummaryDialog();
             await dialog.ShowAsync();
         }
+
+  
     }
 }

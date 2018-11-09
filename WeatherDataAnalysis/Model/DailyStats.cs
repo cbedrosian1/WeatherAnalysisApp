@@ -26,7 +26,7 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         /// The date time offset.
         /// </value>
-        public DateTimeOffset DateTimeOffset => this.Date;
+     //   public DateTimeOffset DateTimeOffset => this.Date;
 
         /// <summary>
         ///     Gets the low temperature.
