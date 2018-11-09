@@ -40,7 +40,7 @@ namespace WeatherDataAnalysis.View
         {
             base.OnNavigatedTo(e);
             var param = (MainPage) e.Parameter;
-            this.DataContext = param.viewModel;
+            this.DataContext = param.ViewModel;
         }
     }
 }

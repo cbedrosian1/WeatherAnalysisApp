@@ -4,13 +4,15 @@ using Windows.UI.Xaml.Data;
 namespace WeatherDataAnalysis.Converter
 {
     /// <summary>
-    /// Converts integers to strings and back
+    ///     Converts integers to datetime and back
     /// </summary>
     /// <seealso cref="Windows.UI.Xaml.Data.IValueConverter" />
-    public class IntConverter : IValueConverter
+    public class IntConverterForDateTime : IValueConverter
     {
+        #region Methods
+
         /// <summary>
-        /// Converts the specified value.
+        ///     Converts the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="targetType">Type of the target.</param>
@@ -24,7 +26,7 @@ namespace WeatherDataAnalysis.Converter
         }
 
         /// <summary>
-        /// Converts the back.
+        ///     Converts the back.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="targetType">Type of the target.</param>
@@ -33,25 +35,17 @@ namespace WeatherDataAnalysis.Converter
         /// <returns></returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            var tempString = "";
-            var valueToReturn = 0;
             var tempDate = DateTime.Now;
-            try
+            if (value != null)
             {
-                tempString = (string) value;
+                tempDate = (DateTime) value;
+            }
+             
+            var valueToReturn = tempDate.Year;
 
-                 if (!string.IsNullOrEmpty(tempString))
-                {
-                valueToReturn = int.Parse(tempString);
-                }
-            }
-            catch (Exception)
-            {
-                tempDate = (DateTime)value;
-                valueToReturn = tempDate.Year;
-            }
-            
             return valueToReturn;
         }
+
+        #endregion
     }
 }

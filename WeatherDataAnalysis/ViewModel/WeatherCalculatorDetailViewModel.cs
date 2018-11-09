@@ -57,6 +57,17 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.highTempThreshold = value;
                 this.OnPropertyChanged();
+                try
+                {
+                    this.weatherCalculator.HighTemperatureThreshold = this.HighTempThreshold;
+                    this.buildReport();
+                }
+                catch (Exception)
+                {
+
+                }
+                
+                
             }
         }
 
@@ -69,8 +80,15 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.lowTempThreshold = value;
                 this.OnPropertyChanged();
+                if (this.weatherCalculator != null)
+                {
+                    this.weatherCalculator.LowTemperatureThreshold = this.LowTempThreshold;
+                    this.buildReport();
+                }
+                
             }
         }
+
 
 
 
@@ -306,6 +324,8 @@ namespace WeatherDataAnalysis.ViewModel
 
         #region Methods
 
+      
+
         /// <summary>
         ///     Occurs when a property value changes.
         /// </summary>
@@ -328,9 +348,21 @@ namespace WeatherDataAnalysis.ViewModel
 
         private void createSummary(object obj)
         {
-            this.weatherCalculator.HighTemperatureThreshold = 20;
-            this.weatherCalculator.LowTemperatureThreshold = 20;
+            this.refreshThreshold();
+            this.buildReport();
+        }
+
+        private void refreshThreshold()
+        {
+            this.weatherCalculator.HighTemperatureThreshold = 90;
+            this.weatherCalculator.LowTemperatureThreshold = 32;
             this.weatherCalculator.HistogramBucketSize = 5;
+            this.HighTempThreshold = 90;
+            this.LowTempThreshold = 32;
+        }
+
+        private void buildReport()
+        {
             var reportBuilder = new ReportBuilder(this.weatherCalculator);
             reportBuilder.CompileReport();
             this.Report = reportBuilder.Report;

@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Navigation;
-using WeatherDataAnalysis.Controllers;
 using WeatherDataAnalysis.View;
 using WeatherDataAnalysis.ViewModel;
 
@@ -40,12 +35,7 @@ namespace WeatherDataAnalysis
 
         private StorageFile file;
 
-        private readonly WeatherDataController controller;
-
-        public readonly WeatherCalculatorDetailViewModel viewModel;
-
-        private const string HighThresholdDefault = "90";
-        private const string LowThresholdDefault = "32";
+        public readonly WeatherCalculatorDetailViewModel ViewModel;
 
         private DuplicateDayResult duplicateBehavior;
 
@@ -63,8 +53,8 @@ namespace WeatherDataAnalysis
             ApplicationView.PreferredLaunchViewSize = new Size {Width = ApplicationWidth, Height = ApplicationHeight};
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
-            this.viewModel = new WeatherCalculatorDetailViewModel();
-            this.DataContext = this.viewModel;
+            this.ViewModel = new WeatherCalculatorDetailViewModel();
+            this.DataContext = this.ViewModel;
 
         }
     
@@ -84,13 +74,13 @@ namespace WeatherDataAnalysis
             this.file = await openPicker.PickSingleFileAsync();
             if (this.file != null)
             {
-                if (this.viewModel.Days.Count > 0)
+                if (this.ViewModel.Days.Count > 0)
                 {
                     await this.handleDataExists();
                 }
                 else
                 {
-                    this.viewModel.ReadFile(this.file);
+                    this.ViewModel.ReadFile(this.file);
                 }    
                 
                 this.duplicateBehavior = null;
@@ -104,21 +94,21 @@ namespace WeatherDataAnalysis
             var mergeOrReplace = dialog.Result;
             if (mergeOrReplace == MergeOrReplaceResult.Merge)
             {
-                await this.viewModel.ReadNewFile(this.file);
+                await this.ViewModel.ReadNewFile(this.file);
                 await this.handleDuplicateDays();
-                this.viewModel.UpdateDays();
+                this.ViewModel.UpdateDays();
             }
             else
             {
-                this.viewModel.ReadFile(this.file);
+                this.ViewModel.ReadFile(this.file);
             }
         }
 
         private async Task handleDuplicateDays()
         {
-            while (this.viewModel.FindDuplicateDays().Count > 0)
+            while (this.ViewModel.FindDuplicateDays().Count > 0)
             {
-                var days = this.viewModel.FindNextConflictingDays();
+                var days = this.ViewModel.FindNextConflictingDays();
                 KeepOrReplace action;
                 if (this.duplicateBehavior == null)
                 {
@@ -138,12 +128,12 @@ namespace WeatherDataAnalysis
 
                 if (action == KeepOrReplace.Replace)
                 {
-                    this.viewModel.Merge(true);
+                    this.ViewModel.Merge(true);
                 }
                 else if(action == KeepOrReplace.Keep)
                 {
 
-                    this.viewModel.Merge(false);
+                    this.ViewModel.Merge(false);
                 } 
             }
             
@@ -161,7 +151,7 @@ namespace WeatherDataAnalysis
             var file = await savePicker.PickSaveFileAsync();
             if (file != null)
             {
-                this.viewModel.SaveFile(file);
+                this.ViewModel.SaveFile(file);
             }
         }
 
@@ -176,7 +166,7 @@ namespace WeatherDataAnalysis
         private void allYearsButton_Click(object sender, RoutedEventArgs e)
         {
             this.yearsDropDownBox.SelectedItem = null;
-            this.viewModel.SelectedYear = 1;
+            this.ViewModel.SelectedYear = 1;
         }
     }
 }
