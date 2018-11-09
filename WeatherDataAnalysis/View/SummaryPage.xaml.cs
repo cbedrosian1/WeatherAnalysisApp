@@ -12,6 +12,7 @@ namespace WeatherDataAnalysis.View
     /// </summary>
     public sealed partial class SummaryPage : Page
     {
+        private MainPage param;
         #region Constructors
 
         /// <summary>
@@ -42,10 +43,14 @@ namespace WeatherDataAnalysis.View
         {
             base.OnNavigatedTo(e);
             var param = (MainPage) e.Parameter;
+            this.param = param;
             this.DataContext = param.ViewModel;
             this.radioButton10.IsChecked = true;
+
         }
 
         #endregion
+
+      
     }
 }

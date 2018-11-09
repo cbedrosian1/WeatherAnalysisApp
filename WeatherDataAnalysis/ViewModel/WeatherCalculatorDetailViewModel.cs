@@ -52,16 +52,13 @@ namespace WeatherDataAnalysis.ViewModel
 
         private int bucketSize;
 
+
+        private ReportBuilder reportBuilder;
+
         #endregion
 
         #region Properties
 
-        /// <summary>
-        /// Gets or sets the size of the bucket.
-        /// </summary>
-        /// <value>
-        /// The size of the bucket.
-        /// </value>
         public int BucketSize
         {
             get => this.bucketSize;
@@ -363,6 +360,7 @@ namespace WeatherDataAnalysis.ViewModel
             this.date = DateTime.Now;
             this.parser = new WeatherDataParser();
             this.weatherCalculator = new WeatherCalculator(new List<DailyStats>());
+            this.reportBuilder = new ReportBuilder(this.weatherCalculator);
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
             this.selectedDays = this.Days.Where(day => day.Date.Year == this.SelectedYear).ToObservableCollection();
             this.initializeCommands();
@@ -409,9 +407,9 @@ namespace WeatherDataAnalysis.ViewModel
 
         private void buildReport()
         {
-            var reportBuilder = new ReportBuilder(this.weatherCalculator);
-            reportBuilder.CompileReport();
-            this.Report = reportBuilder.Report;
+            this.reportBuilder = new ReportBuilder(this.weatherCalculator);
+            this.reportBuilder.CompileReport();
+            this.Report = this.reportBuilder.Report;
         }
 
         private bool canClearData(object obj)
@@ -468,11 +466,17 @@ namespace WeatherDataAnalysis.ViewModel
             this.UpdateDays();
         }
 
+        public string FindLinesWithErrors()
+        {
+  
+            return this.parser.LinesWithErrors;
+
+        }
         /// <summary>
         ///     Reads the file.
         /// </summary>
         /// <param name="file">The file to be read.</param>
-        public async void ReadFile(StorageFile file)
+        public async Task ReadFile(StorageFile file)
         {
             this.weatherCalculator = new WeatherCalculator(await this.parser.LoadFile(file));
             this.UpdateDays();
@@ -532,9 +536,14 @@ namespace WeatherDataAnalysis.ViewModel
         /// Calls the WeatherCalculator merge method
         /// </summary>
         /// <param name="action">if set to <c>true</c> [action].</param>
-        public void Merge(bool action)
+        public void ReplaceOriginalDaysWithDuplicateDays()
         {
-            this.weatherCalculator.Merge(action);
+            this.weatherCalculator.ReplaceOriginalDaysWithDuplicateDays(this.weatherCalculator.ConflictingDays.First());
+        }
+
+        public void KeepOriginalDays()
+        {
+            this.weatherCalculator.KeepOriginalDays(this.weatherCalculator.ConflictingDays.First());
         }
 
         /// <summary>

@@ -323,12 +323,10 @@ namespace WeatherDataAnalysis.Model
         ///     Merges the files based on the KeepOrReplace enum.
         /// </summary>
         /// <param name="action">The KeepOrReplace enum being chosen.</param>
-        public void Merge(bool action)
+        public void ReplaceOriginalDaysWithDuplicateDays(IGrouping<int, DailyStats> conflictingDays)
         {
-            var conDays = this.ConflictingDays.First();
-            if (action)
-            {
-                foreach (var currentDay in conDays)
+       
+                foreach (var currentDay in conflictingDays)
                 {
                     if (!this.Days.Contains(currentDay))
                     {
@@ -339,9 +337,13 @@ namespace WeatherDataAnalysis.Model
                         this.Days.Remove(currentDay);
                     }
                 }
-            }
 
-            this.ConflictingDays.Remove(conDays);
+            this.ConflictingDays.Remove(conflictingDays);
+        }
+
+        public void KeepOriginalDays(IGrouping<int, DailyStats> conflictingDays)
+        {
+            this.ConflictingDays.Remove(conflictingDays);
         }
 
         /// <summary>
