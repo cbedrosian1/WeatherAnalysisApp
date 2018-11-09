@@ -346,6 +346,11 @@ namespace WeatherDataAnalysis.ViewModel
 
         }
 
+        /// <summary>
+        /// Reads the new file.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <returns></returns>
         public async Task ReadNewFile(StorageFile file)
         {
             this.weatherCalculator =  new WeatherCalculator(this.weatherCalculator, await this.parser.LoadFile(file));
@@ -353,28 +358,46 @@ namespace WeatherDataAnalysis.ViewModel
  
         }
 
+        /// <summary>
+        /// Saves the file.
+        /// </summary>
         public void SaveFile()
         {
             var fileSaver = new WeatherDataFileSaver();
             fileSaver.SaveFile(this.weatherCalculator.Days);
         }
 
+        /// <summary>
+        /// Finds the duplicate days.
+        /// </summary>
+        /// <returns></returns>
         public ICollection<IGrouping<int, DailyStats>> FindDuplicateDays()
         {
             return this.weatherCalculator.ConflictingDays;
         }
 
+        /// <summary>
+        /// Updates the days.
+        /// </summary>
         public void UpdateDays()
         {
             this.weatherCalculator.Days = this.weatherCalculator.Days.OrderBy(day => day.Date).ToList();
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
         }
 
+        /// <summary>
+        /// Finds the next conflicting days.
+        /// </summary>
+        /// <returns></returns>
         public ICollection<DailyStats> FindNextConflictingDays()
         {
             return this.weatherCalculator.FindNextConflictingDays();
         }
 
+        /// <summary>
+        /// Merges the specified action.
+        /// </summary>
+        /// <param name="action">if set to <c>true</c> [action].</param>
         public void Merge(bool action)
         {
             this.weatherCalculator.Merge(action);
