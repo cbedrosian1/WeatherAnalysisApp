@@ -9,8 +9,8 @@ namespace WeatherDataAnalysis.Utility
     /// <seealso cref="System.Windows.Input.ICommand" />
     public class RelayCommand : ICommand
     {
-        private Action<object> execute;
-        private Predicate<object> canExecute;
+        private readonly Action<object> execute;
+        private readonly Predicate<object> canExecute;
 
         /// <summary>
         /// Defines the method that determines whether the command can execute in its current state.
