@@ -7,6 +7,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using WeatherDataAnalysis.View;
 using WeatherDataAnalysis.ViewModel;
 
@@ -39,6 +40,7 @@ namespace WeatherDataAnalysis
 
         private DuplicateDayResult duplicateBehavior;
         private StorageFile file;
+        private const int DefaultYear = 1;
 
         #endregion
 
@@ -79,10 +81,26 @@ namespace WeatherDataAnalysis
                 }
                 else
                 {
-                    this.ViewModel.ReadFile(this.file);
+                   await this.ViewModel.ReadFile(this.file);
                 }
 
                 this.duplicateBehavior = null;
+
+                await this.displayLinesWithErrors();
+            }
+        }
+
+        private async Task displayLinesWithErrors()
+        {
+            if (!string.IsNullOrEmpty(this.ViewModel.FindLinesWithErrors()))
+            {
+                var dialogForLinesWithError = new ContentDialog {
+                    Title = "These lines had errors",
+                    Content = this.ViewModel.FindLinesWithErrors(),
+                    CloseButtonText = "Close",
+                    IsSecondaryButtonEnabled = false
+                };
+                await dialogForLinesWithError.ShowAsync();
             }
         }
 
@@ -94,16 +112,16 @@ namespace WeatherDataAnalysis
             if (mergeOrReplace == MergeOrReplaceResult.Merge)
             {
                 await this.ViewModel.ReadNewFile(this.file);
-                await this.handleDuplicateDays();
+                await this.displayDuplicateDayDialog();
                 this.ViewModel.UpdateDays();
             }
             else
             {
-                this.ViewModel.ReadFile(this.file);
+                await this.ViewModel.ReadFile(this.file);
             }
         }
 
-        private async Task handleDuplicateDays()
+        private async Task displayDuplicateDayDialog()
         {
             while (this.ViewModel.FindDuplicateDays().Count > 0)
             {
@@ -125,14 +143,19 @@ namespace WeatherDataAnalysis
                     action = this.duplicateBehavior.KeepOrReplace;
                 }
 
-                if (action == KeepOrReplace.Replace)
-                {
-                    this.ViewModel.Merge(true);
-                }
-                else if (action == KeepOrReplace.Keep)
-                {
-                    this.ViewModel.Merge(false);
-                }
+                this.handleDuplicateDays(action);
+            }
+        }
+
+        private void handleDuplicateDays(KeepOrReplace action)
+        {
+            if (action == KeepOrReplace.Replace)
+            {
+                this.ViewModel.ReplaceOriginalDaysWithDuplicateDays();
+            }
+            else if (action == KeepOrReplace.Keep)
+            {
+                this.ViewModel.KeepOriginalDays();
             }
         }
 
@@ -159,7 +182,7 @@ namespace WeatherDataAnalysis
         private void allYearsButton_Click(object sender, RoutedEventArgs e)
         {
             this.yearsDropDownBox.SelectedItem = null;
-            this.ViewModel.SelectedYear = 1;
+            this.ViewModel.SelectedYear = DefaultYear;
         }
 
         #endregion
