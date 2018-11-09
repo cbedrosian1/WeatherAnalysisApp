@@ -234,7 +234,7 @@ namespace WeatherDataAnalysis.Controllers
         public void SaveFile()
         {
             var fileSaver = new WeatherDataFileSaver();
-            fileSaver.SaveFile(this.weatherData.Days);
+          //  fileSaver.SaveFile(this.weatherData.Days);
         }
 
         /// <summary>
