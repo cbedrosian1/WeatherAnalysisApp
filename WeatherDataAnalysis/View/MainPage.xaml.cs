@@ -16,10 +16,8 @@ namespace WeatherDataAnalysis
 {
     /// <summary>
     ///     An empty page that can be used on its own or navigated to within a Frame.
-    ///
-    /// 
     /// </summary>
-    public sealed partial class MainPage 
+    public sealed partial class MainPage
     {
         #region Data members
 
@@ -33,15 +31,16 @@ namespace WeatherDataAnalysis
         /// </summary>
         public const int ApplicationWidth = 1100;
 
-        private StorageFile file;
-
+        /// <summary>
+        ///     The view model
+        /// </summary>
         public readonly WeatherCalculatorDetailViewModel ViewModel;
 
         private DuplicateDayResult duplicateBehavior;
+        private StorageFile file;
 
         #endregion
 
- 
         #region Constructors
 
         /// <summary>
@@ -54,10 +53,9 @@ namespace WeatherDataAnalysis
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
             this.ViewModel = new WeatherCalculatorDetailViewModel();
-            this.DataContext = this.ViewModel;
-
+            DataContext = this.ViewModel;
         }
-    
+
         #endregion
 
         #region Methods
@@ -81,8 +79,8 @@ namespace WeatherDataAnalysis
                 else
                 {
                     this.ViewModel.ReadFile(this.file);
-                }    
-                
+                }
+
                 this.duplicateBehavior = null;
             }
         }
@@ -130,23 +128,20 @@ namespace WeatherDataAnalysis
                 {
                     this.ViewModel.Merge(true);
                 }
-                else if(action == KeepOrReplace.Keep)
+                else if (action == KeepOrReplace.Keep)
                 {
-
                     this.ViewModel.Merge(false);
-                } 
+                }
             }
-            
         }
 
         private async void saveFile_Click(object sender, RoutedEventArgs e)
         {
-            var savePicker = new FileSavePicker
-            {
+            var savePicker = new FileSavePicker {
                 SuggestedStartLocation = PickerLocationId.DocumentsLibrary
             };
-            savePicker.FileTypeChoices.Add("CSV", new List<string> { ".csv" });
-            savePicker.FileTypeChoices.Add("XML", new List<string> { ".xml" });
+            savePicker.FileTypeChoices.Add("CSV", new List<string> {".csv"});
+            savePicker.FileTypeChoices.Add("XML", new List<string> {".xml"});
             savePicker.SuggestedFileName = "New Document";
             var file = await savePicker.PickSaveFileAsync();
             if (file != null)
@@ -155,12 +150,9 @@ namespace WeatherDataAnalysis
             }
         }
 
-        #endregion
-
-
         private void summaryButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(SummaryPage), this);
+            Frame.Navigate(typeof(SummaryPage), this);
         }
 
         private void allYearsButton_Click(object sender, RoutedEventArgs e)
@@ -168,5 +160,7 @@ namespace WeatherDataAnalysis
             this.yearsDropDownBox.SelectedItem = null;
             this.ViewModel.SelectedYear = 1;
         }
+
+        #endregion
     }
 }

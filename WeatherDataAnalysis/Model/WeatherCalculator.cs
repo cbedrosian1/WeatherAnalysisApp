@@ -17,6 +17,12 @@ namespace WeatherDataAnalysis.Model
         private const int YearPadding = 1000;
         private const int SizeFinder = 1;
 
+        /// <summary>
+        /// Gets or sets the conflicting days.
+        /// </summary>
+        /// <value>
+        /// The conflicting days.
+        /// </value>
         public ICollection<IGrouping<int, DailyStats>> ConflictingDays { get; set; }
 
         #endregion
@@ -31,6 +37,14 @@ namespace WeatherDataAnalysis.Model
         /// </value>
         public IList<DailyStats> Days { get; set; }
 
+        /// <summary>
+        /// Gets or sets the <see cref="DailyStats"/> with the specified i.
+        /// </summary>
+        /// <value>
+        /// The <see cref="DailyStats"/>.
+        /// </value>
+        /// <param name="i">The index.</param>
+        /// <returns></returns>
         public DailyStats this[int i]
         {
             get => this.Days[i];
@@ -135,6 +149,11 @@ namespace WeatherDataAnalysis.Model
 
         #region Methods
 
+        /// <summary>
+        /// Finds the day with date.
+        /// </summary>
+        /// <param name="date">The date.</param>
+        /// <returns></returns>
         public DailyStats FindDayWithDate(DateTime date)
         {
             try
@@ -393,36 +412,74 @@ namespace WeatherDataAnalysis.Model
                 .ToList();
         }
 
+        /// <summary>
+        /// Adds the specified day.
+        /// </summary>
+        /// <param name="day">The day.</param>
         public void Add(DailyStats day)
         {
             this.Days.Add(day);
         }
 
+        /// <summary>
+        /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.
+        /// </summary>
         public void Clear()
         {
             this.Days.Clear();
         }
 
+        /// <summary>
+        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"></see> contains a specific value.
+        /// </summary>
+        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
+        /// <returns>
+        /// true if item is found in the <see cref="T:System.Collections.Generic.ICollection`1"></see>; otherwise, false.
+        /// </returns>
         public bool Contains(DailyStats item)
         {
             return this.Days.Contains(item);
         }
 
+        /// <summary>
+        /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"></see> to an <see cref="T:System.Array"></see>, starting at a particular <see cref="T:System.Array"></see> index.
+        /// </summary>
+        /// <param name="array">The one-dimensional <see cref="T:System.Array"></see> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"></see>. The <see cref="T:System.Array"></see> must have zero-based indexing.</param>
+        /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
         public void CopyTo(DailyStats[] array, int arrayIndex)
         {
             this.Days.CopyTo(array, arrayIndex);
         }
 
+        /// <summary>
+        /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.
+        /// </summary>
+        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
+        /// <returns>
+        /// true if item was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"></see>; otherwise, false. This method also returns false if item is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"></see>.
+        /// </returns>
         public bool Remove(DailyStats item)
         {
             return this.Days.Remove(item);
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that can be used to iterate through the collection.
+        /// </returns>
         public IEnumerator<DailyStats> GetEnumerator()
         {
             return this.Days.GetEnumerator();
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"></see> object that can be used to iterate through the collection.
+        /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.Days.GetEnumerator();

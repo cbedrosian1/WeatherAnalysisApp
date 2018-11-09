@@ -8,6 +8,10 @@ using Microsoft.Toolkit.Extensions;
 
 namespace WeatherDataAnalysis.Converter
 {
+    /// <summary>
+    /// Converts DateTimeOffset to DateTime object and back
+    /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.Data.IValueConverter" />
     public class DateTimeConverter : IValueConverter
     {
         /// <summary>

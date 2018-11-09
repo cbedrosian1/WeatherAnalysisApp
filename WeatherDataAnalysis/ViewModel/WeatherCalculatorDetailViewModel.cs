@@ -44,12 +44,22 @@ namespace WeatherDataAnalysis.ViewModel
 
         private ObservableCollection<DateTime> years;
 
+        private int highTempThreshold;
+
+        private int lowTempThreshold;
+
+        private ObservableCollection<DailyStats> selectedDays;
+
         #endregion
 
         #region Properties
 
-        private int highTempThreshold;
-
+        /// <summary>
+        ///     Gets or sets the high temperature threshold.
+        /// </summary>
+        /// <value>
+        ///     The high temperature threshold.
+        /// </value>
         public int HighTempThreshold
         {
             get => this.highTempThreshold;
@@ -64,15 +74,17 @@ namespace WeatherDataAnalysis.ViewModel
                 }
                 catch (Exception)
                 {
-
+                    //TODO
                 }
-                
-                
             }
         }
 
-        private int lowTempThreshold;
-
+        /// <summary>
+        ///     Gets or sets the low temperature threshold.
+        /// </summary>
+        /// <value>
+        ///     The low temperature threshold.
+        /// </value>
         public int LowTempThreshold
         {
             get => this.lowTempThreshold;
@@ -85,17 +97,15 @@ namespace WeatherDataAnalysis.ViewModel
                     this.weatherCalculator.LowTemperatureThreshold = this.LowTempThreshold;
                     this.buildReport();
                 }
-                
             }
         }
 
-
-
-
-        public bool AllYears { get; set; }
-
-        private ObservableCollection<DailyStats> selectedDays;
-
+        /// <summary>
+        ///     Gets or sets the selected days.
+        /// </summary>
+        /// <value>
+        ///     The selected days.
+        /// </value>
         public ObservableCollection<DailyStats> SelectedDays
         {
             get => this.selectedDays;
@@ -108,7 +118,12 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
-
+        /// <summary>
+        ///     Gets or sets the selected year.
+        /// </summary>
+        /// <value>
+        ///     The selected year.
+        /// </value>
         public int SelectedYear
         {
             get => this.selectedYear;
@@ -118,17 +133,22 @@ namespace WeatherDataAnalysis.ViewModel
                 this.OnPropertyChanged();
                 if (this.SelectedYear == 1)
                 {
-                     this.SelectedDays = this.Days;
+                    this.SelectedDays = this.Days;
                 }
                 else
                 {
-                   
-                    this.SelectedDays = this.Days.Where(day => day.Date.Year == this.SelectedYear).ToObservableCollection();
+                    this.SelectedDays = this.Days.Where(day => day.Date.Year == this.SelectedYear)
+                                            .ToObservableCollection();
                 }
-
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the years.
+        /// </summary>
+        /// <value>
+        ///     The years.
+        /// </value>
         public ObservableCollection<DateTime> Years
         {
             get => this.years;
@@ -139,6 +159,12 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the report.
+        /// </summary>
+        /// <value>
+        ///     The report.
+        /// </value>
         public string Report
         {
             get => this.report;
@@ -324,8 +350,6 @@ namespace WeatherDataAnalysis.ViewModel
 
         #region Methods
 
-      
-
         /// <summary>
         ///     Occurs when a property value changes.
         /// </summary>
@@ -432,23 +456,39 @@ namespace WeatherDataAnalysis.ViewModel
             this.UpdateDays();
         }
 
+        /// <summary>
+        /// Reads a file when data is already present
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <returns></returns>
         public async Task ReadNewFile(StorageFile file)
         {
             this.weatherCalculator = new WeatherCalculator(this.weatherCalculator, await this.parser.LoadFile(file));
             this.UpdateDays();
         }
 
+        /// <summary>
+        /// Saves the file.
+        /// </summary>
+        /// <param name="file">The file.</param>
         public void SaveFile(StorageFile file)
         {
             var fileSaver = new WeatherDataFileSaver();
             fileSaver.SaveFile(this.weatherCalculator.Days, file);
         }
 
+        /// <summary>
+        /// Finds the duplicate days.
+        /// </summary>
+        /// <returns>Collection of groupings of duplicate Days</returns>
         public ICollection<IGrouping<int, DailyStats>> FindDuplicateDays()
         {
             return this.weatherCalculator.ConflictingDays;
         }
 
+        /// <summary>
+        /// Updates the days.
+        /// </summary>
         public void UpdateDays()
         {
             this.Years = this.weatherCalculator.FindYears().ToList().ToObservableCollection();
@@ -457,11 +497,19 @@ namespace WeatherDataAnalysis.ViewModel
             this.SelectedDays = this.Days;
         }
 
+        /// <summary>
+        /// Finds the next conflicting days.
+        /// </summary>
+        /// <returns>Returns collection of conflicting days</returns>
         public ICollection<DailyStats> FindNextConflictingDays()
         {
             return this.weatherCalculator.FindNextConflictingDays();
         }
 
+        /// <summary>
+        /// Calls the WeatherCalculator merge method
+        /// </summary>
+        /// <param name="action">if set to <c>true</c> [action].</param>
         public void Merge(bool action)
         {
             this.weatherCalculator.Merge(action);

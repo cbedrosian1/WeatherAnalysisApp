@@ -107,7 +107,6 @@
     <Compile Include="Extension\ListExtensions.cs" />
     <Compile Include="Utility\DateTimeExtensions.cs" />
     <Compile Include="Utility\RelayCommand.cs" />
-    <Compile Include="ViewModel\ReportBuilderViewModel.cs" />
     <Compile Include="ViewModel\WeatherCalculatorDetailViewModel.cs" />
     <Compile Include="View\DuplicateDayResult.cs" />
     <Compile Include="View\DuplicateDayDialog.xaml.cs">
@@ -124,10 +123,6 @@
     <Compile Include="Model\DailyStats.cs" />
     <Compile Include="Model\MonthlyStats.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\WeatherDataController.cs" />
-    <Compile Include="View\SummaryDialog.xaml.cs">
-      <DependentUpon>SummaryDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\SummaryPage.xaml.cs">
       <DependentUpon>SummaryPage.xaml</DependentUpon>
     </Compile>
@@ -162,10 +157,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DataExistsDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\SummaryDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

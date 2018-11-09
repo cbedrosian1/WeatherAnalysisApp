@@ -3,6 +3,10 @@ using Windows.UI.Xaml.Data;
 
 namespace WeatherDataAnalysis.Converter
 {
+    /// <summary>
+    /// Converts a DateTime object to a string containing the date without the time
+    /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.Data.IValueConverter" />
     public class ShortStringDateTimeConverter : IValueConverter
     {
         /// <summary>
