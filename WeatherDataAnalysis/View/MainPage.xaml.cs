@@ -169,18 +169,13 @@ namespace WeatherDataAnalysis
 
         private void summaryButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(SummaryPage), this.viewModel);
-        }
-
-        private async Task open()
-        {
-            var dialog = new SummaryDialog();
-            await dialog.ShowAsync();
+            //this.Frame.Navigate(typeof(SummaryPage), this.viewModel);
         }
 
         private void allYearsButton_Click(object sender, RoutedEventArgs e)
         {
-            this.yearsDropDownBox.SelectedItem = new DateTime(1, 1, 1);
+            this.yearsDropDownBox.SelectedItem = null;
+            this.viewModel.SelectedYear = 1;
         }
     }
 }

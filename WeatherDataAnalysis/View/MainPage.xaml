@@ -71,6 +71,7 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
         <Button x:Name="allYearsButton" Content="All years" HorizontalAlignment="Left" Margin="959,80,0,0" VerticalAlignment="Top" Click="allYearsButton_Click"/>
+        <TextBox HorizontalAlignment="Left" Margin="60,458,0,0" Text="{Binding Path=Report, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Height="238" Width="585" IsReadOnly="True"/>
 
 
     </Grid>

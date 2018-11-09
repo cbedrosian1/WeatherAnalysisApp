@@ -20,7 +20,7 @@
     </Page.DataContext>
 
     <Grid>
-        <TextBox x:Name="summaryTextBox" HorizontalAlignment="Left" Text="{Binding Path=Report, Mode=TwoWay}" VerticalAlignment="Top" Height="277" Width="530" Margin="581,59,0,0"/>
+        <TextBox x:Name="summaryTextBox" HorizontalAlignment="Left" Text="{Binding Path=Report, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Height="277" Width="530" Margin="581,59,0,0" IsReadOnly="True"/>
         <TextBlock x:Name="daysUnderTextBlock" HorizontalAlignment="Left" Margin="68,126,0,0" Text="Check for days under:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold" RenderTransformOrigin="0.484,0.54"/>
         <TextBlock x:Name="daysOverTextBlock" HorizontalAlignment="Left" Margin="68,59,0,0" Text="Check for days over:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>
         <TextBlock x:Name="bucketSizeTextBlock" HorizontalAlignment="Left" Margin="68,178,0,0" Text="Histogram Bucket Size:   " TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>

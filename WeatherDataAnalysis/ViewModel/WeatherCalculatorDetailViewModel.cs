@@ -48,6 +48,8 @@ namespace WeatherDataAnalysis.ViewModel
 
         #region Properties
 
+        public bool AllYears { get; set; }
+
         private ObservableCollection<DailyStats> selectedDays;
 
         public ObservableCollection<DailyStats> SelectedDays
