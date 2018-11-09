@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
-using WeatherDataAnalysis.View;
 
 namespace WeatherDataAnalysis.Model
 {
@@ -263,7 +261,7 @@ namespace WeatherDataAnalysis.Model
         }
 
         /// <summary>
-        /// Gets the day that has the highest percipitation
+        /// Gets the day that has the highest precipitation
         /// </summary>
         /// <param name="year"> the year that the day occurs in</param>
         /// <returns> the day with the highest precipitation</returns>

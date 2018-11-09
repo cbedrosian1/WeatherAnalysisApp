@@ -1,54 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using WeatherDataAnalysis.Extension;
 using WeatherDataAnalysis.Model;
-using WeatherDataAnalysis.Utility;
 using WeatherDataAnalysis.View;
 
 namespace WeatherDataAnalysis.ViewModel
 {
     /// <summary>
-    /// View model for the summary window
+    ///     View model for the summary window
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    class SummaryViewModel : INotifyPropertyChanged
+    internal class SummaryViewModel : INotifyPropertyChanged
     {
+        #region Data members
+
+
         private WeatherCalculator weatherCalculator;
-        private int bucketSize;
-        private string report;
-        private int lowTempThreshold;
-        private int highTempThreshold;
+
         private ObservableCollection<DailyStats> days;
 
+        private string report;
 
+        private int highTempThreshold;
+
+        private int lowTempThreshold;
+
+        private int bucketSize;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        ///     Gets or sets the days.
+        ///     Gets the weather calculator.
         /// </summary>
         /// <value>
-        ///     The days.
+        ///     The weather calculator.
         /// </value>
-        public ObservableCollection<DailyStats> Days
+        public WeatherCalculator WeatherCalculator
         {
-            get => this.days;
+            get => this.weatherCalculator;
             set
             {
-                this.days = value;
+                this.weatherCalculator = value;
                 this.OnPropertyChanged();
-                this.SummaryCommand?.OnCanExecuteChanged();
             }
+
         }
 
+        public ReportBuilder ReportBuilder { get; private set; }
+
         /// <summary>
-        /// Gets or sets the size of the bucket.
+        ///     Gets or sets the size of the bucket.
         /// </summary>
         /// <value>
-        /// The size of the bucket.
+        ///     The size of the bucket.
         /// </value>
         public int BucketSize
         {
@@ -67,10 +75,10 @@ namespace WeatherDataAnalysis.ViewModel
         }
 
         /// <summary>
-        ///     Gets or sets the high temperature threshold.
+        ///     Gets or sets the high temporary threshold.
         /// </summary>
         /// <value>
-        ///     The high temperature threshold.
+        ///     The high temporary threshold.
         /// </value>
         public int HighTempThreshold
         {
@@ -84,17 +92,15 @@ namespace WeatherDataAnalysis.ViewModel
                     this.weatherCalculator.HighTemperatureThreshold = this.HighTempThreshold;
                     this.buildReport();
                 }
-
-
             }
         }
 
-        /// <summary>
-        ///     Gets or sets the low temperature threshold.
-        /// </summary>
-        /// <value>
-        ///     The low temperature threshold.
-        /// </value>
+        // <summary>
+        //     Gets or sets the low temperature threshold.
+        // </summary>
+        // <value>
+        //     The low temperature threshold.
+        // </value>
         public int LowTempThreshold
         {
             get => this.lowTempThreshold;
@@ -111,10 +117,10 @@ namespace WeatherDataAnalysis.ViewModel
         }
 
         /// <summary>
-        ///     Gets or sets the report.
+        ///     gets or sets the report.
         /// </summary>
         /// <value>
-        ///     The report.
+        ///     the report.
         /// </value>
         public string Report
         {
@@ -124,32 +130,55 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.report = value;
                 this.OnPropertyChanged();
-                this.SummaryCommand.OnCanExecuteChanged();
             }
         }
 
         /// <summary>
-        ///     Gets or sets the summary command.
+        ///     Gets or sets the days.
         /// </summary>
         /// <value>
-        ///     The summary command.
+        ///     The days.
         /// </value>
-        public RelayCommand SummaryCommand { get; set; }
+        public ObservableCollection<DailyStats> Days
+        {
+            get => this.days;
+            set
+            {
+                this.days = value;
+                this.OnPropertyChanged();
+                //this.SummaryCommand?.OnCanExecuteChanged();
+            }
+        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
 
+        #region Constructors
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="WeatherCalculatorDetailViewModel" /> class.
+        /// </summary>
         public SummaryViewModel()
         {
-            this.SummaryCommand = new RelayCommand(this.createSummary, this.canCreateSummary);
+            this.weatherCalculator = new WeatherCalculator(new List<DailyStats>());
+            this.ReportBuilder = new ReportBuilder(this.weatherCalculator);
+            this.Days = this.weatherCalculator.Days.ToObservableCollection();
         }
 
-        private bool canCreateSummary(object obj)
-        {
-            return this.Days.Count > 0;
-        }
+        #endregion
 
-        private void createSummary(object obj)
+        #region Methods
+
+        /// <summary>
+        ///     Occurs when a property value changes.
+        /// </summary>
+        /// <returns> the event</returns>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Creates the summary.
+        /// </summary>
+        public void CreateSummary()
+
         {
             this.refreshThreshold();
             this.buildReport();
@@ -166,9 +195,11 @@ namespace WeatherDataAnalysis.ViewModel
 
         private void buildReport()
         {
-            var reportBuilder = new ReportBuilder(this.weatherCalculator);
-            reportBuilder.CompileReport();
-            this.Report = reportBuilder.Report;
+            
+            this.ReportBuilder = new ReportBuilder(this.weatherCalculator);
+            this.ReportBuilder.CompileReport();
+            this.Report = this.ReportBuilder.Report;
+            
         }
 
         /// <summary>
@@ -179,5 +210,7 @@ namespace WeatherDataAnalysis.ViewModel
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

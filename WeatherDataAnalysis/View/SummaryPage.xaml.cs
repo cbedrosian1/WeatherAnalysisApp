@@ -1,7 +1,6 @@
 ﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-
+using WeatherDataAnalysis.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -10,9 +9,9 @@ namespace WeatherDataAnalysis.View
     /// <summary>
     ///     An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class SummaryPage : Page
+    public sealed partial class SummaryPage
     {
-        private MainPage param;
+        private readonly SummaryViewModel summaryViewModel;
         #region Constructors
 
         /// <summary>
@@ -21,6 +20,8 @@ namespace WeatherDataAnalysis.View
         public SummaryPage()
         {
             this.InitializeComponent();
+            this.summaryViewModel = new SummaryViewModel();
+            
         }
 
         #endregion
@@ -43,13 +44,12 @@ namespace WeatherDataAnalysis.View
         {
             base.OnNavigatedTo(e);
             var param = (MainPage) e.Parameter;
-            this.param = param;
-            this.DataContext = param.ViewModel;
+            DataContext = this.summaryViewModel;
             this.radioButton10.IsChecked = true;
-
+            this.summaryViewModel.WeatherCalculator = param?.ViewModel.WeatherCalculator;
+            this.summaryViewModel.CreateSummary();
         }
-
-        #endregion
+      #endregion
 
       
     }

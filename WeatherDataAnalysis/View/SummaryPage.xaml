@@ -2,7 +2,6 @@
     x:Class="WeatherDataAnalysis.View.SummaryPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:WeatherDataAnalysis.View"
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:converter="using:WeatherDataAnalysis.Converter"
     xmlns:vm="using:WeatherDataAnalysis.ViewModel"
@@ -16,7 +15,7 @@
         <converter:RadioButtonToIntConverter x:Key="RadioButtonToIntConverter"/>
     </Page.Resources>
     <Page.DataContext>
-        <vm:WeatherCalculatorDetailViewModel/>
+        <vm:SummaryViewModel/>
     </Page.DataContext>
 
     <Grid>
@@ -24,7 +23,7 @@
         <TextBox extensions:TextBoxRegex.Regex="^(\-)?[0-9]{0,3}$" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="underTempTextBox" HorizontalAlignment="Left" Margin="303,115,0,0" Text="{Binding Path=LowTempThreshold, Mode=TwoWay, Converter={StaticResource IntConverter}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButton5" IsChecked="{Binding BucketSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RadioButtonToIntConverter}, ConverterParameter=5}" Content="5" GroupName="Histogram" HorizontalAlignment="Left" Margin="109,218,0,0" VerticalAlignment="Top" Width="108"/>
         <RadioButton x:Name="radioButton10" IsChecked="{Binding BucketSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RadioButtonToIntConverter}, ConverterParameter=10}" Content="10" GroupName="Histogram" HorizontalAlignment="Left" Margin="154,218,0,0" VerticalAlignment="Top" Width="108"/>
-        <RadioButton x:Name="radioButton20" IsChecked="{Binding BucketSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RadioButtonToIntConverter}, ConverterParameter=20}" Content="20" GroupName="Histogram" HorizontalAlignment="Left" Margin="215,218,0,0" VerticalAlignment="Top" Width="108"/>
+        <RadioButton x:Name="radioButton20" IsChecked="{Binding BucketSize,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RadioButtonToIntConverter}, ConverterParameter=20}" Content="20" GroupName="Histogram" HorizontalAlignment="Left" Margin="215,218,0,0" VerticalAlignment="Top" Width="108"/>
         <Button x:Name="cancelButton" Content="Back" HorizontalAlignment="Left" Margin="660,316,0,0" VerticalAlignment="Top" Click="cancelButton_Click" Width="121"/>
         <TextBox x:Name="summaryTextBox" HorizontalAlignment="Left" Text="{Binding Path=Report, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Height="277" Width="600" Margin="420,34,0,0" IsReadOnly="True"/>
         <TextBlock x:Name="daysOverTextBlock" HorizontalAlignment="Left" Margin="73,60,0,0" Text="Number of days over:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>

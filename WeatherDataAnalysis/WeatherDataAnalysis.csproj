@@ -102,7 +102,6 @@
     <Compile Include="Converter\IntConverterForString.cs" />
     <Compile Include="Converter\IntConverterForDateTime.cs" />
     <Compile Include="Converter\RadioButtonToIntConvertercs.cs" />
-    <Compile Include="Converter\ShortStringDateTimeConverter.cs" />
     <Compile Include="DataTier\WeatherDataFileSaver.cs" />
     <Compile Include="DataTier\WeatherDataParser.cs" />
     <Compile Include="Extension\ListExtensions.cs" />

@@ -10,7 +10,6 @@ using WeatherDataAnalysis.DataTier;
 using WeatherDataAnalysis.Extension;
 using WeatherDataAnalysis.Model;
 using WeatherDataAnalysis.Utility;
-using WeatherDataAnalysis.View;
 
 namespace WeatherDataAnalysis.ViewModel
 {
@@ -21,8 +20,6 @@ namespace WeatherDataAnalysis.ViewModel
     public class WeatherCalculatorDetailViewModel : INotifyPropertyChanged
     {
         #region Data members
-
-        private WeatherCalculator weatherCalculator;
 
         private DateTime date;
 
@@ -36,94 +33,25 @@ namespace WeatherDataAnalysis.ViewModel
 
         private ObservableCollection<DailyStats> days;
 
-        private string report;
-
         private readonly WeatherDataParser parser;
 
         private int selectedYear;
 
         private ObservableCollection<DateTime> years;
 
-        private int highTempThreshold;
-
-        private int lowTempThreshold;
-
         private ObservableCollection<DailyStats> selectedDays;
-
-        private int bucketSize;
-
-
-        private ReportBuilder reportBuilder;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets or sets the size of the bucket.
+        ///     Gets the weather calculator.
         /// </summary>
         /// <value>
-        /// The size of the bucket.
+        ///     The weather calculator.
         /// </value>
-        public int BucketSize
-        {
-            get => this.bucketSize;
-            set
-            {
-                this.bucketSize = value;
-                this.OnPropertyChanged();
-
-                if (this.weatherCalculator != null)
-                {
-                    this.weatherCalculator.HistogramBucketSize = this.BucketSize;
-                    this.buildReport();
-                }
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the high temperature threshold.
-        /// </summary>
-        /// <value>
-        ///     The high temperature threshold.
-        /// </value>
-        public int HighTempThreshold
-        {
-            get => this.highTempThreshold;
-            set
-            {
-                this.highTempThreshold = value;
-                this.OnPropertyChanged();
-                if (this.weatherCalculator != null)
-                {
-                    this.weatherCalculator.HighTemperatureThreshold = this.HighTempThreshold;
-                    this.buildReport();
-                }
-                    
-               
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the low temperature threshold.
-        /// </summary>
-        /// <value>
-        ///     The low temperature threshold.
-        /// </value>
-        public int LowTempThreshold
-        {
-            get => this.lowTempThreshold;
-            set
-            {
-                this.lowTempThreshold = value;
-                this.OnPropertyChanged();
-                if (this.weatherCalculator != null)
-                {
-                    this.weatherCalculator.LowTemperatureThreshold = this.LowTempThreshold;
-                    this.buildReport();
-                }
-            }
-        }
+        public WeatherCalculator WeatherCalculator { get; private set; }
 
         /// <summary>
         ///     Gets or sets the selected days.
@@ -139,7 +67,6 @@ namespace WeatherDataAnalysis.ViewModel
                 this.selectedDays = value;
                 this.OnPropertyChanged();
                 this.ClearDataCommand?.OnCanExecuteChanged();
-                this.SummaryCommand?.OnCanExecuteChanged();
             }
         }
 
@@ -185,24 +112,6 @@ namespace WeatherDataAnalysis.ViewModel
         }
 
         /// <summary>
-        ///     Gets or sets the report.
-        /// </summary>
-        /// <value>
-        ///     The report.
-        /// </value>
-        public string Report
-        {
-            get => this.report;
-
-            set
-            {
-                this.report = value;
-                this.OnPropertyChanged();
-                this.SummaryCommand.OnCanExecuteChanged();
-            }
-        }
-
-        /// <summary>
         ///     Gets or sets the remove command.
         /// </summary>
         /// <value>
@@ -233,14 +142,6 @@ namespace WeatherDataAnalysis.ViewModel
         ///     The clear data command.
         /// </value>
         public RelayCommand ClearDataCommand { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the summary command.
-        /// </summary>
-        /// <value>
-        ///     The summary command.
-        /// </value>
-        public RelayCommand SummaryCommand { get; set; }
 
         /// <summary>
         ///     Gets or sets the date.
@@ -350,7 +251,6 @@ namespace WeatherDataAnalysis.ViewModel
                 this.days = value;
                 this.OnPropertyChanged();
                 this.ClearDataCommand?.OnCanExecuteChanged();
-                this.SummaryCommand?.OnCanExecuteChanged();
             }
         }
 
@@ -365,9 +265,8 @@ namespace WeatherDataAnalysis.ViewModel
         {
             this.date = DateTime.Now;
             this.parser = new WeatherDataParser();
-            this.weatherCalculator = new WeatherCalculator(new List<DailyStats>());
-            this.reportBuilder = new ReportBuilder(this.weatherCalculator);
-            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+            this.WeatherCalculator = new WeatherCalculator(new List<DailyStats>());
+            this.Days = this.WeatherCalculator.Days.ToObservableCollection();
             this.selectedDays = this.Days.Where(day => day.Date.Year == this.SelectedYear).ToObservableCollection();
             this.initializeCommands();
         }
@@ -388,34 +287,6 @@ namespace WeatherDataAnalysis.ViewModel
             this.AddCommand = new RelayCommand(this.addDay, this.canAddDay);
             this.EditCommand = new RelayCommand(this.editDay, this.canEditDay);
             this.ClearDataCommand = new RelayCommand(this.clearData, this.canClearData);
-            this.SummaryCommand = new RelayCommand(this.createSummary, this.canCreateSummary);
-        }
-
-        private bool canCreateSummary(object obj)
-        {
-            return this.Days.Count > 0;
-        }
-
-        private void createSummary(object obj)
-        {
-            this.refreshThreshold();
-            this.buildReport();
-        }
-
-        private void refreshThreshold()
-        {
-            this.weatherCalculator.HighTemperatureThreshold = 90;
-            this.weatherCalculator.LowTemperatureThreshold = 32;
-            this.weatherCalculator.HistogramBucketSize = 10;
-            this.HighTempThreshold = 90;
-            this.LowTempThreshold = 32;
-        }
-
-        private void buildReport()
-        {
-            this.reportBuilder = new ReportBuilder(this.weatherCalculator);
-            this.reportBuilder.CompileReport();
-            this.Report = this.reportBuilder.Report;
         }
 
         private bool canClearData(object obj)
@@ -425,7 +296,7 @@ namespace WeatherDataAnalysis.ViewModel
 
         private void clearData(object obj)
         {
-            this.weatherCalculator.Days.Clear();
+            this.WeatherCalculator.Days.Clear();
             this.Years.Clear();
             this.UpdateDays();
         }
@@ -438,26 +309,26 @@ namespace WeatherDataAnalysis.ViewModel
 
         private void editDay(object obj)
         {
-            var index = this.weatherCalculator.Days.IndexOf(this.SelectedDay);
-            this.weatherCalculator.Days[index].HighTemperature = this.HighTemperature;
-            this.weatherCalculator.Days[index].LowTemperature = this.LowTemperature;
-            this.weatherCalculator.Days[index].Precipitation = this.Precipitation;
+            var index = this.WeatherCalculator.Days.IndexOf(this.SelectedDay);
+            this.WeatherCalculator.Days[index].HighTemperature = this.HighTemperature;
+            this.WeatherCalculator.Days[index].LowTemperature = this.LowTemperature;
+            this.WeatherCalculator.Days[index].Precipitation = this.Precipitation;
 
-            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+            this.Days = this.WeatherCalculator.Days.ToObservableCollection();
         }
 
         private bool canAddDay(object obj)
         {
             return this.HighTemperature > this.LowTemperature &&
-                   this.weatherCalculator.FindDayWithDate(this.Date) == null;
+                   this.WeatherCalculator.FindDayWithDate(this.Date) == null;
         }
 
         private void addDay(object obj)
         {
             var dayToAdd = new DailyStats(this.Date, this.HighTemperature, this.LowTemperature,
                 this.Precipitation);
-            this.weatherCalculator.Add(dayToAdd);
-            this.weatherCalculator.Days = this.weatherCalculator.Days.OrderBy(day => day.Date).ToList();
+            this.WeatherCalculator.Add(dayToAdd);
+            this.WeatherCalculator.Days = this.WeatherCalculator.Days.OrderBy(day => day.Date).ToList();
             this.UpdateDays();
         }
 
@@ -468,98 +339,97 @@ namespace WeatherDataAnalysis.ViewModel
 
         private void deleteDay(object obj)
         {
-            this.weatherCalculator.Remove(this.SelectedDay);
+            this.WeatherCalculator.Remove(this.SelectedDay);
             this.UpdateDays();
         }
 
         /// <summary>
-        /// Finds the lines with errors.
+        ///     Finds the lines with errors.
         /// </summary>
         /// <returns></returns>
         public string FindLinesWithErrors()
         {
-  
             return this.parser.LinesWithErrors;
-
         }
+
         /// <summary>
         ///     Reads the file.
         /// </summary>
         /// <param name="file">The file to be read.</param>
         public async Task ReadFile(StorageFile file)
         {
-            this.weatherCalculator = new WeatherCalculator(await this.parser.LoadFile(file));
+            this.WeatherCalculator = new WeatherCalculator(await this.parser.LoadFile(file));
             this.UpdateDays();
         }
 
         /// <summary>
-        /// Reads a file when data is already present
+        ///     Reads a file when data is already present
         /// </summary>
         /// <param name="file">The file.</param>
         /// <returns></returns>
         public async Task ReadNewFile(StorageFile file)
         {
-            this.weatherCalculator = new WeatherCalculator(this.weatherCalculator, await this.parser.LoadFile(file));
+            this.WeatherCalculator = new WeatherCalculator(this.WeatherCalculator, await this.parser.LoadFile(file));
             this.UpdateDays();
         }
 
         /// <summary>
-        /// Saves the file.
+        ///     Saves the file.
         /// </summary>
         /// <param name="file">The file.</param>
         public void SaveFile(StorageFile file)
         {
             var fileSaver = new WeatherDataFileSaver();
-            fileSaver.SaveFile(this.weatherCalculator.Days, file);
+            fileSaver.SaveFile(this.WeatherCalculator.Days, file);
         }
 
         /// <summary>
-        /// Finds the duplicate days.
+        ///     Finds the duplicate days.
         /// </summary>
         /// <returns>Collection of groupings of duplicate Days</returns>
         public ICollection<IGrouping<int, DailyStats>> FindDuplicateDays()
         {
-            return this.weatherCalculator.ConflictingDays;
+            return this.WeatherCalculator.ConflictingDays;
         }
 
         /// <summary>
-        /// Updates the days.
+        ///     Updates the days.
         /// </summary>
         public void UpdateDays()
         {
-            this.Years = this.weatherCalculator.FindYears().ToList().ToObservableCollection();
-            this.weatherCalculator.Days = this.weatherCalculator.Days.OrderBy(day => day.Date).ToList();
-            this.Days = this.weatherCalculator.Days.ToObservableCollection();
+            this.Years = this.WeatherCalculator.FindYears().ToList().ToObservableCollection();
+            this.WeatherCalculator.Days = this.WeatherCalculator.Days.OrderBy(day => day.Date).ToList();
+            this.Days = this.WeatherCalculator.Days.ToObservableCollection();
             this.SelectedDays = this.Days;
         }
 
         /// <summary>
-        /// Finds the next conflicting days.
+        ///     Finds the next conflicting days.
         /// </summary>
         /// <returns>Returns collection of conflicting days</returns>
         public ICollection<DailyStats> FindNextConflictingDays()
         {
-            return this.weatherCalculator.FindNextConflictingDays();
+            return this.WeatherCalculator.FindNextConflictingDays();
         }
 
         /// <summary>
-        /// Calls the weather calculator ReplaceOriginalDaysWithDuplicateDays method
+        ///     Calls the weather calculator ReplaceOriginalDaysWithDuplicateDays method
         /// </summary>
         public void ReplaceOriginalDaysWithDuplicateDays()
         {
-            this.weatherCalculator.ReplaceOriginalDaysWithDuplicateDays(this.weatherCalculator.ConflictingDays.First());
+            this.WeatherCalculator.ReplaceOriginalDaysWithDuplicateDays(this.WeatherCalculator.ConflictingDays.First());
         }
 
         /// <summary>
-        /// Calls the weather calculator KeepOriginalDays method
+        ///     Calls the weather calculator KeepOriginalDays method
         /// </summary>
         public void KeepOriginalDays()
         {
-            this.weatherCalculator.KeepOriginalDays(this.weatherCalculator.ConflictingDays.First());
+            this.WeatherCalculator.KeepOriginalDays(this.WeatherCalculator.ConflictingDays.First());
         }
 
         /// <summary>
-        /// Called when [property changed].
+        ///     Called when [property changed].
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
