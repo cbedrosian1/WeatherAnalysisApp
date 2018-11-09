@@ -56,6 +56,12 @@ namespace WeatherDataAnalysis.ViewModel
 
         #region Properties
 
+        /// <summary>
+        /// Gets or sets the size of the bucket.
+        /// </summary>
+        /// <value>
+        /// The size of the bucket.
+        /// </value>
         public int BucketSize
         {
             get => this.bucketSize;
