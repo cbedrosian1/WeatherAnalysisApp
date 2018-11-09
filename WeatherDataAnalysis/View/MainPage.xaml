@@ -28,16 +28,18 @@
             <AppBarButton Icon="OpenFile" Label="Load File" Click="loadFile_Click" />
             <AppBarButton Icon="Save" Label="SaveFile" Click="saveFile_Click"></AppBarButton>
         </CommandBar>
-        <TextBox x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=HighTemperature, Converter={StaticResource IntConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
-        <TextBox x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="177,220,0,0" Text="{Binding Path=LowTemperature, Converter={StaticResource IntConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.751"/>
+        <TextBox extensions:TextBoxRegex.ValidationType="Number" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=HighTemperature, Converter={StaticResource IntConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
+        <TextBox extensions:TextBoxRegex.ValidationType="Number" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="177,220,0,0" Text="{Binding Path=LowTemperature, Converter={StaticResource IntConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.751"/>
+        <TextBox extensions:TextBoxRegex.ValidationType="Decimal" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=Precipitation, Converter={StaticResource DoubleConverter}, Mode=TwoWay}" VerticalAlignment="Top"/>
+        <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=Date, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"/>
+
         <TextBlock x:Name="dayTextBlock" HorizontalAlignment="Left" Margin="80,126,0,0" Text="Date" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-0.914,41.337"/>
         <TextBlock x:Name="highTempTextBlock" HorizontalAlignment="Left" Margin="80,176,0,0" Text="High Temp" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="lowTempTextBlock" HorizontalAlignment="Left" Margin="80,226,0,0" Text="Low Temp" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="precipitationTextBlock" HorizontalAlignment="Left" Margin="80,276,0,0" Text="Precipitation" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.354,0.767"/>
-        <TextBox x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=Precipitation, Converter={StaticResource DoubleConverter}, Mode=TwoWay}" VerticalAlignment="Top"/>
         <TextBlock x:Name="tempCheckerTextBlock" HorizontalAlignment="Left" Visibility="Collapsed"  Margin="990,305,0,0" Text="High Temperature must be higher than Low Temperature" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="80"/>
-        <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=Date, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"/>
-        <ListView BorderBrush="Black" BorderThickness ="4" ItemsSource="{Binding Path=SelectedDays, Mode=TwoWay}" HorizontalAlignment="Left" 
+        
+        <ListView BorderBrush="Black" BorderThickness ="4" ItemsSource="{Binding Path=Days, Mode=TwoWay}" HorizontalAlignment="Left" 
                   SelectedItem="{Binding Path=SelectedDay, Mode=TwoWay}" Height="280" Margin="560,80,0,0" VerticalAlignment="Top" Width="480">
             <ListView.ItemTemplate>
                 <DataTemplate>
