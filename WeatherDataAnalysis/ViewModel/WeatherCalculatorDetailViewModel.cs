@@ -50,9 +50,27 @@ namespace WeatherDataAnalysis.ViewModel
 
         private ObservableCollection<DailyStats> selectedDays;
 
+        private int bucketSize;
+
         #endregion
 
         #region Properties
+
+        public int BucketSize
+        {
+            get => this.bucketSize;
+            set
+            {
+                this.bucketSize = value;
+                this.OnPropertyChanged();
+
+                if (this.weatherCalculator != null)
+                {
+                    this.weatherCalculator.HistogramBucketSize = this.BucketSize;
+                    this.buildReport();
+                }
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the high temperature threshold.
@@ -67,15 +85,13 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.highTempThreshold = value;
                 this.OnPropertyChanged();
-                try
+                if (this.weatherCalculator != null)
                 {
                     this.weatherCalculator.HighTemperatureThreshold = this.HighTempThreshold;
                     this.buildReport();
                 }
-                catch (Exception)
-                {
-                    //TODO
-                }
+                    
+               
             }
         }
 
@@ -380,7 +396,7 @@ namespace WeatherDataAnalysis.ViewModel
         {
             this.weatherCalculator.HighTemperatureThreshold = 90;
             this.weatherCalculator.LowTemperatureThreshold = 32;
-            this.weatherCalculator.HistogramBucketSize = 5;
+            this.weatherCalculator.HistogramBucketSize = 10;
             this.HighTempThreshold = 90;
             this.LowTempThreshold = 32;
         }

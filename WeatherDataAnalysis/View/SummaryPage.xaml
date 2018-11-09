@@ -13,23 +13,24 @@
 
     <Page.Resources>
         <converter:IntConverterForString x:Key="IntConverter"/>
+        <converter:RadioButtonToIntConverter x:Key="RadioButtonToIntConverter"/>
     </Page.Resources>
     <Page.DataContext>
         <vm:WeatherCalculatorDetailViewModel/>
     </Page.DataContext>
 
     <Grid>
-        <TextBox extensions:TextBoxRegex.Regex="^(\-)?[0-9]{0,3}$" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="overTempTextBox" HorizontalAlignment="Left" Margin="230,55,0,0" Text="{Binding Path=HighTempThreshold, Mode=TwoWay, Converter={StaticResource IntConverter}}" VerticalAlignment="Top"/>
-        <TextBox extensions:TextBoxRegex.Regex="^(\-)?[0-9]{0,3}$" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="underTempTextBox" HorizontalAlignment="Left" Margin="230,115,0,0" Text="{Binding Path=LowTempThreshold, Mode=TwoWay, Converter={StaticResource IntConverter}}" VerticalAlignment="Top"/>
-        <RadioButton x:Name="radioButton5" Content="5" GroupName="Histogram" HorizontalAlignment="Left" Margin="230,175,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="radioButton10" Content="10" GroupName="Histogram" HorizontalAlignment="Left" Margin="280,175,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="radioButton20" Content="20" GroupName="Histogram" HorizontalAlignment="Left" Margin="330,175,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="cancelButton" Content="Back" HorizontalAlignment="Left" Margin="68,231,0,0" VerticalAlignment="Top" Click="cancelButton_Click"/>
+        <TextBox extensions:TextBoxRegex.Regex="^(\-)?[0-9]{0,3}$" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="overTempTextBox" HorizontalAlignment="Left" Margin="303,55,0,0" Text="{Binding Path=HighTempThreshold, Mode=TwoWay, Converter={StaticResource IntConverter}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"/>
+        <TextBox extensions:TextBoxRegex.Regex="^(\-)?[0-9]{0,3}$" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="underTempTextBox" HorizontalAlignment="Left" Margin="303,115,0,0" Text="{Binding Path=LowTempThreshold, Mode=TwoWay, Converter={StaticResource IntConverter}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"/>
+        <RadioButton x:Name="radioButton5" IsChecked="{Binding BucketSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RadioButtonToIntConverter}, ConverterParameter=5}" Content="5" GroupName="Histogram" HorizontalAlignment="Left" Margin="109,218,0,0" VerticalAlignment="Top" Width="108"/>
+        <RadioButton x:Name="radioButton10" IsChecked="{Binding BucketSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RadioButtonToIntConverter}, ConverterParameter=10}" Content="10" GroupName="Histogram" HorizontalAlignment="Left" Margin="154,218,0,0" VerticalAlignment="Top" Width="108"/>
+        <RadioButton x:Name="radioButton20" IsChecked="{Binding BucketSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RadioButtonToIntConverter}, ConverterParameter=20}" Content="20" GroupName="Histogram" HorizontalAlignment="Left" Margin="215,218,0,0" VerticalAlignment="Top" Width="108"/>
+        <Button x:Name="cancelButton" Content="Back" HorizontalAlignment="Left" Margin="660,316,0,0" VerticalAlignment="Top" Click="cancelButton_Click" Width="121"/>
         <TextBox x:Name="summaryTextBox" HorizontalAlignment="Left" Text="{Binding Path=Report, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Height="277" Width="600" Margin="420,34,0,0" IsReadOnly="True"/>
         <TextBlock x:Name="daysOverTextBlock" HorizontalAlignment="Left" Margin="73,60,0,0" Text="Number of days over:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>
-        <TextBlock x:Name="daysUnderTextBlock" HorizontalAlignment="Left" Margin="62,120,0,0" Text="Number of days under:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold" RenderTransformOrigin="0.484,0.54"/>
-        <TextBlock x:Name="bucketSizeTextBlock" HorizontalAlignment="Left" Margin="60,180,0,0" Text="Histogram Bucket Size:   " TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>
-        <TextBlock  HorizontalAlignment="Left" Margin="300,50,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="25" FontSize="25"/>
-        <TextBlock  HorizontalAlignment="Left" Margin="300,119,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="25" FontSize="25"/>
+        <TextBlock x:Name="daysUnderTextBlock" HorizontalAlignment="Left" Margin="58,120,0,0" Text="Number of days under:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold" RenderTransformOrigin="0.484,0.54"/>
+        <TextBlock x:Name="bucketSizeTextBlock" HorizontalAlignment="Left" Margin="59,180,0,0" Text="Histogram Bucket Size:   " TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Adobe Arabic" FontSize="22" FontWeight="Bold"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="379,50,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="25" FontSize="25" RenderTransformOrigin="0.48,-0.1"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="379,110,0,0" Text="°F" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="25" FontSize="25"/>
     </Grid>
 </Page>
