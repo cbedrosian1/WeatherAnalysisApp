@@ -12,7 +12,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <converter:IntConverter x:Key="IntConverter"/>
+        <converter:IntConverterForString x:Key="IntConverterForString"/>
+        <converter:IntConverterForDateTime x:Key="IntConverterForDateTime"/>
         <converter:DoubleConverter x:Key="DoubleConverter"/>
         <converter:DateTimeConverter x:Key="DateTimeConverter"/>
         <converter:ShortStringDateTimeConverter x:Key="ShortStringDateTimeConverter"/>
@@ -28,8 +29,8 @@
             <AppBarButton Icon="OpenFile" Label="Load File" Click="loadFile_Click" />
             <AppBarButton Icon="Save" Label="SaveFile" Click="saveFile_Click"></AppBarButton>
         </CommandBar>
-        <TextBox extensions:TextBoxRegex.ValidationType="Number" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=HighTemperature, Converter={StaticResource IntConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
-        <TextBox extensions:TextBoxRegex.ValidationType="Number" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="177,220,0,0" Text="{Binding Path=LowTemperature, Converter={StaticResource IntConverter}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.751"/>
+        <TextBox extensions:TextBoxRegex.ValidationType="Number" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="highTempTextBox" HorizontalAlignment="Left" Margin="177,170,0,0" Text="{Binding Path=HighTemperature, Converter={StaticResource IntConverterForString}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.404"/>
+        <TextBox extensions:TextBoxRegex.ValidationType="Number" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="lowTempTextBox" HorizontalAlignment="Left" Margin="177,220,0,0" Text="{Binding Path=LowTemperature, Converter={StaticResource IntConverterForString}, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.751"/>
         <TextBox extensions:TextBoxRegex.ValidationType="Decimal" extensions:TextBoxRegex.ValidationMode="Dynamic" x:Name="precipitationTextBox" HorizontalAlignment="Left" Margin="177,270,0,0" Text="{Binding Path=Precipitation, Converter={StaticResource DoubleConverter}, Mode=TwoWay}" VerticalAlignment="Top"/>
         <DatePicker x:Name="newDayPicker" HorizontalAlignment="Left" Margin="177,120,0,0" VerticalAlignment="Top" Date="{Binding Path=Date, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"/>
 
@@ -62,11 +63,11 @@
         <Button x:Name="summaryButton" Content="Summary" Command="{Binding SummaryCommand}" HorizontalAlignment="Left" Margin="691,365,0,0" VerticalAlignment="Top" Click="summaryButton_Click"/>
         <Button x:Name="clearDataButton" Content="Clear Data" Command="{Binding ClearDataCommand}"  HorizontalAlignment="Left" Margin="821,365,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.449,0.485"/>
         <Border BorderBrush="Black" BorderThickness="4" HorizontalAlignment="Left" Height="280" Margin="60,80,0,0" VerticalAlignment="Top" Width="480"/>
-        <ComboBox x:Name="yearsDropDownBox" ItemsSource="{Binding Years, Mode=TwoWay}" SelectedItem="{Binding SelectedYear, Mode=TwoWay, Converter={StaticResource IntConverter}}" HorizontalAlignment="Left" Margin="845,80,0,0" VerticalAlignment="Top" Width="114" PlaceholderText="Years">
+        <ComboBox x:Name="yearsDropDownBox" ItemsSource="{Binding Years, Mode=TwoWay}" SelectedItem="{Binding SelectedYear, Mode=TwoWay, Converter={StaticResource IntConverterForDateTime}}" HorizontalAlignment="Left" Margin="845,80,0,0" VerticalAlignment="Top" Width="114" PlaceholderText="Years">
             <x:String>None</x:String>
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock HorizontalAlignment="Stretch" Grid.Row="0" Text="{Binding Year, Converter={StaticResource IntConverter} }" />
+                    <TextBlock HorizontalAlignment="Stretch" Grid.Row="0" Text="{Binding Year, Converter={StaticResource IntConverterForDateTime} }" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
