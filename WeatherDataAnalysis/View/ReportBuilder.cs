@@ -58,22 +58,22 @@ namespace WeatherDataAnalysis.View
             var years = this.data.FindYears();
             foreach (var currentYear in years)
             {
-                var highTemps = this.data.FindHighTemperaturesForYear(currentYear);
-                var lowTemps = this.data.FindLowTemperaturesForYear(currentYear);
+                var highTemps = this.data.FindHighTemperaturesForYear(currentYear.Year);
+                var lowTemps = this.data.FindLowTemperaturesForYear(currentYear.Year);
 
-                this.Report += $"Year: {currentYear}" + Environment.NewLine;
-                this.addHighestTemperatureDaysOfYearToReport(currentYear);
-                this.addLowestTemperatureDaysOfYearToReport(currentYear);
-                this.addLowestHighTemperatureDaysOfYearToReport(currentYear);
-                this.addHighestLowTemperatureDaysOfYearToReport(currentYear);
+                this.Report += $"Year: {currentYear.Year}" + Environment.NewLine;
+                this.addHighestTemperatureDaysOfYearToReport(currentYear.Year);
+                this.addLowestTemperatureDaysOfYearToReport(currentYear.Year);
+                this.addLowestHighTemperatureDaysOfYearToReport(currentYear.Year);
+                this.addHighestLowTemperatureDaysOfYearToReport(currentYear.Year);
                 this.addAverageTemperatureOfYearToReport(highTemps, High);
                 this.addAverageTemperatureOfYearToReport(lowTemps, Low);
-                this.addNumberOfDaysOverTemperatureToReport(currentYear);
-                this.addNumberOfDaysUnderTemperatureToReport(currentYear);
-                this.addDayWithHighestPrecipitationToReport(currentYear);
+                this.addNumberOfDaysOverTemperatureToReport(currentYear.Year);
+                this.addNumberOfDaysUnderTemperatureToReport(currentYear.Year);
+                this.addDayWithHighestPrecipitationToReport(currentYear.Year);
                 this.addTempHistogramToReport(highTemps, High);
                 this.addTempHistogramToReport(lowTemps, Low);
-                this.addInfoForMonthsToReport(currentYear);
+                this.addInfoForMonthsToReport(currentYear.Year);
                 this.Report += Environment.NewLine;
             }
         }

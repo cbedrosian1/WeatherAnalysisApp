@@ -36,40 +36,56 @@ namespace WeatherDataAnalysis.ViewModel
 
         private ObservableCollection<DailyStats> days;
 
-        private DuplicateDayResult duplicateBehavior;
-
         private string report;
 
-        private WeatherDataParser parser;
+        private readonly WeatherDataParser parser;
+
+        private int selectedYear;
+
+        private ObservableCollection<DateTime> years;
+
         #endregion
 
         #region Properties
 
+        private ObservableCollection<DailyStats> selectedDays;
 
-
-
-
-        private string dateForDisplay;
-
-        public string DateForDisplay
+        public ObservableCollection<DailyStats> SelectedDays
         {
-            get => this.dateForDisplay;
+            get => this.selectedDays;
             set
             {
-                this.dateForDisplay = value;
+                this.selectedDays = value;
                 this.OnPropertyChanged();
+                this.ClearDataCommand?.OnCanExecuteChanged();
+                this.SummaryCommand?.OnCanExecuteChanged();
             }
         }
 
 
+        public int SelectedYear
+        {
+            get => this.selectedYear;
+            set
+            {
+                this.selectedYear = value;
+                this.OnPropertyChanged();
+            }
+        }
 
-
-
-
+        public ObservableCollection<DateTime> Years
+        {
+            get => this.years;
+            set
+            {
+                this.years = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public string Report
         {
-            get => this.report; 
+            get => this.report;
 
             set
             {
@@ -78,7 +94,6 @@ namespace WeatherDataAnalysis.ViewModel
                 this.SummaryCommand.OnCanExecuteChanged();
             }
         }
-
 
         /// <summary>
         ///     Gets or sets the remove command.
@@ -113,10 +128,10 @@ namespace WeatherDataAnalysis.ViewModel
         public RelayCommand ClearDataCommand { get; set; }
 
         /// <summary>
-        /// Gets or sets the summary command.
+        ///     Gets or sets the summary command.
         /// </summary>
         /// <value>
-        /// The summary command.
+        ///     The summary command.
         /// </value>
         public RelayCommand SummaryCommand { get; set; }
 
@@ -232,8 +247,6 @@ namespace WeatherDataAnalysis.ViewModel
             }
         }
 
-        public MergeOrReplaceResult MergeOrReplace { get; set; }
-
         #endregion
 
         #region Constructors
@@ -247,6 +260,7 @@ namespace WeatherDataAnalysis.ViewModel
             this.parser = new WeatherDataParser();
             this.weatherCalculator = new WeatherCalculator(new List<DailyStats>());
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
+            this.selectedDays = this.Days.Where(day => day.Date.Year == this.SelectedYear).ToObservableCollection();
             this.initializeCommands();
         }
 
@@ -292,12 +306,14 @@ namespace WeatherDataAnalysis.ViewModel
         private void clearData(object obj)
         {
             this.weatherCalculator.Days.Clear();
+            this.Years.Clear();
             this.UpdateDays();
         }
 
         private bool canEditDay(object obj)
         {
-            return this.HighTemperature > this.LowTemperature && this.SelectedDay != null && this.SelectedDay.Date == this.Date;
+            return this.HighTemperature > this.LowTemperature && this.SelectedDay != null &&
+                   this.SelectedDay.Date == this.Date;
         }
 
         private void editDay(object obj)
@@ -312,7 +328,8 @@ namespace WeatherDataAnalysis.ViewModel
 
         private bool canAddDay(object obj)
         {
-            return this.HighTemperature > this.LowTemperature && this.weatherCalculator.FindDayWithDate(this.Date) == null;
+            return this.HighTemperature > this.LowTemperature &&
+                   this.weatherCalculator.FindDayWithDate(this.Date) == null;
         }
 
         private void addDay(object obj)
@@ -343,14 +360,12 @@ namespace WeatherDataAnalysis.ViewModel
         {
             this.weatherCalculator = new WeatherCalculator(await this.parser.LoadFile(file));
             this.UpdateDays();
-
         }
 
         public async Task ReadNewFile(StorageFile file)
         {
-            this.weatherCalculator =  new WeatherCalculator(this.weatherCalculator, await this.parser.LoadFile(file));
+            this.weatherCalculator = new WeatherCalculator(this.weatherCalculator, await this.parser.LoadFile(file));
             this.UpdateDays();
- 
         }
 
         public void SaveFile(StorageFile file)
@@ -366,8 +381,10 @@ namespace WeatherDataAnalysis.ViewModel
 
         public void UpdateDays()
         {
+            this.Years = this.weatherCalculator.FindYears().ToList().ToObservableCollection();
             this.weatherCalculator.Days = this.weatherCalculator.Days.OrderBy(day => day.Date).ToList();
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
+            this.selectedDays = this.Days.Where(day => day.Date.Year == this.SelectedYear).ToObservableCollection();
         }
 
         public ICollection<DailyStats> FindNextConflictingDays()
@@ -379,7 +396,6 @@ namespace WeatherDataAnalysis.ViewModel
         {
             this.weatherCalculator.Merge(action);
         }
-
 
         /// <summary>
         ///     Called when [property changed].

@@ -273,13 +273,14 @@ namespace WeatherDataAnalysis.Model
         ///     Finds and returns a collection of years from the data
         /// </summary>
         /// <returns>Collection of years from the data</returns>
-        public ICollection<int> FindYears()
+        public ICollection<DateTime> FindYears()
         {
-            var years = new List<int>();
+            var years = new List<DateTime>();
             var yearGroups = this.Days.GroupBy(day => day.Date.Year);
+
             foreach (var currentYear in yearGroups)
             {
-                years.Add(currentYear.First().Date.Year);
+                years.Add(new DateTime(currentYear.First().Date.Year, 1, 1));
             }
 
             return years;
