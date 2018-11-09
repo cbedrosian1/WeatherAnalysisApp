@@ -50,7 +50,7 @@
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0" Text="{Binding Date, Converter={StaticResource ShortStringDateTimeConverter} }" />
+                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0" Text="{Binding Path=InfoAboutDay}" />
                         </Grid>
                     </Border>
                 </DataTemplate>

@@ -42,6 +42,15 @@ namespace WeatherDataAnalysis.Model
         /// <value>the precipitation</value>
         public double Precipitation { get; set; }
 
+        /// <summary>
+        /// Gets the information about day.
+        /// </summary>
+        /// <value>
+        /// The information about day.
+        /// </value>
+        public string InfoAboutDay =>
+            $"Date: {this.Date.ToShortDateString()}, High Temperature: {this.HighTemperature}, Low Temperature: {this.LowTemperature}";
+
         #endregion
 
         #region Constructors

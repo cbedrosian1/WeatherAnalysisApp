@@ -59,6 +59,12 @@ namespace WeatherDataAnalysis.ViewModel
 
         #region Properties
 
+        /// <summary>
+        /// Gets or sets the size of the bucket.
+        /// </summary>
+        /// <value>
+        /// The size of the bucket.
+        /// </value>
         public int BucketSize
         {
             get => this.bucketSize;
@@ -466,6 +472,10 @@ namespace WeatherDataAnalysis.ViewModel
             this.UpdateDays();
         }
 
+        /// <summary>
+        /// Finds the lines with errors.
+        /// </summary>
+        /// <returns></returns>
         public string FindLinesWithErrors()
         {
   
@@ -533,21 +543,23 @@ namespace WeatherDataAnalysis.ViewModel
         }
 
         /// <summary>
-        /// Calls the WeatherCalculator merge method
+        /// Calls the weather calculator ReplaceOriginalDaysWithDuplicateDays method
         /// </summary>
-        /// <param name="action">if set to <c>true</c> [action].</param>
         public void ReplaceOriginalDaysWithDuplicateDays()
         {
             this.weatherCalculator.ReplaceOriginalDaysWithDuplicateDays(this.weatherCalculator.ConflictingDays.First());
         }
 
+        /// <summary>
+        /// Calls the weather calculator KeepOriginalDays method
+        /// </summary>
         public void KeepOriginalDays()
         {
             this.weatherCalculator.KeepOriginalDays(this.weatherCalculator.ConflictingDays.First());
         }
 
         /// <summary>
-        ///     Called when [property changed].
+        /// Called when [property changed].
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

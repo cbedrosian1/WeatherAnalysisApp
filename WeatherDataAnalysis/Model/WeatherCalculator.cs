@@ -320,9 +320,9 @@ namespace WeatherDataAnalysis.Model
         }
 
         /// <summary>
-        ///     Merges the files based on the KeepOrReplace enum.
+        /// Replaces days in list with new conflicting days
         /// </summary>
-        /// <param name="action">The KeepOrReplace enum being chosen.</param>
+        /// <param name="conflictingDays">The conflicting days.</param>
         public void ReplaceOriginalDaysWithDuplicateDays(IGrouping<int, DailyStats> conflictingDays)
         {
        
@@ -341,6 +341,10 @@ namespace WeatherDataAnalysis.Model
             this.ConflictingDays.Remove(conflictingDays);
         }
 
+        /// <summary>
+        /// Keeps the original days while removing conflicting days
+        /// </summary>
+        /// <param name="conflictingDays">The conflicting days.</param>
         public void KeepOriginalDays(IGrouping<int, DailyStats> conflictingDays)
         {
             this.ConflictingDays.Remove(conflictingDays);
