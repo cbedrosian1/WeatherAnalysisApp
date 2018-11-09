@@ -42,7 +42,7 @@ namespace WeatherDataAnalysis
 
         private readonly WeatherDataController controller;
 
-        private readonly WeatherCalculatorDetailViewModel viewModel;
+        public readonly WeatherCalculatorDetailViewModel viewModel;
 
         private const string HighThresholdDefault = "90";
         private const string LowThresholdDefault = "32";
@@ -51,6 +51,7 @@ namespace WeatherDataAnalysis
 
         #endregion
 
+ 
         #region Constructors
 
         /// <summary>
@@ -63,10 +64,10 @@ namespace WeatherDataAnalysis
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
             this.viewModel = new WeatherCalculatorDetailViewModel();
-            this.DataContext = this.viewModel; 
+            this.DataContext = this.viewModel;
 
         }
-
+    
         #endregion
 
         #region Methods
@@ -169,7 +170,7 @@ namespace WeatherDataAnalysis
 
         private void summaryButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.Frame.Navigate(typeof(SummaryPage), this.viewModel);
+            this.Frame.Navigate(typeof(SummaryPage), this);
         }
 
         private void allYearsButton_Click(object sender, RoutedEventArgs e)

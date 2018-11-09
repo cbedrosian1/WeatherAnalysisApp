@@ -48,6 +48,32 @@ namespace WeatherDataAnalysis.ViewModel
 
         #region Properties
 
+        private int highTempThreshold;
+
+        public int HighTempThreshold
+        {
+            get => this.highTempThreshold;
+            set
+            {
+                this.highTempThreshold = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        private int lowTempThreshold;
+
+        public int LowTempThreshold
+        {
+            get => this.lowTempThreshold;
+            set
+            {
+                this.lowTempThreshold = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+
+
         public bool AllYears { get; set; }
 
         private ObservableCollection<DailyStats> selectedDays;

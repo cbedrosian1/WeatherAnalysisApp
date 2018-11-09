@@ -36,5 +36,11 @@ namespace WeatherDataAnalysis.View
             this.Frame.Navigate(typeof(MainPage));
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            var param = (MainPage) e.Parameter;
+            this.DataContext = param.viewModel;
+        }
     }
 }
