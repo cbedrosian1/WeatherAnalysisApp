@@ -70,6 +70,16 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.selectedYear = value;
                 this.OnPropertyChanged();
+                if (this.SelectedYear == 1)
+                {
+                     this.SelectedDays = this.Days;
+                }
+                else
+                {
+                   
+                    this.SelectedDays = this.Days.Where(day => day.Date.Year == this.SelectedYear).ToObservableCollection();
+                }
+
             }
         }
 
@@ -384,7 +394,7 @@ namespace WeatherDataAnalysis.ViewModel
             this.Years = this.weatherCalculator.FindYears().ToList().ToObservableCollection();
             this.weatherCalculator.Days = this.weatherCalculator.Days.OrderBy(day => day.Date).ToList();
             this.Days = this.weatherCalculator.Days.ToObservableCollection();
-            this.selectedDays = this.Days.Where(day => day.Date.Year == this.SelectedYear).ToObservableCollection();
+            this.SelectedDays = this.Days;
         }
 
         public ICollection<DailyStats> FindNextConflictingDays()

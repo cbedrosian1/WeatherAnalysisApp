@@ -178,6 +178,9 @@ namespace WeatherDataAnalysis
             await dialog.ShowAsync();
         }
 
-  
+        private void allYearsButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.yearsDropDownBox.SelectedItem = new DateTime(1, 1, 1);
+        }
     }
 }

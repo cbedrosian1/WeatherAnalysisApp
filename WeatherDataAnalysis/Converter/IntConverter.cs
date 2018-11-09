@@ -51,11 +51,6 @@ namespace WeatherDataAnalysis.Converter
                 valueToReturn = tempDate.Year;
             }
             
-
-
-            
-           
-            
             return valueToReturn;
         }
     }
