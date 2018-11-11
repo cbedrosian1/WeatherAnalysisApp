@@ -9,7 +9,6 @@ namespace WeatherDataAnalysis.Model
     [Serializable]
     public class DailyStats
     {
-       
         #region Properties
 
         /// <summary>
@@ -80,7 +79,7 @@ namespace WeatherDataAnalysis.Model
         /// </summary>
         public DailyStats()
         {
-            //TODO
+          
         }
 
        

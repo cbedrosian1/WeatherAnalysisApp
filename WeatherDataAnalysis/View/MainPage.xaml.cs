@@ -8,12 +8,11 @@ using Windows.Storage.Pickers;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using WeatherDataAnalysis.View;
 using WeatherDataAnalysis.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-namespace WeatherDataAnalysis
+namespace WeatherDataAnalysis.View
 
 {
     /// <summary>
@@ -33,6 +32,8 @@ namespace WeatherDataAnalysis
         /// </summary>
         public const int ApplicationWidth = 1100;
 
+        private const int DefaultYear = 1;
+
         /// <summary>
         ///     The view model
         /// </summary>
@@ -40,7 +41,6 @@ namespace WeatherDataAnalysis
 
         private DuplicateDayResult duplicateBehavior;
         private StorageFile file;
-        private const int DefaultYear = 1;
 
         #endregion
 
@@ -81,7 +81,7 @@ namespace WeatherDataAnalysis
                 }
                 else
                 {
-                   await this.ViewModel.ReadFile(this.file);
+                    await this.ViewModel.ReadFile(this.file);
                 }
 
                 this.duplicateBehavior = null;

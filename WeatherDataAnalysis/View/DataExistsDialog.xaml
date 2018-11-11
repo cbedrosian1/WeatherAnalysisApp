@@ -6,8 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Data Already Exists"
-    PrimaryButtonText="Merge Text"
-    SecondaryButtonText="Replace Text"
+    PrimaryButtonText="Merge Data"
+    SecondaryButtonText="Replace Data"
     PrimaryButtonClick="ContentDialog_MergeButtonClick"
     SecondaryButtonClick="ContentDialog_ReplaceButtonClick">
 

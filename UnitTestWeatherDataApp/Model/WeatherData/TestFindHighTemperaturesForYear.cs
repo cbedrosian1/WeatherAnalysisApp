@@ -5,20 +5,18 @@ using WeatherDataAnalysis.Model;
 
 namespace UnitTestWeatherDataApp.Model.WeatherData
 {
+    //  Input ({WeatherData.Days} in WeatherData)                                            Expected output
+    //  [{1/1/2015,50,15,1}]                                                                 [50]
+    //  [{1/1/2015,50,15,1}, {1/2/2015,45,25,1}                                              [50,45]
+    //  [{1/1/2015,50,15,1}, {1/2/2015,45,25,1}, {1/3/2015,40,20,1}, {1/4/2015,50,15,1}]     [50,45,40,50]
+    //  [{1/1/2015,50,15,1}, {1/1/2016, 50, 15,1}]                                           [50]
+    //  [{}]                                                                                 empty list
     [TestClass]
     public class TestFindHighTemperaturesForYear
     {
-
-        //  Input ({WeatherData.Days} in WeatherData)                                            Expected output
-        //  [{1/1/2015,50,15,1}]                                                                 [50]
-        //  [{1/1/2015,50,15,1}, {1/2/2015,45,25,1}                                              [50,45]
-        //  [{1/1/2015,50,15,1}, {1/2/2015,45,25,1}, {1/3/2015,40,20,1}, {1/4/2015,50,15,1}]     [50,45,40,50]
-        //  [{1/1/2015,50,15,1}, {1/1/2016, 50, 15,1}]                                           [50]
-        //  [{}]                                                                                 empty list
-
         #region Data members
 
-        private WeatherDataAnalysis.Model.WeatherCalculator weatherData;
+        private WeatherCalculator weatherData;
         private List<DailyStats> days;
         private List<int> testList;
         private DailyStats day1;
@@ -48,7 +46,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         {
             this.days.Add(this.day1);
             this.testList.Add(50);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighTemperaturesForYear(this.day1.Date.Year));
         }
@@ -61,7 +59,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
 
             this.days.Add(this.day1);
             this.days.Add(this.day2);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighTemperaturesForYear(this.day1.Date.Year));
         }
@@ -78,7 +76,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day2);
             this.days.Add(this.day3);
             this.days.Add(this.day4);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighTemperaturesForYear(this.day1.Date.Year));
         }
@@ -90,7 +88,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
 
             this.days.Add(this.day1);
             this.days.Add(this.day5);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighTemperaturesForYear(this.day1.Date.Year));
         }
@@ -98,7 +96,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         [TestMethod]
         public void TestEmptyList()
         {
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighTemperaturesForYear(this.day1.Date.Year));
         }

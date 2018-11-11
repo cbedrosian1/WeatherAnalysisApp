@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="WeatherDataAnalysis.MainPage"
+    x:Class="WeatherDataAnalysis.View.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -40,7 +40,7 @@
         <TextBlock x:Name="tempCheckerTextBlock" HorizontalAlignment="Left" Visibility="Collapsed"  Margin="990,305,0,0" Text="High Temperature must be higher than Low Temperature" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="80"/>
 
         <ListView BorderBrush="Black" BorderThickness ="4" ItemsSource="{Binding Path=SelectedDays, Mode=TwoWay}" HorizontalAlignment="Left" 
-                  SelectedItem="{Binding Path=SelectedDay, Mode=TwoWay}" Height="280" Margin="560,80,0,0" VerticalAlignment="Top" Width="480">
+                  SelectedItem="{Binding Path=SelectedDay, Mode=TwoWay}" Height="280" Margin="560,80,0,0" VerticalAlignment="Top" Width="475">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Black" BorderThickness="1">
@@ -62,7 +62,7 @@
         <Button x:Name="summaryButton" Content="Summary" HorizontalAlignment="Left" Margin="691,365,0,0" VerticalAlignment="Top" Click="summaryButton_Click"/>
         <Button x:Name="clearDataButton" Content="Clear Data" Command="{Binding ClearDataCommand}"  HorizontalAlignment="Left" Margin="821,365,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.449,0.485"/>
         <Border BorderBrush="Black" BorderThickness="4" HorizontalAlignment="Left" Height="280" Margin="60,80,0,0" VerticalAlignment="Top" Width="480"/>
-        <ComboBox x:Name="yearsDropDownBox" ItemsSource="{Binding Years, Mode=TwoWay}" SelectedItem="{Binding SelectedYear, Mode=TwoWay, Converter={StaticResource IntConverterForDateTime}}" HorizontalAlignment="Left" Margin="845,80,0,0" VerticalAlignment="Top" Width="114" PlaceholderText="Years">
+        <ComboBox x:Name="yearsDropDownBox" ItemsSource="{Binding Years, Mode=TwoWay}" SelectedItem="{Binding SelectedYear, Mode=TwoWay, Converter={StaticResource IntConverterForDateTime}}" HorizontalAlignment="Left" Margin="845,48,0,0" VerticalAlignment="Top" Width="114" PlaceholderText="Years">
             <x:String>None</x:String>
             <ComboBox.ItemTemplate>
                 <DataTemplate>
@@ -70,7 +70,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Button x:Name="allYearsButton" Content="All years" HorizontalAlignment="Left" Margin="959,80,0,0" VerticalAlignment="Top" Click="allYearsButton_Click"/>
+        <Button x:Name="allYearsButton" Content="All years" HorizontalAlignment="Left" Margin="959,48,0,0" VerticalAlignment="Top" Click="allYearsButton_Click"/>
 
 
     </Grid>

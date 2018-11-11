@@ -16,6 +16,11 @@ namespace WeatherDataAnalysis.ViewModel
     {
         #region Data members
 
+        private const int DefaultHighTemp = 90;
+
+        private const int DefaultLowTemp = 32;
+
+        private const int DefaultBucketSize = 10;
 
         private WeatherCalculator weatherCalculator;
 
@@ -47,7 +52,6 @@ namespace WeatherDataAnalysis.ViewModel
                 this.weatherCalculator = value;
                 this.OnPropertyChanged();
             }
-
         }
 
         public ReportBuilder ReportBuilder { get; private set; }
@@ -146,7 +150,6 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.days = value;
                 this.OnPropertyChanged();
-                //this.SummaryCommand?.OnCanExecuteChanged();
             }
         }
 
@@ -175,7 +178,7 @@ namespace WeatherDataAnalysis.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Creates the summary.
+        ///     Creates the summary.
         /// </summary>
         public void CreateSummary()
 
@@ -186,20 +189,18 @@ namespace WeatherDataAnalysis.ViewModel
 
         private void refreshThreshold()
         {
-            this.weatherCalculator.HighTemperatureThreshold = 90;
-            this.weatherCalculator.LowTemperatureThreshold = 32;
-            this.weatherCalculator.HistogramBucketSize = 10;
-            this.HighTempThreshold = 90;
-            this.LowTempThreshold = 32;
+            this.weatherCalculator.HighTemperatureThreshold = DefaultHighTemp;
+            this.weatherCalculator.LowTemperatureThreshold = DefaultLowTemp;
+            this.weatherCalculator.HistogramBucketSize = DefaultBucketSize;
+            this.HighTempThreshold = DefaultHighTemp;
+            this.LowTempThreshold = DefaultLowTemp;
         }
 
         private void buildReport()
         {
-            
             this.ReportBuilder = new ReportBuilder(this.weatherCalculator);
             this.ReportBuilder.CompileReport();
             this.Report = this.ReportBuilder.Report;
-            
         }
 
         /// <summary>

@@ -15,17 +15,17 @@ namespace WeatherDataAnalysis.Model
         private const int YearPadding = 1000;
         private const int SizeFinder = 1;
 
-        /// <summary>
-        /// Gets or sets the conflicting days.
-        /// </summary>
-        /// <value>
-        /// The conflicting days.
-        /// </value>
-        public ICollection<IGrouping<int, DailyStats>> ConflictingDays { get; set; }
-
         #endregion
 
         #region Properties
+
+        /// <summary>
+        ///     Gets or sets the conflicting days.
+        /// </summary>
+        /// <value>
+        ///     The conflicting days.
+        /// </value>
+        public ICollection<IGrouping<int, DailyStats>> ConflictingDays { get; set; }
 
         /// <summary>
         ///     Gets or sets the collection of days.
@@ -36,10 +36,10 @@ namespace WeatherDataAnalysis.Model
         public IList<DailyStats> Days { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="DailyStats"/> with the specified i.
+        ///     Gets or sets the <see cref="DailyStats" /> with the specified i.
         /// </summary>
         /// <value>
-        /// The <see cref="DailyStats"/>.
+        ///     The <see cref="DailyStats" />.
         /// </value>
         /// <param name="i">The index.</param>
         /// <returns></returns>
@@ -90,15 +90,15 @@ namespace WeatherDataAnalysis.Model
         public int HistogramRange => this.HistogramBucketSize - SizeFinder;
 
         /// <summary>
-        /// Gets the count of days 
+        ///     Gets the count of days
         /// </summary>
         /// <value>
-        /// the count of days
+        ///     the count of days
         /// </value>
         public int Count => this.Days.Count;
 
         /// <summary>
-        /// gets whether true or false depending on if days is read only
+        ///     gets whether true or false depending on if days is read only
         /// </summary>
         /// <value> true or false depending on days is read only</value>
         public bool IsReadOnly => this.Days.IsReadOnly;
@@ -148,7 +148,88 @@ namespace WeatherDataAnalysis.Model
         #region Methods
 
         /// <summary>
-        /// Finds the day with date.
+        ///     Adds the specified day.
+        /// </summary>
+        /// <param name="day">The day.</param>
+        public void Add(DailyStats day)
+        {
+            this.Days.Add(day);
+        }
+
+        /// <summary>
+        ///     Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.
+        /// </summary>
+        public void Clear()
+        {
+            this.Days.Clear();
+        }
+
+        /// <summary>
+        ///     Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"></see> contains a specific value.
+        /// </summary>
+        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
+        /// <returns>
+        ///     true if item is found in the <see cref="T:System.Collections.Generic.ICollection`1"></see>; otherwise, false.
+        /// </returns>
+        public bool Contains(DailyStats item)
+        {
+            return this.Days.Contains(item);
+        }
+
+        /// <summary>
+        ///     Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"></see> to an
+        ///     <see cref="T:System.Array"></see>, starting at a particular <see cref="T:System.Array"></see> index.
+        /// </summary>
+        /// <param name="array">
+        ///     The one-dimensional <see cref="T:System.Array"></see> that is the destination of the elements
+        ///     copied from <see cref="T:System.Collections.Generic.ICollection`1"></see>. The <see cref="T:System.Array"></see>
+        ///     must have zero-based indexing.
+        /// </param>
+        /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
+        public void CopyTo(DailyStats[] array, int arrayIndex)
+        {
+            this.Days.CopyTo(array, arrayIndex);
+        }
+
+        /// <summary>
+        ///     Removes the first occurrence of a specific object from the
+        ///     <see cref="T:System.Collections.Generic.ICollection`1"></see>.
+        /// </summary>
+        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
+        /// <returns>
+        ///     true if item was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"></see>;
+        ///     otherwise, false. This method also returns false if item is not found in the original
+        ///     <see cref="T:System.Collections.Generic.ICollection`1"></see>.
+        /// </returns>
+        public bool Remove(DailyStats item)
+        {
+            return this.Days.Remove(item);
+        }
+
+        /// <summary>
+        ///     Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        ///     An enumerator that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<DailyStats> GetEnumerator()
+        {
+            return this.Days.GetEnumerator();
+        }
+
+        /// <summary>
+        ///     Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        ///     An <see cref="T:System.Collections.IEnumerator"></see> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.Days.GetEnumerator();
+        }
+
+        /// <summary>
+        ///     Finds the day with date.
         /// </summary>
         /// <param name="date">The date.</param>
         /// <returns></returns>
@@ -162,7 +243,6 @@ namespace WeatherDataAnalysis.Model
             {
                 return null;
             }
-
         }
 
         /// <summary>
@@ -228,7 +308,7 @@ namespace WeatherDataAnalysis.Model
         ///     Returns the average temperature of the list
         /// </returns>
         public double FindAverageTemperatureOfYear(List<int> temps)
-        { 
+        {
             return temps.Average();
         }
 
@@ -261,15 +341,15 @@ namespace WeatherDataAnalysis.Model
         }
 
         /// <summary>
-        /// Gets the day that has the highest precipitation
+        ///     Gets the days that has the highest precipitation
         /// </summary>
         /// <param name="year"> the year that the day occurs in</param>
-        /// <returns> the day with the highest precipitation</returns>
+        /// <returns> the days with the highest precipitation</returns>
         public List<DailyStats> FindDayHighestPrecipitationOccuredOn(int year)
         {
-            return this.Days.Where(day => day.Date.Year == year).OrderBy(day => day.Date).GroupBy(day => day.Precipitation)
+            return this.Days.Where(day => day.Date.Year == year).OrderBy(day => day.Date)
+                       .GroupBy(day => day.Precipitation)
                        .OrderByDescending(precipitation => precipitation.Key).First().ToList();
-
         }
 
         /// <summary>
@@ -318,29 +398,28 @@ namespace WeatherDataAnalysis.Model
         }
 
         /// <summary>
-        /// Replaces days in list with new conflicting days
+        ///     Replaces days in list with new conflicting days
         /// </summary>
         /// <param name="conflictingDays">The conflicting days.</param>
         public void ReplaceOriginalDaysWithDuplicateDays(IGrouping<int, DailyStats> conflictingDays)
         {
-       
-                foreach (var currentDay in conflictingDays)
+            foreach (var currentDay in conflictingDays)
+            {
+                if (!this.Days.Contains(currentDay))
                 {
-                    if (!this.Days.Contains(currentDay))
-                    {
-                        this.Days.Add(currentDay);
-                    }
-                    else
-                    {
-                        this.Days.Remove(currentDay);
-                    }
+                    this.Days.Add(currentDay);
                 }
+                else
+                {
+                    this.Days.Remove(currentDay);
+                }
+            }
 
             this.ConflictingDays.Remove(conflictingDays);
         }
 
         /// <summary>
-        /// Keeps the original days while removing conflicting days
+        ///     Keeps the original days while removing conflicting days
         /// </summary>
         /// <param name="conflictingDays">The conflicting days.</param>
         public void KeepOriginalDays(IGrouping<int, DailyStats> conflictingDays)
@@ -349,7 +428,7 @@ namespace WeatherDataAnalysis.Model
         }
 
         /// <summary>
-        /// Generates the histogram of the temps.
+        ///     Generates the histogram of the temps.
         /// </summary>
         /// <param name="temps">The temps.</param>
         /// <returns> the histogram</returns>
@@ -362,7 +441,6 @@ namespace WeatherDataAnalysis.Model
             var bottomOfRange = this.findStartingTempForHistogram(low);
 
             return this.findNumbersInRange(topOfHistogram, bottomOfRange, temps);
-
         }
 
         private int findStartingTempForHistogram(int temp)
@@ -388,14 +466,13 @@ namespace WeatherDataAnalysis.Model
                 groupCounts.Add(bottomOfRange, numbersInRange);
 
                 bottomOfRange += this.HistogramBucketSize;
-
             }
 
             return groupCounts;
         }
 
         /// <summary>
-        /// Finds the high temperatures for year.
+        ///     Finds the high temperatures for year.
         /// </summary>
         /// <param name="year">The year.</param>
         /// <returns>the high temperatures for year</returns>
@@ -406,87 +483,14 @@ namespace WeatherDataAnalysis.Model
         }
 
         /// <summary>
-        /// Finds the low temperatures for year.
+        ///     Finds the low temperatures for year.
         /// </summary>
         /// <param name="year">The year.</param>
         /// <returns>the low temperatures for year</returns>
         public List<int> FindLowTemperaturesForYear(int year)
         {
             return this.Days.Where(yearOfDay => yearOfDay.Date.Year == year).Select(day => day.LowTemperature)
-                .ToList();
-        }
-
-        /// <summary>
-        /// Adds the specified day.
-        /// </summary>
-        /// <param name="day">The day.</param>
-        public void Add(DailyStats day)
-        {
-            this.Days.Add(day);
-        }
-
-        /// <summary>
-        /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.
-        /// </summary>
-        public void Clear()
-        {
-            this.Days.Clear();
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"></see> contains a specific value.
-        /// </summary>
-        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
-        /// <returns>
-        /// true if item is found in the <see cref="T:System.Collections.Generic.ICollection`1"></see>; otherwise, false.
-        /// </returns>
-        public bool Contains(DailyStats item)
-        {
-            return this.Days.Contains(item);
-        }
-
-        /// <summary>
-        /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"></see> to an <see cref="T:System.Array"></see>, starting at a particular <see cref="T:System.Array"></see> index.
-        /// </summary>
-        /// <param name="array">The one-dimensional <see cref="T:System.Array"></see> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"></see>. The <see cref="T:System.Array"></see> must have zero-based indexing.</param>
-        /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
-        public void CopyTo(DailyStats[] array, int arrayIndex)
-        {
-            this.Days.CopyTo(array, arrayIndex);
-        }
-
-        /// <summary>
-        /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.
-        /// </summary>
-        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
-        /// <returns>
-        /// true if item was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"></see>; otherwise, false. This method also returns false if item is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"></see>.
-        /// </returns>
-        public bool Remove(DailyStats item)
-        {
-            return this.Days.Remove(item);
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
-        /// An enumerator that can be used to iterate through the collection.
-        /// </returns>
-        public IEnumerator<DailyStats> GetEnumerator()
-        {
-            return this.Days.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"></see> object that can be used to iterate through the collection.
-        /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.Days.GetEnumerator();
+                       .ToList();
         }
 
         #endregion

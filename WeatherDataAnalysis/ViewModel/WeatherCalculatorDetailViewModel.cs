@@ -21,6 +21,14 @@ namespace WeatherDataAnalysis.ViewModel
     {
         #region Data members
 
+        private const int DefaultYear = 1;
+
+        private const int DefaultHighTemp = 0;
+
+        private const int DefaultLowTemp = 0;
+
+        private const int DefaultPrecipitation = 0;
+
         private DateTime date;
 
         private int highTemperature;
@@ -83,7 +91,7 @@ namespace WeatherDataAnalysis.ViewModel
             {
                 this.selectedYear = value;
                 this.OnPropertyChanged();
-                if (this.SelectedYear == 1)
+                if (this.SelectedYear == DefaultYear)
                 {
                     this.SelectedDays = this.Days;
                 }
@@ -314,7 +322,7 @@ namespace WeatherDataAnalysis.ViewModel
             this.WeatherCalculator.Days[index].LowTemperature = this.LowTemperature;
             this.WeatherCalculator.Days[index].Precipitation = this.Precipitation;
 
-            this.Days = this.WeatherCalculator.Days.ToObservableCollection();
+            this.UpdateDays();
         }
 
         private bool canAddDay(object obj)
@@ -340,13 +348,16 @@ namespace WeatherDataAnalysis.ViewModel
         private void deleteDay(object obj)
         {
             this.WeatherCalculator.Remove(this.SelectedDay);
+            this.HighTemperature = DefaultHighTemp;
+            this.LowTemperature = DefaultLowTemp;
+            this.Precipitation = DefaultPrecipitation;
             this.UpdateDays();
         }
 
         /// <summary>
         ///     Finds the lines with errors.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The lines with errors</returns>
         public string FindLinesWithErrors()
         {
             return this.parser.LinesWithErrors;
@@ -356,6 +367,7 @@ namespace WeatherDataAnalysis.ViewModel
         ///     Reads the file.
         /// </summary>
         /// <param name="file">The file to be read.</param>
+        /// <returns>the task</returns>
         public async Task ReadFile(StorageFile file)
         {
             this.WeatherCalculator = new WeatherCalculator(await this.parser.LoadFile(file));
@@ -366,7 +378,7 @@ namespace WeatherDataAnalysis.ViewModel
         ///     Reads a file when data is already present
         /// </summary>
         /// <param name="file">The file.</param>
-        /// <returns></returns>
+        /// <returns>The task</returns>
         public async Task ReadNewFile(StorageFile file)
         {
             this.WeatherCalculator = new WeatherCalculator(this.WeatherCalculator, await this.parser.LoadFile(file));

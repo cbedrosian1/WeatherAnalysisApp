@@ -192,7 +192,7 @@ namespace WeatherDataAnalysis.View
 
         private string getSuffix(DailyStats day)
         {
-            return DateTimeExtensions.FormatEndingForDay(day.Date);
+            return DateTimeSuffixFormatter.FormatEndingForDay(day.Date);
         }
 
         private void addTempHistogramToReport(List<int> temps, string highOrLow)

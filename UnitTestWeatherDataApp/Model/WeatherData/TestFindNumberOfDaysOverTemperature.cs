@@ -5,21 +5,19 @@ using WeatherDataAnalysis.Model;
 
 namespace UnitTestWeatherDataApp.Model.WeatherData
 {
+    //  Input ({WeatherData.Days} in WeatherData)                                             Expected output
+    //  [{1/3/2015,89,30,0}]                                                                         0
+    //  [{1/4/2015,90,15,0}]                                                                         1
+    //  [{1/1/2016,91,15,0}]                                                                         1
+    //  [{1/2/2015,94,25,0}, {1/1/2015,91,15,0}]                                                     2
+    //  [{1/2/2015,94,25,0}, {1/1/2015,91,15,0}]  (with incorrect year passed in)                    0
+    //  [{}]                                                                                         0
     [TestClass]
     public class TestFindNumberOfDaysOverTemperature
     {
-
-        //  Input ({WeatherData.Days} in WeatherData)                                             Expected output
-        //  [{1/3/2015,89,30,0}]                                                                         0
-        //  [{1/4/2015,90,15,0}]                                                                         1
-        //  [{1/1/2016,91,15,0}]                                                                         1
-        //  [{1/2/2015,94,25,0}, {1/1/2015,91,15,0}]                                                     2
-        //  [{1/2/2015,94,25,0}, {1/1/2015,91,15,0}]  (with incorrect year passed in)                    0
-        //  [{}]                                                                                         0
-
         #region Data members
 
-        private WeatherDataAnalysis.Model.WeatherCalculator weatherData;
+        private WeatherCalculator weatherData;
         private List<DailyStats> days;
         private DailyStats day1;
         private DailyStats day2;
@@ -46,7 +44,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         public void Test1LessThanThresholdNotReturned()
         {
             this.days.Add(this.day3);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days) {
+            this.weatherData = new WeatherCalculator(this.days) {
                 HighTemperatureThreshold = 90
             };
             Assert.AreEqual(0, this.weatherData.FindNumberOfDaysOverTemperature(this.day3.Date.Year));
@@ -56,7 +54,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         public void TestRightAtThresholdReturned()
         {
             this.days.Add(this.day4);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days) {
+            this.weatherData = new WeatherCalculator(this.days) {
                 HighTemperatureThreshold = 90
             };
             Assert.AreEqual(1, this.weatherData.FindNumberOfDaysOverTemperature(this.day4.Date.Year));
@@ -66,7 +64,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         public void Test1MoreThanThresholdReturned()
         {
             this.days.Add(this.day5);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days) {
+            this.weatherData = new WeatherCalculator(this.days) {
                 HighTemperatureThreshold = 90
             };
             Assert.AreEqual(1, this.weatherData.FindNumberOfDaysOverTemperature(this.day5.Date.Year));
@@ -77,7 +75,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         {
             this.days.Add(this.day2);
             this.days.Add(this.day1);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days) {
+            this.weatherData = new WeatherCalculator(this.days) {
                 HighTemperatureThreshold = 90
             };
             Assert.AreEqual(2, this.weatherData.FindNumberOfDaysOverTemperature(this.day2.Date.Year));
@@ -88,7 +86,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         {
             this.days.Add(this.day2);
             this.days.Add(this.day1);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days) {
+            this.weatherData = new WeatherCalculator(this.days) {
                 HighTemperatureThreshold = 90
             };
             Assert.AreEqual(0, this.weatherData.FindNumberOfDaysOverTemperature(this.day5.Date.Year));
@@ -97,13 +95,13 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         [TestMethod]
         public void TestEmptyList()
         {
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days)
-            {
+            this.weatherData = new WeatherCalculator(this.days) {
                 HighTemperatureThreshold = 90
             };
             Assert.AreEqual(0, this.weatherData.FindNumberOfDaysOverTemperature(this.day1.Date.Year));
         }
 
-        #endregion  
+        #endregion
+
     }
 }

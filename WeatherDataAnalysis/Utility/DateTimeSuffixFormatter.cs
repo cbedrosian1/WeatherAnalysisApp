@@ -3,12 +3,14 @@
 namespace WeatherDataAnalysis.Utility
 {
     /// <summary>
-    /// Extends the date time class in order to format the ending for a day
+    ///     Extends the date time class in order to format the ending for a day
     /// </summary>
-    public static class DateTimeExtensions
+    public static class DateTimeSuffixFormatter
     {
+        #region Methods
+
         /// <summary>
-        /// Formats the ending for day.
+        ///     Formats the ending for day.
         /// </summary>
         /// <param name="day">The day.</param>
         /// <returns>the proper ending</returns>
@@ -30,5 +32,7 @@ namespace WeatherDataAnalysis.Utility
                     return "th";
             }
         }
+
+        #endregion
     }
 }
