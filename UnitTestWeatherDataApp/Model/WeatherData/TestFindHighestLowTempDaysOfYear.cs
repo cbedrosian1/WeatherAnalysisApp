@@ -8,7 +8,6 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
     [TestClass]
     public class TestFindHighestLowTempDaysOfYear
     {
-
         //  Input ({WeatherData.Days} in WeatherData)                                                 Expected output
         //  [{1/1/2015,50,15,0}]                                                                     [{1/1/2015,50,15,0}]
         //  [{1/3/2015,40,30,0}, {1/1/2015,50,15,0}, {1/2/2015,45,25,0}]                             [{1/3/2015,40,30,0}]
@@ -20,7 +19,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
 
         #region Data members
 
-        private WeatherDataAnalysis.Model.WeatherCalculator weatherData;
+        private WeatherCalculator weatherData;
         private List<DailyStats> days;
         private List<DailyStats> testList;
         private DailyStats day1;
@@ -50,7 +49,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         {
             this.days.Add(this.day1);
             this.testList.Add(this.day1);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighestLowTemperatureDaysOfYear(this.day1.Date.Year));
         }
@@ -64,7 +63,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day1);
             this.days.Add(this.day2);
 
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighestLowTemperatureDaysOfYear(this.day3.Date.Year));
         }
@@ -78,7 +77,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day3);
             this.days.Add(this.day1);
 
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighestLowTemperatureDaysOfYear(this.day3.Date.Year));
         }
@@ -92,7 +91,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day1);
             this.days.Add(this.day3);
 
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighestLowTemperatureDaysOfYear(this.day3.Date.Year));
         }
@@ -107,7 +106,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day2);
             this.days.Add(this.day3);
             this.days.Add(this.day4);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighestLowTemperatureDaysOfYear(this.day3.Date.Year));
         }
@@ -119,7 +118,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
 
             this.days.Add(this.day1);
             this.days.Add(this.day5);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighestLowTemperatureDaysOfYear(this.day1.Date.Year));
         }
@@ -127,13 +126,13 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         [TestMethod]
         public void TestEmptyList()
         {
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             Assert.ThrowsException<InvalidOperationException>(() =>
                 this.weatherData.FindHighestLowTemperatureDaysOfYear(this.day1.Date.Year));
         }
 
-
-
         #endregion
+
+       
     }
 }

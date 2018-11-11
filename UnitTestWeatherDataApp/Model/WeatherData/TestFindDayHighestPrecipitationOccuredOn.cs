@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WeatherDataAnalysis.Model;
 
 namespace UnitTestWeatherDataApp.Model.WeatherData
 {
+
+    //  Input ({WeatherData.Days} in WeatherData)                                                 Expected output
+    //  [{1/1/2015,50,15,1}]                                                                     [{1/1/2015,50,15,1}]
+    //  [{1/3/2015,40,30,3}, {1/1/2015,50,15,1}, {1/2/2015,45,25,2}]                             [{1/3/2015,40,30,3}]
+    //  [{1/2/2015,45,25,2}, {1/3/2015,40,30,3}, {1/1/2015,50,15,1}]                             [{1/3/2015,40,30,3}]
+    //  [{1/2/2015,45,25,2}, {1/1/2015,50,15,1}, {1/3/2015,40,30,3}]                             [{1/1/2015, 50, 15,1}]
+    //  [{1/1/2015,50,15,1}, {1/2/2015,45,25,2}, {1/3/2015,40,30,3}, {1/4/2015,50,30,4}]         [{1/3/2015,40,30,3}, {1/4/2015,50,30,4}]
+    //  [{1/1/2015,50,15,1}, {1/1/2016, 50, 15,1}]                                               [{1/1/2015, 50, 15,1}]
+    //  [{}]                                                                                     InvalidExceptionError
+
     [TestClass]
     public class TestFindDayHighestPrecipitationOccuredOn
     {
-
-         //  Input ({WeatherData.Days} in WeatherData)                                                 Expected output
-        //  [{1/1/2015,50,15,1}]                                                                     [{1/1/2015,50,15,1}]
-        //  [{1/3/2015,40,30,3}, {1/1/2015,50,15,1}, {1/2/2015,45,25,2}]                             [{1/3/2015,40,30,3}]
-        //  [{1/2/2015,45,25,2}, {1/3/2015,40,30,3}, {1/1/2015,50,15,1}]                             [{1/3/2015,40,30,3}]
-        //  [{1/2/2015,45,25,2}, {1/1/2015,50,15,1}, {1/3/2015,40,30,3}]                             [{1/1/2015, 50, 15,1}]
-        //  [{1/1/2015,50,15,1}, {1/2/2015,45,25,2}, {1/3/2015,40,30,3}, {1/4/2015,50,30,4}]         [{1/3/2015,40,30,3}, {1/4/2015,50,30,4}]
-        //  [{1/1/2015,50,15,1}, {1/1/2016, 50, 15,1}]                                               [{1/1/2015, 50, 15,1}]
-        //  [{}]                                                                                     InvalidExceptionError
-
         #region Data members
 
-        private WeatherDataAnalysis.Model.WeatherCalculator weatherData;
+        private WeatherCalculator weatherData;
         private List<DailyStats> days;
         private List<DailyStats> testList;
         private DailyStats day1;
@@ -53,7 +50,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         {
             this.days.Add(this.day1);
             this.testList.Add(this.day1);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindDayHighestPrecipitationOccuredOn(this.day1.Date.Year));
         }
@@ -67,7 +64,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day1);
             this.days.Add(this.day2);
 
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindDayHighestPrecipitationOccuredOn(this.day3.Date.Year));
         }
@@ -81,7 +78,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day3);
             this.days.Add(this.day1);
 
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindDayHighestPrecipitationOccuredOn(this.day3.Date.Year));
         }
@@ -95,7 +92,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day1);
             this.days.Add(this.day3);
 
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindDayHighestPrecipitationOccuredOn(this.day3.Date.Year));
         }
@@ -110,7 +107,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
             this.days.Add(this.day2);
             this.days.Add(this.day3);
             this.days.Add(this.day4);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighestLowTemperatureDaysOfYear(this.day3.Date.Year));
         }
@@ -122,7 +119,7 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
 
             this.days.Add(this.day1);
             this.days.Add(this.day5);
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             CollectionAssert.AreEquivalent(this.testList,
                 this.weatherData.FindHighestLowTemperatureDaysOfYear(this.day1.Date.Year));
         }
@@ -130,14 +127,13 @@ namespace UnitTestWeatherDataApp.Model.WeatherData
         [TestMethod]
         public void TestEmptyList()
         {
-            this.weatherData = new WeatherDataAnalysis.Model.WeatherCalculator(this.days);
+            this.weatherData = new WeatherCalculator(this.days);
             Assert.ThrowsException<InvalidOperationException>(() =>
                 this.weatherData.FindHighestLowTemperatureDaysOfYear(this.day1.Date.Year));
         }
 
-
-
         #endregion
 
+ 
     }
 }
