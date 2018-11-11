@@ -56,7 +56,8 @@ namespace WeatherDataAnalysis.DataTier
             if (file.FileType == ".csv")
             {
                 days = await this.handleCsvFile(file);
-            } else if (file.FileType == ".xml")
+            }
+            else if (file.FileType == ".xml")
             {
                 days = await this.handleXmlFile(file);
             }

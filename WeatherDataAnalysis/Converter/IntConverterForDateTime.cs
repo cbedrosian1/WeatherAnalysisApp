@@ -18,7 +18,7 @@ namespace WeatherDataAnalysis.Converter
         /// <param name="targetType">Type of the target.</param>
         /// <param name="parameter">The parameter.</param>
         /// <param name="language">The language.</param>
-        /// <returns></returns>
+        /// <returns>Returns string from int</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var temperature = (int) value;
@@ -32,7 +32,7 @@ namespace WeatherDataAnalysis.Converter
         /// <param name="targetType">Type of the target.</param>
         /// <param name="parameter">The parameter.</param>
         /// <param name="language">The language.</param>
-        /// <returns></returns>
+        /// <returns>Returns int from DateTime</returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             var tempDate = DateTime.Now;
@@ -40,7 +40,7 @@ namespace WeatherDataAnalysis.Converter
             {
                 tempDate = (DateTime) value;
             }
-             
+
             var valueToReturn = tempDate.Year;
 
             return valueToReturn;

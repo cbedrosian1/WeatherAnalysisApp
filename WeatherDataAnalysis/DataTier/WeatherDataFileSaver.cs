@@ -18,8 +18,8 @@ namespace WeatherDataAnalysis.DataTier
         #region Methods
 
         /// <summary>
-        /// Saves the collection of data into a csv file
-        /// Precondition: daySummaries != null
+        ///     Saves the collection of data into a csv file
+        ///     Precondition: daySummaries != null
         /// </summary>
         /// <param name="daySummaries">The data being saved</param>
         /// <param name="file">The file.</param>

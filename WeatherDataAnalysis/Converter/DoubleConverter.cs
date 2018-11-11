@@ -5,44 +5,48 @@ using Microsoft.Toolkit.Extensions;
 namespace WeatherDataAnalysis.Converter
 {
     /// <summary>
-    /// Converts integers to strings and back
+    ///     Converts integers to strings and back
     /// </summary>
     /// <seealso cref="Windows.UI.Xaml.Data.IValueConverter" />
     public class DoubleConverter : IValueConverter
     {
+        #region Methods
+
         /// <summary>
-        /// Converts the specified value.
+        ///     Converts the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="targetType">Type of the target.</param>
         /// <param name="parameter">The parameter.</param>
         /// <param name="language">The language.</param>
-        /// <returns></returns>
+        /// <returns>Returns string of the double </returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var temperature = (double)value;
-            return temperature.ToSafeString();
+            var precipitation = (double) value;
+            return precipitation.ToSafeString();
         }
 
         /// <summary>
-        /// Converts the back.
+        ///     Converts the back.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="targetType">Type of the target.</param>
         /// <param name="parameter">The parameter.</param>
         /// <param name="language">The language.</param>
-        /// <returns></returns>
+        /// <returns>Returns double from a string</returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            var tempText = (string)value;
+            var precipitationText = (string) value;
 
             var valueToReturn = 0.0;
-            if (!string.IsNullOrEmpty(tempText))
+            if (!string.IsNullOrEmpty(precipitationText))
             {
-                valueToReturn = double.Parse(tempText);
+                valueToReturn = double.Parse(precipitationText);
             }
 
             return valueToReturn;
         }
+
+        #endregion
     }
 }
