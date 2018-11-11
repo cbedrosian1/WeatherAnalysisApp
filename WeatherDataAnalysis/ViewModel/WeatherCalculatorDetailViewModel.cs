@@ -305,6 +305,7 @@ namespace WeatherDataAnalysis.ViewModel
         private void clearData(object obj)
         {
             this.WeatherCalculator.Days.Clear();
+            this.resetDayProperties();
             this.Years.Clear();
             this.UpdateDays();
         }
@@ -348,10 +349,15 @@ namespace WeatherDataAnalysis.ViewModel
         private void deleteDay(object obj)
         {
             this.WeatherCalculator.Remove(this.SelectedDay);
+            this.resetDayProperties();
+            this.UpdateDays();
+        }
+
+        private void resetDayProperties()
+        {
             this.HighTemperature = DefaultHighTemp;
             this.LowTemperature = DefaultLowTemp;
             this.Precipitation = DefaultPrecipitation;
-            this.UpdateDays();
         }
 
         /// <summary>
